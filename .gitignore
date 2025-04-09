@@ -1,0 +1,11 @@
+all-in-one/*
+
+data/*
+
+models/*
+
+output/*
+
+demix/*
+
+spec/*

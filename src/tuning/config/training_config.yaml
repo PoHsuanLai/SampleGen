@@ -1,0 +1,79 @@
+# Training configuration for hip-hop music generators finetuning
+
+# Default training parameters
+default:
+  num_epochs: 3
+  batch_size: 4
+  learning_rate: 5.0e-5
+  weight_decay: 0.01
+  gradient_accumulation_steps: 4
+  fp16: true
+  save_strategy: "epoch"
+  save_total_limit: 2
+  logging_steps: 10
+  report_to: ["tensorboard"]
+
+# Models directory configuration
+models_dir: "models"  # Directory for storing models (relative to project root)
+# You can also specify an absolute path like "/path/to/models"
+
+# Hip-hop style configuration
+styles:
+  modern:
+    description: "Modern hip-hop with trap influences, 808s, and digital sounds"
+    prompt_modifiers: ["trap influenced", "808 heavy", "digital", "minimalist", "modern hip-hop"]
+    
+  classic:
+    description: "Classic boom-bap style hip-hop with sampled drums and jazzy influences"
+    prompt_modifiers: ["boom bap", "sample based", "90s style", "golden era", "classic hip-hop"]
+    
+  trap:
+    description: "Southern trap style with heavy 808s, fast hi-hats and dark atmosphere"
+    prompt_modifiers: ["trap", "808 drums", "hi-hat rolls", "dark", "atmospheric", "southern"]
+    
+  lofi:
+    description: "Mellow, dusty lo-fi hip-hop with vintage character"
+    prompt_modifiers: ["lo-fi", "mellow", "chill", "dusty", "vinyl", "relaxed"]
+
+# Generator-specific configurations
+generators:
+  melody:
+    model_name: "facebook/musicgen-melody"
+    description: "Melodic content generator specialized for hip-hop hooks and leads"
+    training:
+      learning_rate: 4.0e-5
+      top_k: 250
+      guidance_scale: 3.0
+      temperature: 1.0
+    
+  harmony:
+    model_name: "facebook/musicgen-small"
+    description: "Harmonic content generator for hip-hop chord progressions"
+    training:
+      learning_rate: 5.0e-5
+      top_k: 200
+      guidance_scale: 3.5
+      temperature: 0.9
+    
+  bass:
+    model_name: "facebook/musicgen-small"
+    description: "Bass generator for hip-hop bass lines and 808s"
+    training:
+      learning_rate: 5.0e-5
+      top_k: 175
+      guidance_scale: 3.5
+      temperature: 0.9
+    
+  drums:
+    model_name: "facebook/musicgen-small"
+    description: "Drum pattern generator for hip-hop beats"
+    training:
+      learning_rate: 6.0e-5
+      top_k: 150
+      guidance_scale: 4.0
+      temperature: 0.95
+
+# Prompt configuration
+prompts:
+  custom_prompt_file: null  # Set to a file path to use custom prompts
+  use_default_prompts: true  # Whether to use the default prompts from prompts.py 
