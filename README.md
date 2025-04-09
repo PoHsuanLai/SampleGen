@@ -8,7 +8,7 @@ SampleGen is an AI-powered beat generation system that combines sample-based pro
 - **Sample Analysis and Re-synthesis**: Extract stems from existing tracks and transform them
 - **Multi-stage Pipeline**:
   - **Planner**: Understands music structure and creates beat blueprints
-  - **Generator**: Creates individual musical components (drums, bass, melody, harmony)
+  - **Generator**: Creates individual musical components (drums, bass, others)
   - **Mixer**: Professionally mixes the components for high-quality output
 - **Stem Separation**: Splits audio tracks into vocals, drums, bass, and other components
 - **MIDI Transcription**: Can transcribe audio to MIDI for further editing
