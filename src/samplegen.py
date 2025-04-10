@@ -7,7 +7,7 @@ from music.planner.planner import generate_beat_plan, load_clap_large
 from music.generator.models.bass_generator import BassGenerator
 from music.generator.models.drum_generator import DrumGenerator
 from music.generator.models.other_generator import OtherGenerator
-from music.mixer.mixing import MixingModule
+from music.mixer.mixer import MixingModule
 from data_processing.stem_extraction import StemExtractor
 
 

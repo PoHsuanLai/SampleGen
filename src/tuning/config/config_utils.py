@@ -4,7 +4,7 @@ Utilities for loading and parsing configuration files for the music generation s
 
 import os
 import yaml
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 
 def get_default_config_path() -> str:
@@ -16,6 +16,28 @@ def get_default_config_path() -> str:
     """
     config_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(config_dir, "training_config.yaml")
+
+
+def get_default_generator_config_path() -> str:
+    """
+    Get the path to the default generator configuration file.
+    
+    Returns:
+        Path to the default generator configuration file
+    """
+    config_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(config_dir, "generator_config.yaml")
+
+
+def get_default_mixer_config_path() -> str:
+    """
+    Get the path to the default mixer configuration file.
+    
+    Returns:
+        Path to the default mixer configuration file
+    """
+    config_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(config_dir, "mixer_config.yaml")
 
 
 def load_config(config_path: Optional[str] = None) -> Dict[str, Any]:
@@ -39,6 +61,38 @@ def load_config(config_path: Optional[str] = None) -> Dict[str, Any]:
         print(f"Error loading configuration from {config_path}: {str(e)}")
         print("Using default configuration")
         return {}
+
+
+def load_generator_config(config_path: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Load generator configuration from a YAML file.
+    
+    Args:
+        config_path: Path to the configuration file, or None to use the default generator config
+        
+    Returns:
+        Dictionary containing the generator configuration
+    """
+    if config_path is None:
+        config_path = get_default_generator_config_path()
+        
+    return load_config(config_path)
+
+
+def load_mixer_config(config_path: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Load mixer configuration from a YAML file.
+    
+    Args:
+        config_path: Path to the configuration file, or None to use the default mixer config
+        
+    Returns:
+        Dictionary containing the mixer configuration
+    """
+    if config_path is None:
+        config_path = get_default_mixer_config_path()
+        
+    return load_config(config_path)
 
 
 def get_generator_config(config: Dict[str, Any], generator_type: str) -> Dict[str, Any]:
@@ -73,6 +127,60 @@ def get_generator_config(config: Dict[str, Any], generator_type: str) -> Dict[st
     return merged_config
 
 
+def get_mixer_config(config: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Get configuration for the mixer.
+    
+    Args:
+        config: The loaded configuration dictionary
+        
+    Returns:
+        Dictionary containing mixer-specific configuration
+    """
+    if not config:
+        return {}
+        
+    mixer_config = config.get('mixer', {})
+    default_config = config.get('default', {})
+    
+    # Merge with default config (mixer config takes precedence)
+    merged_config = {**default_config, **mixer_config}
+    
+    return merged_config
+
+
+def get_mixer_data_config(config: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Get configuration for mixer data processing.
+    
+    Args:
+        config: The loaded configuration dictionary
+        
+    Returns:
+        Dictionary containing mixer data configuration
+    """
+    if not config:
+        return {}
+        
+    return config.get('data', {})
+
+
+def get_mixer_augmentation_config(config: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Get configuration for mixer augmentation operations.
+    
+    Args:
+        config: The loaded configuration dictionary
+        
+    Returns:
+        Dictionary containing mixer augmentation configuration
+    """
+    if not config:
+        return {}
+        
+    return config.get('augmentation', {})
+
+
 def get_style_config(config: Dict[str, Any], style_name: str) -> Dict[str, Any]:
     """
     Get configuration for a specific hip-hop style.
@@ -100,6 +208,7 @@ def get_models_dir(root_dir: str, config: Dict[str, Any]) -> str:
     Get the models directory from configuration.
     
     Args:
+        root_dir: Root directory of the project
         config: The loaded configuration dictionary
         
     Returns:
@@ -120,4 +229,20 @@ def get_models_dir(root_dir: str, config: Dict[str, Any]) -> str:
     if not os.path.isabs(models_dir):
         models_dir = os.path.join(root_dir, models_dir)
     
-    return models_dir 
+    return models_dir
+
+
+def get_mixer_stems(config: Dict[str, Any]) -> List[str]:
+    """
+    Get the list of stems to process for the mixer.
+    
+    Args:
+        config: The loaded configuration dictionary
+        
+    Returns:
+        List of stem types to process
+    """
+    data_config = get_mixer_data_config(config)
+    default_stems = ["drums", "bass", "other"]
+    
+    return data_config.get('stems', default_stems) 
