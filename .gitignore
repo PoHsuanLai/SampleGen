@@ -16,3 +16,4 @@ spec/*
 
 *.pth
 
+stem_test_output/*
