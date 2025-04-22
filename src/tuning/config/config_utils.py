@@ -203,17 +203,24 @@ def get_style_config(config: Dict[str, Any], style_name: str) -> Dict[str, Any]:
     return style_config
 
 
-def get_models_dir(root_dir: str, config: Dict[str, Any]) -> str:
+def get_models_dir(config: Dict[str, Any], root_dir: Optional[str] = None) -> str:
     """
     Get the models directory from configuration.
     
     Args:
-        root_dir: Root directory of the project
         config: The loaded configuration dictionary
+        root_dir: Root directory of the project (optional)
         
     Returns:
         Path to the models directory
     """
+    # Determine project root if not provided
+    if root_dir is None:
+        # Navigate up from the current file to find the project root
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        # config is in src/tuning/config, so go up 3 levels to get to project root
+        root_dir = os.path.abspath(os.path.join(current_dir, '../../..'))
+    
     # Default to 'models' directory in the project root
     default_dir = os.path.join(root_dir, "models")
     

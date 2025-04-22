@@ -2,36 +2,62 @@
 
 # Default training parameters
 default:
-  num_epochs: 5
-  batch_size: 4
-  learning_rate: 5.0e-5
-  weight_decay: 0.01
-  gradient_accumulation_steps: 4
-  fp16: true
+  num_epochs: 5             # Increase from 3 to 5 for better convergence
+  batch_size: 2             # Reduce from 4 to 2 to handle increased segment duration
+  learning_rate: 2.0e-5     # Adjust from 5.0e-5 to improve stability
+  warmup_ratio: 0.15        # Increase from 0.10 for better stability
+  weight_decay: 0.02        # Increase from 0.01 to reduce overfitting
   save_strategy: "epoch"
   save_total_limit: 2
-  logging_steps: 10
+  logging_steps: 100        # Log less frequently with large dataset
+  evaluation_strategy: "steps"   # Add evaluation
+  eval_steps: 500           # Evaluate every 500 steps
+  save_steps: 1000          # Save every 1000 steps
   report_to: ["tensorboard"]
+  lr_patience: 3            # Increase from 2 to give more time before reducing LR
+  lr_factor: 0.6            # Gentler reduction from 0.5
 
 # Models directory configuration
 models_dir: "models/finetuned/mixer"  # Directory for storing mixer models (relative to project root)
 
 # Data configuration
 data:
-  segment_duration: 5.0  # Duration of audio segments in seconds
-  max_seq_len: 64        # Maximum sequence length for tokenized outputs
-  sample_rate: 44100     # Target sample rate for audio
+  segment_duration: 4.0     # Increase from 5.0 to 8.0 seconds for better musical context
+  max_seq_len: 128          # Increase from 128 to 256 for more detailed instructions
+  sample_rate: 48000        # Keep as is for CLAP compatibility
+  validation_split: 0.10    # Increase from 0.05 to get better validation feedback
+  max_train_samples: 5000   # Increase from 2000 to improve generalization
   
-  # Specifying which stem types to include (vocals excluded for instrumental beats)
+  # Include vocals for more complete mixing
   stems:
+    - "vocals"
     - "drums"
     - "bass"
     - "other"
 
 # Mixer model configuration
 mixer:
-  mistral_model: "mistralai/Mistral-7B-v0.3"
+  # Change to an open model instead of the gated Mistral model
+  mistral_model: "facebook/opt-2.7b"
   text_model: "bert-base-uncased"
+  
+  # LoRA parameters
+  lora:
+    r: 32                 # Increase from 16 to 32 for more expressive capacity
+    lora_alpha: 64        # Keep 2x the rank
+    lora_dropout: 0.07    # Slight increase from 0.05
+    bias: "none"
+    task_type: "CAUSAL_LM"
+    # Add more target modules for better control
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+      - "gate_proj"
+      - "up_proj"
+      - "down_proj"
+      - "lm_head"
   
   # Special tokens for the mixer operations
   special_tokens:
@@ -68,20 +94,15 @@ generators:
 
 # Augmentation settings
 augmentation:
-  min_operations: 1
-  max_operations: 4
+  min_operations: 3      # Increase from 2 to 3 for more diverse training examples
+  max_operations: 6      # Increase from 4 to 6
   operations:
     loop:
-      probability: 0.2
-      params:
-        loop_lengths: [4, 8]  # In beats
-        counts: [2, 3, 4]
+      probability: 0.3    # Increase from 0.2
     apply_eq:
-      probability: 0.3
-      params:
-        gain_range: [-6, 6]  # In dB
+      probability: 0.4    # Increase from 0.3
     apply_reverb:
-      probability: 0.15
+      probability: 0.2    # Increase from 0.15
     apply_delay:
       probability: 0.15
       params:
@@ -106,7 +127,7 @@ augmentation:
     apply_normalize:
       probability: 0.1
     apply_compression:
-      probability: 0.15
+      probability: 0.25   # Increase from 0.15
       params:
         threshold_range: [-30, -10]
         ratio_range: [2, 6] 

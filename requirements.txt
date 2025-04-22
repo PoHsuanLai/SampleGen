@@ -1,12 +1,12 @@
 # Core dependencies
-numpy>=1.20.0
+numpy>=1.22.0
 torch>=2.0.0
 torchaudio>=2.0.0
-transformers>=4.31.0
+transformers>=4.36.0  # Updated to version that includes CLAP
 soundfile>=0.12.1
 librosa>=0.10.0
-scipy>=1.10.0
-matplotlib>=3.7.0
+scikit-learn>=1.2.0
+matplotlib>=3.5.0
 
 # Audio processing and stem separation
 demucs>=4.0.0
@@ -16,9 +16,9 @@ basic-pitch>=0.2.6  # For audio transcription to MIDI
 audiocraft>=1.0.0  # For MusicGen
 
 # LLM and text processing
-bitsandbytes>=0.41.0  # For LLM 8-bit quantization
+bitsandbytes>=0.37.0  # For LLM 8-bit quantization
 peft>=0.5.0  # For LoRA fine-tuning
-accelerate>=0.23.0  # For optimized inference
+accelerate>=0.20.0  # For optimized inference
 sentencepiece>=0.1.99  # For LLM tokenization
 
 # Fine-tuning and dataset management
@@ -35,7 +35,13 @@ youtube-dl>=2021.12.17  # For downloading music from YouTube
 
 # Optional dependencies
 ffmpeg-python>=0.2.0  # For audio file conversion
-tensorboardX>=2.6  # For training visualization
+tensorboard>=2.12.0  # For training visualization
 hydra-core>=1.3.2  # For configuration management
 ipython>=8.10.0  # For interactive usage
-streamlit>=1.24.0  # For UI demos 
+streamlit>=1.24.0  # For UI demos
+
+# Added from the code block
+pydub>=0.25.1
+tensorboardX>=2.6  # For training visualization
+
+# Removed laion_clap in favor of the CLAP implementation in the transformers library 

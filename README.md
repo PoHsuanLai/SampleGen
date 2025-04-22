@@ -161,4 +161,119 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - [Demucs](https://github.com/facebookresearch/demucs) for stem separation
 - [MusicGen](https://github.com/facebookresearch/audiocraft) for music generation
-- [FMA Dataset](https://github.com/mdeff/fma) for training data 
+- [FMA Dataset](https://github.com/mdeff/fma) for training data
+
+# Audio Mixer Training Pipeline
+
+This repository contains code for processing audio data and training a mixing model that learns to apply various mixing operations to improve audio quality.
+
+## Overview
+
+The mixer model is designed to take distorted audio as input and generate a plan of mixing operations to improve the audio quality. It uses a combination of audio and text encoders connected to a decoder language model to generate the appropriate mixing actions.
+
+## Project Structure
+
+- `src/data_processing/`: Contains scripts for audio processing and dataset creation
+  - `chunking.py`: Splits audio files into segments based on JSON annotations
+  - `audio_distorter.py`: Contains distortion methods for on-the-fly augmentation
+  - `create_dataset.py`: Creates a dataset index of processed audio segments
+- `src/music/mixer/`: Contains the mixer model implementation
+  - `mixer.py`: The main mixer model that generates mixing actions
+  - `mixing_tools.py`: Various audio mixing tools used by the mixer
+- `src/tuning/`: Contains training and evaluation scripts
+  - `tune_mixer.py`: Main script for training the mixer model
+
+## Data Processing
+
+The pipeline involves several steps:
+
+1. **Chunking**: Split full songs into segments based on JSON annotations
+2. **Dataset Creation**: Create an index of all segments for easier access
+3. **Runtime Distortion**: During training, apply random distortions to original audio segments
+
+## Training Pipeline
+
+### Option 1: End-to-End Pipeline
+
+Process data and train the model in a single command:
+
+```bash
+python -m src.tuning.tune_mixer \
+  --config src/tuning/config/mixer_config.yaml \
+  --data_dir data \
+  --processed_dir data/processed \
+  --dataset_file data/dataset.json
+```
+
+### Option 2: Step-by-Step
+
+If you prefer to run the pipeline in steps:
+
+1. Process the data:
+
+```bash
+python -m src.data_processing.chunking \
+  --artists_dir data \
+  --output_dir data/processed
+```
+
+2. Create the dataset index:
+
+```bash
+python -m src.data_processing.create_dataset \
+  --processed_dir data/processed \
+  --output_file data/dataset.json
+```
+
+3. Train the model:
+
+```bash
+python -m src.tuning.tune_mixer \
+  --config src/tuning/config/mixer_config.yaml \
+  --skip_processing
+```
+
+## Configuration Options
+
+The mixer training can be configured through the `mixer_config.yaml` file:
+
+- Data parameters (segment duration, sample rate)
+- Model parameters (backbone models)
+- Augmentation settings (types and probabilities of distortions)
+- Training parameters (batch size, learning rate, etc.)
+
+## Runtime Distortions
+
+The audio distorter applies various transformations to create training examples:
+
+- **Volume Changes**: Adjust audio volume up or down
+- **Panning**: Create left/right imbalance
+- **Filtering**: Add high/low frequency content that needs filtering
+- **Compression**: Create dynamic range issues
+- **EQ Adjustments**: Create frequency imbalances
+- **Effects**: Training examples for delay and reverb
+
+These distortions are applied on-the-fly during training, rather than pre-generating distorted files.
+
+## Example Usage
+
+```python
+# Apply combined distortions to an audio file
+from pydub import AudioSegment
+from src.data_processing import AudioDistorter
+
+# Load an audio file
+audio = AudioSegment.from_file("path/to/audio.wav")
+
+# Create distorter
+distorter = AudioDistorter(audio)
+
+# Apply random distortions
+distorted_audio, actions = distorter.get_combined_distortions(num_distortions=2)
+
+# Save the distorted audio
+distorted_audio.export("distorted.wav", format="wav")
+
+# The actions contain the mixing operations needed to fix the audio
+print(actions)
+``` 

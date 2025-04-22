@@ -4,6 +4,7 @@ This file contains curated text prompts organized by generator type and hip-hop 
 """
 
 from typing import Dict, List
+import random
 
 # Common hip-hop descriptors used across different prompt types
 HIP_HOP_DESCRIPTORS = [
@@ -74,6 +75,92 @@ BASE_PROMPTS = {
     ]
 }
 
+# Mixer prompts components for structured generation
+
+# 5 character variants
+MIXER_CHARACTERS = [
+    "You are a legendary mixing engineer with decades of experience in hip-hop production.",
+    "You are a renowned sound designer specialized in crafting unique sonic textures.",
+    "You are an award-winning producer known for pristine audio quality and innovative mixes.",
+    "You are a veteran music producer who has worked with the biggest names in the industry.",
+    "You are a hip-hop production specialist with expertise in creating powerful, commercial mixes."
+]
+
+# Many instruction variants
+MIXER_INSTRUCTIONS = [
+    "Create a professional mix with punchy bass and clear vocals.",
+    "Restore the natural warmth to these stems while enhancing clarity.",
+    "Design a mix with well-defined low end and sparkling highs, focusing on clarity and punch.",
+    "Develop a minimalist mix by removing unnecessary elements and highlighting essential parts.",
+    "Craft an aggressive, energetic mix that prioritizes impact while maintaining clarity.",
+    "Create a boom bap style mix with vintage character and enhanced groove.",
+    "Design a trap-influenced mix with hard-hitting 808s while maintaining space for vocals.",
+    "Produce a warm, nostalgic lo-fi sound with tasteful imperfections.",
+    "Balance all elements to create a sophisticated mix with clarity and depth.",
+    "Design a commercial-ready urban mix with exceptional clarity and punch.",
+    "Create a radio-ready mix that follows commercial loudness standards.",
+    "Mix these stems for vinyl release, emphasizing analog warmth and manageable bass.",
+    "Optimize this mix for streaming platforms with appropriate loudness targets.",
+    "Develop a cinematic mix with wide stereo image and dramatic transitions.",
+    "Create a mix optimized for club systems with controlled low end and punchy transients.",
+    "Craft a modern trap beat with precise 808 tuning and rhythmic clarity.",
+    "Design a classic boom bap mix with vinyl character and head-nodding groove.",
+    "Mix in the style of Atlanta trap production with heavy sub bass and spatial atmospherics.",
+    "Create a lo-fi hip-hop mix with warm textures and subtle imperfections.",
+    "Produce a drill-style mix with sliding 808s and dark atmosphere.",
+    "Fix phase issues and frequency masking problems in these stems.",
+    "Address dynamic range issues for a consistent, balanced mix.",
+    "Clean up unwanted frequencies while preserving essential character.",
+    "Optimize stereo imaging for width while maintaining mono compatibility.",
+    "Apply temporal effects strategically to create depth without muddiness.",
+    "Prepare this mix for final release with appropriate loudness and frequency balance.",
+    "Optimize each stem independently before final assembly.",
+    "Enhance the clarity, presence, and emotion of vocal elements.",
+    "Improve the groove and impact of the rhythm section.",
+    "Maximize low-end impact while ensuring translation across playback systems."
+]
+
+# Consistent format template
+MIXER_FORMAT = """
+Format your response as follows:
+1. DIAGNOSIS: List specific issues identified in each stem
+2. PROCESSING CHAIN: For each stem, provide precise operations in this order:
+   - Gain adjustments (dB values)
+   - EQ settings (specific frequencies and gain)
+   - Dynamics processing (threshold, ratio, attack, release)
+   - Spatial effects (reverb time, delay values)
+3. OUTPUT SETTINGS: Provide final output parameters (LUFS target, peak limiter settings)
+
+Use exact numerical values that can be programmatically parsed.
+"""
+
+def generate_mixer_prompt():
+    """
+    Generate a structured mixer prompt with character, instruction, and format.
+    
+    Returns:
+        A complete mixer prompt
+    """
+    character = random.choice(MIXER_CHARACTERS)
+    instruction = random.choice(MIXER_INSTRUCTIONS)
+    
+    # Combine all three components
+    return f"{character}\n\n{instruction}\n\n{MIXER_FORMAT}"
+
+def get_mixer_prompts(num_prompts=5):
+    """
+    Get a collection of mixer prompts.
+    
+    Args:
+        num_prompts: Number of prompts to return
+        
+    Returns:
+        List of mixer prompts
+    """
+    prompts = []
+    for _ in range(num_prompts):
+        prompts.append(generate_mixer_prompt())
+    return prompts
 
 def get_hip_hop_prompts(generator_type: str, style: str = "modern") -> List[str]:
     """

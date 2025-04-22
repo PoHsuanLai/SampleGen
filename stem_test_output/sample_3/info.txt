@@ -1,0 +1,224 @@
+Source audio: ./data/future/229 - Stick to the Models/229 - Stick to the Models.wav
+Segments:
+1. verse: [Metadata] stem=vocals, segment_idx=0, chunk=0
+2. verse: [Metadata] stem=vocals, segment_idx=0, chunk=0
+3. verse: [Metadata] stem=vocals, segment_idx=0, chunk=0
+4. verse: [Metadata] stem=drums, segment_idx=0, chunk=0
+5. verse: [Metadata] stem=drums, segment_idx=0, chunk=0
+6. verse: [Metadata] stem=drums, segment_idx=0, chunk=0
+7. verse: [Metadata] stem=bass, segment_idx=0, chunk=0
+8. verse: [Metadata] stem=bass, segment_idx=0, chunk=0
+9. verse: [Metadata] stem=bass, segment_idx=0, chunk=0
+10. verse: [Metadata] stem=other, segment_idx=0, chunk=0
+11. verse: [Metadata] stem=other, segment_idx=0, chunk=0
+12. verse: [Metadata] stem=other, segment_idx=0, chunk=0
+
+Token Identifiers:
+  vocals: ['[VOCALS_1]', '[VOCALS_2]', '[VOCALS_3]']
+  drums: ['[DRUMS_1]', '[DRUMS_2]', '[DRUMS_3]']
+  bass: ['[BASS_1]', '[BASS_2]', '[BASS_3]']
+  other: ['[OTHER_1]', '[OTHER_2]', '[OTHER_3]']
+
+Text prompt:
+You are an award-winning producer known for pristine audio quality and innovative mixes.
+
+Prepare this mix for final release with appropriate loudness and frequency balance.
+
+
+Format your response as follows:
+1. DIAGNOSIS: List specific issues identified in each stem
+2. PROCESSING CHAIN: For each stem, provide precise operations in this order:
+   - Gain adjustments (dB values)
+   - EQ settings (specific frequencies and gain)
+   - Dynamics processing (threshold, ratio, attack, release)
+   - Spatial effects (reverb time, delay values)
+3. OUTPUT SETTINGS: Provide final output parameters (LUFS target, peak limiter settings)
+
+Use exact numerical values that can be programmatically parsed.
+
+
+Song Information:
+BPM: 140
+
+Segments:
+1. start: 0.00s - 0.05s (0.00 - 0.01 eight counts, duration: 0.01 eight counts)
+2. intro: 0.05s - 27.88s (0.01 - 8.13 eight counts, duration: 8.12 eight counts)
+3. verse: 27.88s - 59.17s (8.13 - 17.26 eight counts, duration: 9.13 eight counts)
+4. verse: 59.17s - 80.04s (17.26 - 23.35 eight counts, duration: 6.09 eight counts)
+5. verse: 80.04s - 97.44s (23.35 - 28.42 eight counts, duration: 5.07 eight counts)
+6. chorus: 97.44s - 111.35s (28.42 - 32.48 eight counts, duration: 4.06 eight counts)
+7. verse: 111.35s - 128.74s (32.48 - 37.55 eight counts, duration: 5.07 eight counts)
+8. verse: 128.74s - 149.61s (37.55 - 43.64 eight counts, duration: 6.09 eight counts)
+9. chorus: 149.61s - 177.44s (43.64 - 51.75 eight counts, duration: 8.12 eight counts)
+10. outro: 177.44s - 196.17s (51.75 - 57.22 eight counts, duration: 5.46 eight counts)
+11. end: 196.17s - 196.18s (57.22 - 57.22 eight counts, duration: 0.00 eight counts)
+
+Note: One eight count equals 8 beats, standardized to 4 seconds at 120 BPM.
+
+VOCALS STEM: Adjust the volume by -21.928708135334322 dB., Pan the audio to the left by 0.00., Apply a low pass filter with cutoff at 4143 Hz., Apply a high pass filter with cutoff at 183 Hz., Normalize the audio levels., Add some reverb to the audio., Apply compression with threshold at -13 dB and ratio 4.7., Adjust the EQ with low band: 7.2 dB, mid band: 10.2 dB, high band: -2.2 dB., Trim 284 ms from the start and 0 ms from the end., Add some reverb to the audio., Adjust the EQ with low band: -8.0 dB, mid band: 3.9 dB, high band: 6.8 dB., Apply a low pass filter with cutoff at 2878 Hz., Adjust the EQ with low band: 11.1 dB, mid band: 4.0 dB, high band: 6.7 dB., Add some reverb to the audio., Add a delay effect with 438 ms delay and 0.51 decay.
+DRUMS STEM: Adjust the EQ with low band: 8.5 dB, mid band: 11.9 dB, high band: 6.7 dB., Trim 0 ms from the start and 102 ms from the end., Adjust the volume by -1.1938684377103677 dB., Trim 257 ms from the start and 0 ms from the end., Adjust the volume by -20.16446477298987 dB., Apply a high pass filter with cutoff at 353 Hz., Add some reverb to the audio., Adjust the EQ with low band: 5.2 dB, mid band: 4.0 dB, high band: -2.4 dB., Trim 0 ms from the start and 242 ms from the end.
+BASS STEM: Adjust the EQ with low band: 1.6 dB, mid band: -4.1 dB, high band: -6.7 dB., Apply a high pass filter with cutoff at 248 Hz., Trim 0 ms from the start and 292 ms from the end., Adjust the volume by -21.362021426662174 dB., Pan the audio to the right by 0.92., Apply a high pass filter with cutoff at 320 Hz., Apply compression with threshold at -14 dB and ratio 5.4., Adjust the EQ with low band: -3.1 dB, mid band: 10.8 dB, high band: 11.1 dB., Trim 211 ms from the start and 0 ms from the end.
+OTHER STEM: Apply a high pass filter with cutoff at 338 Hz., Pan the audio to the right by 0.04., Apply compression with threshold at -20 dB and ratio 4.4., Pan the audio to the right by 0.95., Adjust the volume by 4.14579975664892 dB., Adjust the EQ with low band: -10.2 dB, mid band: 4.5 dB, high band: -3.4 dB., Adjust the volume by -11.285756322693972 dB., Apply a high pass filter with cutoff at 711 Hz.
+
+
+Tool tokens:
+<vocals_verse_0_pos0_eight_count23.3-28.4>
+  <vol:21.9>
+  <lpf:4143>
+  <hpf:183>
+  <norm>
+  <dly>
+  <rvb>
+  <cmp:-13,4.7>
+  <eq:-7.2,-10.2,2.2>
+  <trim:284,0>
+  <vocals_chorus_1_pos0_eight_count28.4-32.5>
+  <lpf:2878>
+  <norm>
+  <rvb>
+  <eq:8.0,-3.9,-6.8>
+  <vocals_verse_2_pos0_eight_count32.5-37.5>
+  <norm>
+  <dly:438,0.5>
+  <rvb>
+  <eq:-11.1,-4.0,-6.7>
+  <drums_verse_0_pos0_eight_count23.3-28.4>
+  <vol:1.2>
+  <norm>
+  <rvb>
+  <eq:-8.5,-11.9,-6.7>
+  <trim:0,102>
+  <drums_chorus_1_pos0_eight_count24.4-27.8>
+  <empty>
+  <drums_verse_2_pos0_eight_count32.5-37.5>
+  <norm>
+  <rvb>
+  <eq:-5.2,-4.0,2.4>
+  <trim:0,242>
+  <bass_verse_0_pos0_eight_count23.3-28.4>
+  <hpf:248>
+  <norm>
+  <rvb>
+  <eq:-1.6,4.1,6.7>
+  <bass_chorus_1_pos0_eight_count28.4-32.5>
+  <norm>
+  <rvb>
+  <trim:0,292>
+  <bass_verse_2_pos0_eight_count32.5-37.5>
+  <vol:21.4>
+  <pan:-0.9>
+  <hpf:320>
+  <norm>
+  <dly>
+  <rvb>
+  <cmp:-14,5.4>
+  <eq:3.1,-10.8,-11.1>
+  <trim:211,0>
+  <other_verse_0_pos0_eight_count23.3-28.4>
+  <hpf:338>
+  <norm>
+  <rvb>
+  <spd:0.81>
+  <other_chorus_1_pos0_eight_count28.4-32.5>
+  <vol:-4.1>
+  <pan:-0.9>
+  <norm>
+  <rvb>
+  <cmp:-20,4.4>
+  <other_verse_2_pos0_eight_count32.5-37.5>
+  <vol:11.3>
+  <hpf:711>
+  <norm>
+  <rvb>
+  <eq:10.2,-4.5,3.4>
+Input IDs (text prompt):
+tensor([ 101, 2017, 2024,  ..., 1014, 1012,  102])
+
+Tool Input IDs:
+tensor([ 101, 1026, 2955,  ...,    0,    0,    0])
+
+Encoded Audio Information:
+  distorted_shape: torch.Size([4, 3, 192000])
+  original_shape: torch.Size([4, 3, 192000])
+  distorted_mean: 0.000710758613422513
+  original_mean: 0.00012087589857401326
+  distorted_std: 0.28777816891670227
+  original_std: 0.15837979316711426
+
+Stem Actions:
+VOCALS STEM:
+  Chunk 1:
+    - change_volume: {"db": 21.928708135334322}
+    - pan: {"pan_value": -0.0}
+    - apply_low_pass: {"cutoff": 4143}
+    - apply_high_pass: {"cutoff": 183}
+    - apply_normalize: {}
+    - delay: {}
+    - apply_reverb: {}
+    - apply_compression: {"threshold_db": -13, "ratio": 4.738675987358958}
+    - apply_eq: {"low_gain": -7.245600509623976, "mid_gain": -10.2378552266812, "high_gain": 2.2335138354814497}
+    - apply_trim: {"start_ms": 284, "end_ms": 0}
+    - loop_section: {"start_ms": 0, "end_ms": 0, "count": 1}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - speed_change: {"factor": 1.0}
+  Chunk 2:
+    - apply_reverb: {}
+    - apply_eq: {"low_gain": 8.018415037996665, "mid_gain": -3.9249225735168185, "high_gain": -6.792913895962009}
+    - apply_low_pass: {"cutoff": 2878}
+  Chunk 3:
+    - apply_eq: {"low_gain": -11.145882778114922, "mid_gain": -3.9739326824449517, "high_gain": -6.700056955816807}
+    - apply_reverb: {}
+    - apply_delay: {"delay_ms": 438, "decay": 0.5085562446375783}
+DRUMS STEM:
+  Chunk 1:
+    - apply_eq: {"low_gain": -8.491960259018423, "mid_gain": -11.880954483153062, "high_gain": -6.679690613099248}
+    - apply_trim: {"start_ms": 0, "end_ms": 102}
+    - change_volume: {"db": 1.1938684377103677}
+  Chunk 2:
+    - apply_trim: {"start_ms": 257, "end_ms": 0}
+    - change_volume: {"db": -20.16446477298987}
+    - apply_high_pass: {"cutoff": 353}
+  Chunk 3:
+    - apply_reverb: {}
+    - apply_eq: {"low_gain": -5.1674676365883965, "mid_gain": -3.9803553366951068, "high_gain": 2.419100319350319}
+    - apply_trim: {"start_ms": 0, "end_ms": 242}
+BASS STEM:
+  Chunk 1:
+    - loop_section: {"start_ms": 2295, "end_ms": 2612, "count": 1}
+    - apply_eq: {"low_gain": -1.5857561855129916, "mid_gain": 4.07263678646763, "high_gain": 6.701203511793615}
+    - apply_high_pass: {"cutoff": 248}
+  Chunk 2:
+    - apply_trim: {"start_ms": 0, "end_ms": 292}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - loop_section: {"start_ms": 2068, "end_ms": 2707, "count": 1}
+  Chunk 3:
+    - change_volume: {"db": 21.362021426662174}
+    - pan: {"pan_value": -0.9211809485031426}
+    - low_pass: {"cutoff": 20000}
+    - apply_high_pass: {"cutoff": 320}
+    - normalize: {}
+    - delay: {}
+    - reverb: {}
+    - apply_compression: {"threshold_db": -14, "ratio": 5.430313902494358}
+    - apply_eq: {"low_gain": 3.1020696521991447, "mid_gain": -10.803196627036705, "high_gain": -11.124287977630345}
+    - apply_trim: {"start_ms": 211, "end_ms": 0}
+    - loop_section: {"start_ms": 807, "end_ms": 1118, "count": 1}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - speed_change: {"factor": 1.0}
+OTHER STEM:
+  Chunk 1:
+    - apply_high_pass: {"cutoff": 338}
+    - speed_change: {"factor": 0.8147357569573306}
+    - pan: {"pan_value": -0.03769265303997971}
+  Chunk 2:
+    - apply_compression: {"threshold_db": -20, "ratio": 4.420303123248495}
+    - pan: {"pan_value": -0.949113233085898}
+    - change_volume: {"db": -4.14579975664892}
+  Chunk 3:
+    - apply_eq: {"low_gain": 10.17086636810599, "mid_gain": -4.477903379100577, "high_gain": 3.400310824342533}
+    - change_volume: {"db": 11.285756322693972}
+    - apply_high_pass: {"cutoff": 711}
+
+Audio Shape Information:
+Distorted Audio Shape: torch.Size([4, 3, 192000])
+Original Audio Shape: torch.Size([4, 3, 192000])

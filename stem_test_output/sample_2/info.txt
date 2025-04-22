@@ -1,0 +1,711 @@
+Source audio: ./data/kanye/077 - Ghost Town/077 - Ghost Town.wav
+Segments:
+1. verse: [Metadata] stem=vocals, segment_idx=0, chunk=0
+2. verse: [Metadata] stem=vocals, segment_idx=0, chunk=1
+3. verse: [Metadata] stem=vocals, segment_idx=0, chunk=2
+4. verse: [Metadata] stem=vocals, segment_idx=0, chunk=3
+5. verse: [Metadata] stem=vocals, segment_idx=0, chunk=4
+6. verse: [Metadata] stem=vocals, segment_idx=0, chunk=0
+7. verse: [Metadata] stem=vocals, segment_idx=0, chunk=1
+8. verse: [Metadata] stem=vocals, segment_idx=0, chunk=2
+9. verse: [Metadata] stem=vocals, segment_idx=0, chunk=3
+10. verse: [Metadata] stem=vocals, segment_idx=0, chunk=4
+11. verse: [Metadata] stem=vocals, segment_idx=0, chunk=0
+12. verse: [Metadata] stem=vocals, segment_idx=0, chunk=1
+13. verse: [Metadata] stem=vocals, segment_idx=0, chunk=2
+14. verse: [Metadata] stem=vocals, segment_idx=0, chunk=3
+15. verse: [Metadata] stem=drums, segment_idx=0, chunk=0
+16. verse: [Metadata] stem=drums, segment_idx=0, chunk=1
+17. verse: [Metadata] stem=drums, segment_idx=0, chunk=2
+18. verse: [Metadata] stem=drums, segment_idx=0, chunk=3
+19. verse: [Metadata] stem=drums, segment_idx=0, chunk=4
+20. verse: [Metadata] stem=drums, segment_idx=0, chunk=0
+21. verse: [Metadata] stem=drums, segment_idx=0, chunk=1
+22. verse: [Metadata] stem=drums, segment_idx=0, chunk=2
+23. verse: [Metadata] stem=drums, segment_idx=0, chunk=3
+24. verse: [Metadata] stem=drums, segment_idx=0, chunk=4
+25. verse: [Metadata] stem=drums, segment_idx=0, chunk=0
+26. verse: [Metadata] stem=drums, segment_idx=0, chunk=1
+27. verse: [Metadata] stem=drums, segment_idx=0, chunk=2
+28. verse: [Metadata] stem=drums, segment_idx=0, chunk=3
+29. verse: [Metadata] stem=bass, segment_idx=0, chunk=0
+30. verse: [Metadata] stem=bass, segment_idx=0, chunk=1
+31. verse: [Metadata] stem=bass, segment_idx=0, chunk=2
+32. verse: [Metadata] stem=bass, segment_idx=0, chunk=3
+33. verse: [Metadata] stem=bass, segment_idx=0, chunk=4
+34. verse: [Metadata] stem=bass, segment_idx=0, chunk=0
+35. verse: [Metadata] stem=bass, segment_idx=0, chunk=1
+36. verse: [Metadata] stem=bass, segment_idx=0, chunk=2
+37. verse: [Metadata] stem=bass, segment_idx=0, chunk=3
+38. verse: [Metadata] stem=bass, segment_idx=0, chunk=4
+39. verse: [Metadata] stem=bass, segment_idx=0, chunk=0
+40. verse: [Metadata] stem=bass, segment_idx=0, chunk=1
+41. verse: [Metadata] stem=bass, segment_idx=0, chunk=2
+42. verse: [Metadata] stem=bass, segment_idx=0, chunk=3
+43. verse: [Metadata] stem=other, segment_idx=0, chunk=0
+44. verse: [Metadata] stem=other, segment_idx=0, chunk=1
+45. verse: [Metadata] stem=other, segment_idx=0, chunk=2
+46. verse: [Metadata] stem=other, segment_idx=0, chunk=3
+47. verse: [Metadata] stem=other, segment_idx=0, chunk=4
+48. verse: [Metadata] stem=other, segment_idx=0, chunk=0
+49. verse: [Metadata] stem=other, segment_idx=0, chunk=1
+50. verse: [Metadata] stem=other, segment_idx=0, chunk=2
+51. verse: [Metadata] stem=other, segment_idx=0, chunk=3
+52. verse: [Metadata] stem=other, segment_idx=0, chunk=4
+53. verse: [Metadata] stem=other, segment_idx=0, chunk=0
+54. verse: [Metadata] stem=other, segment_idx=0, chunk=1
+55. verse: [Metadata] stem=other, segment_idx=0, chunk=2
+56. verse: [Metadata] stem=other, segment_idx=0, chunk=3
+
+Token Identifiers:
+  vocals: ['[VOCALS_1]', '[VOCALS_2]', '[VOCALS_3]', '[VOCALS_4]', '[VOCALS_5]', '[VOCALS_6]', '[VOCALS_7]', '[VOCALS_8]', '[VOCALS_9]', '[VOCALS_10]', '[VOCALS_11]', '[VOCALS_12]', '[VOCALS_13]', '[VOCALS_14]']
+  drums: ['[DRUMS_1]', '[DRUMS_2]', '[DRUMS_3]', '[DRUMS_4]', '[DRUMS_5]', '[DRUMS_6]', '[DRUMS_7]', '[DRUMS_8]', '[DRUMS_9]', '[DRUMS_10]', '[DRUMS_11]', '[DRUMS_12]', '[DRUMS_13]', '[DRUMS_14]']
+  bass: ['[BASS_1]', '[BASS_2]', '[BASS_3]', '[BASS_4]', '[BASS_5]', '[BASS_6]', '[BASS_7]', '[BASS_8]', '[BASS_9]', '[BASS_10]', '[BASS_11]', '[BASS_12]', '[BASS_13]', '[BASS_14]']
+  other: ['[OTHER_1]', '[OTHER_2]', '[OTHER_3]', '[OTHER_4]', '[OTHER_5]', '[OTHER_6]', '[OTHER_7]', '[OTHER_8]', '[OTHER_9]', '[OTHER_10]', '[OTHER_11]', '[OTHER_12]', '[OTHER_13]', '[OTHER_14]']
+
+Text prompt:
+Fix and mix the following stems according to the song structure:
+
+BPM: 83
+
+Segments:
+1. verse: 0.00s - 12.72s (0.00 - 2.20 eight counts, duration: 2.20 eight counts)
+2. verse: 12.72s - 35.74s (2.20 - 6.18 eight counts, duration: 3.98 eight counts)
+3. chorus: 35.74s - 58.77s (6.18 - 10.16 eight counts, duration: 3.98 eight counts)
+4. chorus: 58.77s - 81.77s (10.16 - 14.14 eight counts, duration: 3.98 eight counts)
+5. verse: 81.77s - 104.81s (14.14 - 18.12 eight counts, duration: 3.98 eight counts)
+6. verse: 104.81s - 127.83s (18.12 - 22.10 eight counts, duration: 3.98 eight counts)
+7. verse: 127.83s - 150.84s (22.10 - 26.08 eight counts, duration: 3.98 eight counts)
+8. chorus: 150.84s - 176.75s (26.08 - 30.56 eight counts, duration: 4.48 eight counts)
+9. bridge: 176.75s - 199.76s (30.56 - 34.54 eight counts, duration: 3.98 eight counts)
+10. bridge: 199.76s - 214.15s (34.54 - 37.03 eight counts, duration: 2.49 eight counts)
+11. chorus: 214.15s - 231.41s (37.03 - 40.01 eight counts, duration: 2.98 eight counts)
+12. chorus: 231.41s - 244.31s (40.01 - 42.25 eight counts, duration: 2.23 eight counts)
+13. chorus: 244.31s - 260.18s (42.25 - 44.99 eight counts, duration: 2.74 eight counts)
+14. chorus: 260.18s - 271.39s (44.99 - 46.93 eight counts, duration: 1.94 eight counts)
+
+Note: One eight count equals 8 beats, standardized to 4 seconds at 120 BPM.
+
+VOCALS STEM: Trim 0 ms from the start and 179 ms from the end., Pan the audio to the right by 0.31., Adjust the volume by -2.4669393866379714 dB., Adjust the volume by -21.378972942935107 dB., Add some reverb to the audio., Adjust the EQ with low band: -7.6 dB, mid band: 11.2 dB, high band: -4.0 dB., Apply compression with threshold at -21 dB and ratio 4.1., Trim 256 ms from the start and 0 ms from the end., Adjust the volume by -11.129666855825214 dB., Adjust the volume by -16.687879353783106 dB., Pan the audio to the left by 0.00., Apply a low pass filter with cutoff at 3941 Hz., Apply a high pass filter with cutoff at 624 Hz., Add some reverb to the audio., Apply compression with threshold at -24 dB and ratio 4.4., Adjust the EQ with low band: -3.1 dB, mid band: 0.2 dB, high band: 6.4 dB., Trim 0 ms from the start and 118 ms from the end., Adjust the volume by -12.87340175692006 dB., Pan the audio to the left by 0.02., Apply a low pass filter with cutoff at 2021 Hz., Apply a high pass filter with cutoff at 465 Hz., Add some reverb to the audio., Apply compression with threshold at -30 dB and ratio 6.1., Adjust the EQ with low band: -5.4 dB, mid band: 10.9 dB, high band: -9.7 dB., Trim 0 ms from the start and 96 ms from the end., Adjust the EQ with low band: -10.0 dB, mid band: 9.5 dB, high band: -2.6 dB., Apply a high pass filter with cutoff at 526 Hz., Apply compression with threshold at -14 dB and ratio 5.2., Adjust the EQ with low band: -7.7 dB, mid band: 0.8 dB, high band: -2.8 dB., Apply a high pass filter with cutoff at 530 Hz., Apply a low pass filter with cutoff at 1521 Hz., Apply a high pass filter with cutoff at 347 Hz., Normalize the audio levels., Trim 0 ms from the start and 252 ms from the end., Apply a high pass filter with cutoff at 671 Hz., Trim 83 ms from the start and 0 ms from the end., Add a delay effect with 500 ms delay and 0.77 decay., Apply compression with threshold at -15 dB and ratio 4.7., Apply a high pass filter with cutoff at 612 Hz., Adjust the volume by 6.3743563634986735 dB., Trim 83 ms from the start and 0 ms from the end., Add a delay effect with 234 ms delay and 0.74 decay., Adjust the volume by -4.0047876061738314 dB., Apply a low pass filter with cutoff at 1685 Hz., Add some reverb to the audio., Apply a low pass filter with cutoff at 3673 Hz., Adjust the EQ with low band: 0.4 dB, mid band: 0.1 dB, high band: 9.4 dB., Add some reverb to the audio., Apply a high pass filter with cutoff at 743 Hz., Adjust the volume by 2.4781876650065477 dB., Adjust the EQ with low band: 8.6 dB, mid band: 11.0 dB, high band: -5.7 dB.
+DRUMS STEM: Apply compression with threshold at -13 dB and ratio 7.3., Adjust the volume by 4.961152293092518 dB., Pan the audio to the right by 0.86., Trim 0 ms from the start and 155 ms from the end., Adjust the EQ with low band: -3.3 dB, mid band: 4.9 dB, high band: -3.2 dB., Adjust the volume by -21.5376713340373 dB., Apply compression with threshold at -19 dB and ratio 5.8., Adjust the volume by 4.810851375975563 dB., Adjust the volume by -18.15238345554028 dB., Trim 0 ms from the start and 267 ms from the end., Adjust the volume by -8.963380150997743 dB., Add some reverb to the audio., Apply a low pass filter with cutoff at 1759 Hz., Pan the audio to the right by 0.03., Trim 0 ms from the start and 159 ms from the end., Normalize the audio levels., Apply a low pass filter with cutoff at 3709 Hz., Trim 259 ms from the start and 0 ms from the end., Pan the audio to the left by 0.80., Trim 0 ms from the start and 284 ms from the end., Apply a low pass filter with cutoff at 2903 Hz., Add a delay effect with 444 ms delay and 0.87 decay., Apply compression with threshold at -17 dB and ratio 7.0., Normalize the audio levels., Adjust the volume by 7.763525805927436 dB., Add a delay effect with 477 ms delay and 0.51 decay.
+BASS STEM: Pan the audio to the right by 0.67., Adjust the volume by -7.156445621624446 dB., Add some reverb to the audio., Adjust the EQ with low band: 1.9 dB, mid band: -0.9 dB, high band: 1.9 dB., Adjust the volume by -16.08355252892955 dB., Pan the audio to the left by 0.74., Apply a high pass filter with cutoff at 734 Hz., Apply compression with threshold at -20 dB and ratio 5.1., Adjust the EQ with low band: -3.3 dB, mid band: 7.6 dB, high band: -3.6 dB., Trim 0 ms from the start and 205 ms from the end., Add some reverb to the audio., Adjust the volume by -22.64302166698878 dB., Apply a low pass filter with cutoff at 3756 Hz., Pan the audio to the right by 0.48., Adjust the EQ with low band: 6.7 dB, mid band: -11.3 dB, high band: -7.6 dB., Apply compression with threshold at -18 dB and ratio 4.7., Normalize the audio levels., Trim 0 ms from the start and 253 ms from the end., Apply compression with threshold at -17 dB and ratio 7.4., Trim 80 ms from the start and 0 ms from the end., Pan the audio to the right by 0.65., Add a delay effect with 263 ms delay and 0.76 decay., Apply compression with threshold at -18 dB and ratio 5.4., Pan the audio to the right by 0.90., Adjust the volume by -8.007805610541222 dB., Pan the audio to the left by 0.08., Normalize the audio levels., Apply compression with threshold at -30 dB and ratio 4.7., Trim 0 ms from the start and 191 ms from the end., Add some reverb to the audio., Trim 230 ms from the start and 0 ms from the end., Pan the audio to the right by 0.22.
+OTHER STEM: Pan the audio to the right by 0.58., Apply a high pass filter with cutoff at 174 Hz., Adjust the EQ with low band: -4.8 dB, mid band: 9.2 dB, high band: 6.9 dB., Normalize the audio levels., Apply compression with threshold at -10 dB and ratio 5.3., Apply a low pass filter with cutoff at 4517 Hz., Apply a high pass filter with cutoff at 420 Hz., Trim 0 ms from the start and 287 ms from the end., Add some reverb to the audio., Adjust the volume by 2.596264588469193 dB., Add a delay effect with 316 ms delay and 0.45 decay., Trim 68 ms from the start and 0 ms from the end., Adjust the EQ with low band: -9.0 dB, mid band: -11.8 dB, high band: 3.6 dB., Add a delay effect with 289 ms delay and 0.81 decay., Adjust the volume by -16.792623277004186 dB., Normalize the audio levels., Pan the audio to the left by 0.60., Apply compression with threshold at -19 dB and ratio 4.8., Add some reverb to the audio., Adjust the volume by 6.874674157114601 dB., Trim 0 ms from the start and 226 ms from the end., Add some reverb to the audio., Pan the audio to the right by 0.35., Adjust the EQ with low band: 9.3 dB, mid band: 10.1 dB, high band: -8.8 dB., Adjust the volume by -21.353023988582866 dB., Add a delay effect with 216 ms delay and 0.88 decay., Adjust the volume by 3.1204604233980184 dB., Pan the audio to the left by 0.29., Apply a high pass filter with cutoff at 641 Hz., Normalize the audio levels., Add a delay effect with 382 ms delay and 0.57 decay., Add some reverb to the audio., Apply compression with threshold at -23 dB and ratio 7.0., Adjust the EQ with low band: -9.0 dB, mid band: 8.7 dB, high band: -9.6 dB., Trim 238 ms from the start and 0 ms from the end., Add a delay effect with 200 ms delay and 0.78 decay., Pan the audio to the left by 0.66., Trim 282 ms from the start and 0 ms from the end., Pan the audio to the right by 0.95., Normalize the audio levels.
+
+
+Tool tokens:
+<vocals_verse_0_pos0_eight_count22.1-26.1>
+  <vol:2.5>
+  <pan:-0.3>
+  <norm>
+  <rvb>
+  <trim:0,179>
+  <vocals_verse_0_pos1_eight_count22.1-26.1>
+  <vol:21.4>
+  <norm>
+  <rvb>
+  <eq:7.6,-11.2,4.0>
+  <vocals_verse_0_pos2_eight_count22.1-26.1>
+  <vol:11.1>
+  <norm>
+  <rvb>
+  <cmp:-21,4.1>
+  <trim:256,0>
+  <vocals_verse_0_pos3_eight_count22.1-26.1>
+  <vol:16.7>
+  <lpf:3941>
+  <hpf:624>
+  <norm>
+  <dly>
+  <rvb>
+  <cmp:-24,4.4>
+  <eq:3.1,-0.2,-6.4>
+  <trim:0,118>
+  <vocals_verse_0_pos4_eight_count22.1-26.1>
+  <vol:12.9>
+  <lpf:2021>
+  <hpf:465>
+  <norm>
+  <dly>
+  <rvb>
+  <cmp:-30,6.1>
+  <eq:5.4,-10.9,9.7>
+  <trim:0,96>
+  <vocals_chorus_1_pos0_eight_count26.1-30.6>
+  <hpf:526>
+  <norm>
+  <rvb>
+  <cmp:-14,5.2>
+  <eq:10.0,-9.5,2.6>
+  <vocals_chorus_1_pos1_eight_count26.1-30.6>
+  <lpf:1521>
+  <hpf:530>
+  <norm>
+  <rvb>
+  <eq:7.7,-0.8,2.8>
+  <vocals_chorus_1_pos2_eight_count26.1-30.6>
+  <hpf:347>
+  <norm>
+  <rvb>
+  <trim:0,252>
+  <vocals_chorus_1_pos3_eight_count26.1-30.6>
+  <hpf:671>
+  <norm>
+  <dly:500,0.8>
+  <rvb>
+  <trim:83,0>
+  <vocals_chorus_1_pos4_eight_count26.1-30.6>
+  <vol:-6.4>
+  <hpf:612>
+  <norm>
+  <rvb>
+  <cmp:-15,4.7>
+  <vocals_bridge_2_pos0_eight_count30.6-34.5>
+  <vol:4.0>
+  <norm>
+  <dly:234,0.7>
+  <rvb>
+  <trim:83,0>
+  <vocals_bridge_2_pos1_eight_count30.6-34.5>
+  <lpf:1685>
+  <norm>
+  <rvb>
+  <vocals_bridge_2_pos2_eight_count30.6-34.5>
+  <lpf:3673>
+  <norm>
+  <rvb>
+  <eq:-0.4,-0.1,-9.4>
+  <vocals_bridge_2_pos3_eight_count30.6-34.5>
+  <vol:-2.5>
+  <hpf:743>
+  <norm>
+  <rvb>
+  <eq:-8.6,-11.0,5.7>
+  <drums_verse_0_pos0_eight_count22.1-26.1>
+  <loop:3>
+  <vol:-5.0>
+  <norm>
+  <rvb>
+  <cmp:-13,7.3>
+  <drums_verse_0_pos1_eight_count22.1-26.1>
+  <loop:2>
+  <pan:-0.9>
+  <norm>
+  <rvb>
+  <trim:0,155>
+  <drums_verse_0_pos2_eight_count22.1-26.1>
+  <vol:21.5>
+  <norm>
+  <rvb>
+  <eq:3.3,-4.9,3.2>
+  <drums_verse_0_pos3_eight_count22.1-26.1>
+  <vol:-4.8>
+  <norm>
+  <rvb>
+  <cmp:-19,5.8>
+  <drums_verse_0_pos4_eight_count22.1-26.1>
+  <vol:18.2>
+  <norm>
+  <rvb>
+  <trim:0,267>
+  <spd:0.97>
+  <drums_chorus_1_pos0_eight_count26.1-30.6>
+  <loop:4>
+  <vol:9.0>
+  <norm>
+  <rvb>
+  <spd:0.85>
+  <drums_chorus_1_pos1_eight_count26.1-30.6>
+  <loop:2>
+  <lpf:1759>
+  <norm>
+  <rvb>
+  <spd:0.96>
+  <drums_chorus_1_pos2_eight_count26.1-30.6>
+  <loop:2>
+  <norm>
+  <rvb>
+  <trim:0,159>
+  <drums_chorus_1_pos3_eight_count26.1-30.6>
+  <lpf:3709>
+  <norm>
+  <rvb>
+  <trim:259,0>
+  <drums_chorus_1_pos4_eight_count26.1-30.6>
+  <pan:0.8>
+  <norm>
+  <rvb>
+  <spd:0.86>
+  <drums_bridge_2_pos0_eight_count30.6-34.5>
+  <loop:3>
+  <norm>
+  <rvb>
+  <trim:0,284>
+  <drums_bridge_2_pos1_eight_count30.6-34.5>
+  <loop:2>
+  <lpf:2903>
+  <norm>
+  <dly:444,0.9>
+  <rvb>
+  <cmp:-17,7.0>
+  <drums_bridge_2_pos2_eight_count30.6-34.5>
+  <vol:-7.8>
+  <norm>
+  <rvb>
+  <drums_bridge_2_pos3_eight_count30.6-34.5>
+  <norm>
+  <dly:477,0.5>
+  <rvb>
+  <bass_verse_0_pos0_eight_count22.1-26.1>
+  <loop:3>
+  <vol:7.2>
+  <pan:-0.7>
+  <norm>
+  <rvb>
+  <bass_verse_0_pos1_eight_count22.1-26.1>
+  <loop:2>
+  <norm>
+  <rvb>
+  <eq:-1.9,0.9,-1.9>
+  <bass_verse_0_pos2_eight_count22.1-26.1>
+  <vol:16.1>
+  <pan:0.7>
+  <hpf:734>
+  <norm>
+  <dly>
+  <rvb>
+  <cmp:-20,5.1>
+  <eq:3.3,-7.6,3.6>
+  <trim:0,205>
+  <bass_verse_0_pos3_eight_count22.1-26.1>
+  <vol:22.6>
+  <norm>
+  <rvb>
+  <bass_verse_0_pos4_eight_count22.1-26.1>
+  <pan:-0.5>
+  <lpf:3756>
+  <norm>
+  <rvb>
+  <bass_chorus_1_pos0_eight_count26.1-30.6>
+  <loop:4>
+  <norm>
+  <rvb>
+  <cmp:-18,4.7>
+  <eq:-6.7,11.3,7.6>
+  <bass_chorus_1_pos1_eight_count26.1-30.6>
+  <loop:2>
+  <norm>
+  <rvb>
+  <trim:0,253>
+  <bass_chorus_1_pos2_eight_count26.1-30.6>
+  <loop:2>
+  <norm>
+  <rvb>
+  <cmp:-17,7.4>
+  <trim:80,0>
+  <bass_chorus_1_pos3_eight_count26.1-30.6>
+  <pan:-0.7>
+  <norm>
+  <dly:263,0.8>
+  <rvb>
+  <bass_chorus_1_pos4_eight_count26.1-30.6>
+  <pan:-0.9>
+  <norm>
+  <rvb>
+  <cmp:-18,5.4>
+  <spd:1.43>
+  <bass_bridge_2_pos0_eight_count30.6-34.5>
+  <loop:3>
+  <vol:8.0>
+  <pan:0.1>
+  <norm>
+  <dly>
+  <rvb>
+  <cmp:-30,4.7>
+  <trim:0,191>
+  <bass_bridge_2_pos1_eight_count30.6-34.5>
+  <loop:2>
+  <norm>
+  <rvb>
+  <spd:0.90>
+  <bass_bridge_2_pos2_eight_count30.6-34.5>
+  <norm>
+  <rvb>
+  <trim:230,0>
+  <bass_bridge_2_pos3_eight_count30.6-34.5>
+  <pan:-0.2>
+  <norm>
+  <rvb>
+  <other_verse_0_pos0_eight_count22.1-26.1>
+  <pan:-0.6>
+  <hpf:174>
+  <norm>
+  <rvb>
+  <other_verse_0_pos1_eight_count22.1-26.1>
+  <norm>
+  <rvb>
+  <eq:4.8,-9.2,-6.9>
+  <other_verse_0_pos2_eight_count22.1-26.1>
+  <lpf:4517>
+  <hpf:420>
+  <norm>
+  <rvb>
+  <cmp:-10,5.3>
+  <other_verse_0_pos3_eight_count22.1-26.1>
+  <vol:-2.6>
+  <norm>
+  <rvb>
+  <trim:0,287>
+  <other_verse_0_pos4_eight_count22.1-26.1>
+  <norm>
+  <dly:316,0.4>
+  <rvb>
+  <trim:68,0>
+  <other_chorus_1_pos0_eight_count26.1-30.6>
+  <norm>
+  <dly:289,0.8>
+  <rvb>
+  <eq:9.0,11.8,-3.6>
+  <spd:0.80>
+  <other_chorus_1_pos1_eight_count26.1-30.6>
+  <vol:16.8>
+  <pan:0.6>
+  <norm>
+  <rvb>
+  <other_chorus_1_pos2_eight_count26.1-30.6>
+  <vol:-6.9>
+  <norm>
+  <rvb>
+  <cmp:-19,4.8>
+  <other_chorus_1_pos3_eight_count26.1-30.6>
+  <norm>
+  <rvb>
+  <trim:0,226>
+  <spd:1.18>
+  <other_chorus_1_pos4_eight_count26.1-30.6>
+  <pan:-0.4>
+  <norm>
+  <rvb>
+  <eq:-9.3,-10.1,8.8>
+  <other_bridge_2_pos0_eight_count30.6-34.5>
+  <vol:21.4>
+  <norm>
+  <dly:216,0.9>
+  <rvb>
+  <other_bridge_2_pos1_eight_count30.6-34.5>
+  <vol:-3.1>
+  <pan:0.3>
+  <hpf:641>
+  <norm>
+  <dly:382,0.6>
+  <rvb>
+  <cmp:-23,7.0>
+  <eq:9.0,-8.7,9.6>
+  <trim:238,0>
+  <other_bridge_2_pos2_eight_count30.6-34.5>
+  <pan:0.7>
+  <norm>
+  <dly:200,0.8>
+  <rvb>
+  <trim:282,0>
+  <other_bridge_2_pos3_eight_count30.6-34.5>
+  <pan:-0.9>
+  <norm>
+  <rvb>
+  <spd:1.01>
+Input IDs (text prompt):
+tensor([ 101, 8081, 1998,  ..., 1010, 6611,  102])
+
+Tool Input IDs:
+tensor([ 101, 1026, 2955,  ..., 3846, 1035,  102])
+
+Encoded Audio Information:
+  distorted_shape: torch.Size([4, 14, 192000])
+  original_shape: torch.Size([4, 14, 192000])
+  distorted_mean: -0.002545533934608102
+  original_mean: 2.3947408408275805e-05
+  distorted_std: 0.30846071243286133
+  original_std: 0.12844456732273102
+
+Stem Actions:
+VOCALS STEM:
+  Chunk 1:
+    - apply_trim: {"start_ms": 0, "end_ms": 179}
+    - pan: {"pan_value": -0.3101735468957203}
+    - change_volume: {"db": 2.4669393866379714}
+  Chunk 2:
+    - change_volume: {"db": 21.378972942935107}
+    - apply_reverb: {}
+    - apply_eq: {"low_gain": 7.560765329336167, "mid_gain": -11.180258742611693, "high_gain": 4.0236624759519515}
+  Chunk 3:
+    - apply_compression: {"threshold_db": -21, "ratio": 4.14675582575536}
+    - apply_trim: {"start_ms": 256, "end_ms": 0}
+    - change_volume: {"db": 11.129666855825214}
+  Chunk 4:
+    - change_volume: {"db": 16.687879353783106}
+    - pan: {"pan_value": -0.0}
+    - apply_low_pass: {"cutoff": 3941}
+    - apply_high_pass: {"cutoff": 624}
+    - normalize: {}
+    - delay: {}
+    - apply_reverb: {}
+    - apply_compression: {"threshold_db": -24, "ratio": 4.422421547792391}
+    - apply_eq: {"low_gain": 3.146498901880392, "mid_gain": -0.18474288495307079, "high_gain": -6.442399028613972}
+    - apply_trim: {"start_ms": 0, "end_ms": 118}
+    - loop_section: {"start_ms": 0, "end_ms": 0, "count": 1}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - speed_change: {"factor": 1.0}
+  Chunk 5:
+    - change_volume: {"db": 12.87340175692006}
+    - pan: {"pan_value": 0.023322584189809925}
+    - apply_low_pass: {"cutoff": 2021}
+    - apply_high_pass: {"cutoff": 465}
+    - normalize: {}
+    - delay: {}
+    - apply_reverb: {}
+    - apply_compression: {"threshold_db": -30, "ratio": 6.102365622751621}
+    - apply_eq: {"low_gain": 5.431407962386327, "mid_gain": -10.866562112352522, "high_gain": 9.66959116200951}
+    - apply_trim: {"start_ms": 0, "end_ms": 96}
+    - loop_section: {"start_ms": 0, "end_ms": 0, "count": 1}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - speed_change: {"factor": 1.0}
+  Chunk 6:
+    - apply_eq: {"low_gain": 10.040055351668169, "mid_gain": -9.543985383496024, "high_gain": 2.647569909586469}
+    - apply_high_pass: {"cutoff": 526}
+    - apply_compression: {"threshold_db": -14, "ratio": 5.221976086092585}
+  Chunk 7:
+    - apply_eq: {"low_gain": 7.723722388803878, "mid_gain": -0.780072212849598, "high_gain": 2.7790582825517056}
+    - apply_high_pass: {"cutoff": 530}
+    - apply_low_pass: {"cutoff": 1521}
+  Chunk 8:
+    - apply_high_pass: {"cutoff": 347}
+    - apply_normalize: {}
+    - apply_trim: {"start_ms": 0, "end_ms": 252}
+  Chunk 9:
+    - apply_high_pass: {"cutoff": 671}
+    - apply_trim: {"start_ms": 83, "end_ms": 0}
+    - apply_delay: {"delay_ms": 500, "decay": 0.7666051668375324}
+  Chunk 10:
+    - apply_compression: {"threshold_db": -15, "ratio": 4.716570987172313}
+    - apply_high_pass: {"cutoff": 612}
+    - change_volume: {"db": -6.3743563634986735}
+  Chunk 11:
+    - apply_trim: {"start_ms": 83, "end_ms": 0}
+    - apply_delay: {"delay_ms": 234, "decay": 0.7377124288699737}
+    - change_volume: {"db": 4.0047876061738314}
+  Chunk 12:
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_low_pass: {"cutoff": 1685}
+    - apply_reverb: {}
+  Chunk 13:
+    - apply_low_pass: {"cutoff": 3673}
+    - apply_eq: {"low_gain": -0.36367574973117556, "mid_gain": -0.12862450061212627, "high_gain": -9.391888959703646}
+    - apply_reverb: {}
+  Chunk 14:
+    - apply_high_pass: {"cutoff": 743}
+    - change_volume: {"db": -2.4781876650065477}
+    - apply_eq: {"low_gain": -8.616479531991338, "mid_gain": -11.030603967135795, "high_gain": 5.722603941503323}
+DRUMS STEM:
+  Chunk 1:
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_compression: {"threshold_db": -13, "ratio": 7.300453580726016}
+    - change_volume: {"db": -4.961152293092518}
+  Chunk 2:
+    - pan: {"pan_value": -0.8638628933952883}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_trim: {"start_ms": 0, "end_ms": 155}
+  Chunk 3:
+    - apply_eq: {"low_gain": 3.285576892293234, "mid_gain": -4.862716409964797, "high_gain": 3.2032280477170474}
+    - change_volume: {"db": 21.5376713340373}
+    - loop_section: {"start_ms": 164, "end_ms": 1039, "count": 1}
+  Chunk 4:
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_compression: {"threshold_db": -19, "ratio": 5.779653229166677}
+    - change_volume: {"db": -4.810851375975563}
+  Chunk 5:
+    - speed_change: {"factor": 0.9711389117091193}
+    - change_volume: {"db": 18.15238345554028}
+    - apply_trim: {"start_ms": 0, "end_ms": 267}
+  Chunk 6:
+    - change_volume: {"db": 8.963380150997743}
+    - speed_change: {"factor": 0.8463459034785719}
+    - apply_reverb: {}
+  Chunk 7:
+    - apply_low_pass: {"cutoff": 1759}
+    - speed_change: {"factor": 0.9564022089212905}
+    - loop_section: {"start_ms": 83, "end_ms": 569, "count": 1}
+  Chunk 8:
+    - pan: {"pan_value": -0.026467884519864482}
+    - apply_trim: {"start_ms": 0, "end_ms": 159}
+    - apply_normalize: {}
+  Chunk 9:
+    - loop_section: {"start_ms": 3589, "end_ms": 3817, "count": 1}
+    - apply_low_pass: {"cutoff": 3709}
+    - apply_trim: {"start_ms": 259, "end_ms": 0}
+  Chunk 10:
+    - speed_change: {"factor": 0.855916301163475}
+    - pan: {"pan_value": 0.8001868563098975}
+    - duplicate_and_shift: {"offset_ms": 0}
+  Chunk 11:
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_trim: {"start_ms": 0, "end_ms": 284}
+    - loop_section: {"start_ms": 513, "end_ms": 1261, "count": 1}
+  Chunk 12:
+    - apply_low_pass: {"cutoff": 2903}
+    - apply_delay: {"delay_ms": 444, "decay": 0.8712979004508279}
+    - apply_compression: {"threshold_db": -17, "ratio": 6.997439241278567}
+  Chunk 13:
+    - loop_section: {"start_ms": 2583, "end_ms": 2885, "count": 1}
+    - apply_normalize: {}
+    - change_volume: {"db": -7.763525805927436}
+  Chunk 14:
+    - loop_section: {"start_ms": 2440, "end_ms": 3349, "count": 1}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_delay: {"delay_ms": 477, "decay": 0.5118023958125055}
+BASS STEM:
+  Chunk 1:
+    - pan: {"pan_value": -0.6718465833093379}
+    - change_volume: {"db": 7.156445621624446}
+    - speed_change: {"factor": 0.9967383463223822}
+  Chunk 2:
+    - loop_section: {"start_ms": 1189, "end_ms": 1572, "count": 1}
+    - apply_reverb: {}
+    - apply_eq: {"low_gain": -1.857389508875169, "mid_gain": 0.8759093884245743, "high_gain": -1.9137760723381199}
+  Chunk 3:
+    - change_volume: {"db": 16.08355252892955}
+    - pan: {"pan_value": 0.7370187988316019}
+    - low_pass: {"cutoff": 20000}
+    - apply_high_pass: {"cutoff": 734}
+    - normalize: {}
+    - delay: {}
+    - reverb: {}
+    - apply_compression: {"threshold_db": -20, "ratio": 5.072000013873126}
+    - apply_eq: {"low_gain": 3.2975333020656077, "mid_gain": -7.6206143310911925, "high_gain": 3.562743456713097}
+    - apply_trim: {"start_ms": 0, "end_ms": 205}
+    - loop_section: {"start_ms": 450, "end_ms": 792, "count": 1}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - speed_change: {"factor": 1.0}
+  Chunk 4:
+    - apply_reverb: {}
+    - change_volume: {"db": 22.64302166698878}
+    - duplicate_and_shift: {"offset_ms": 0}
+  Chunk 5:
+    - loop_section: {"start_ms": 1605, "end_ms": 1960, "count": 1}
+    - apply_low_pass: {"cutoff": 3756}
+    - pan: {"pan_value": -0.4780376979867449}
+  Chunk 6:
+    - loop_section: {"start_ms": 1851, "end_ms": 2473, "count": 1}
+    - apply_eq: {"low_gain": -6.738537390607804, "mid_gain": 11.253283397207742, "high_gain": 7.561496440915175}
+    - apply_compression: {"threshold_db": -18, "ratio": 4.6539748961996565}
+  Chunk 7:
+    - apply_normalize: {}
+    - loop_section: {"start_ms": 2563, "end_ms": 3446, "count": 1}
+    - apply_trim: {"start_ms": 0, "end_ms": 253}
+  Chunk 8:
+    - apply_compression: {"threshold_db": -17, "ratio": 7.440423064594932}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_trim: {"start_ms": 80, "end_ms": 0}
+  Chunk 9:
+    - pan: {"pan_value": -0.6544101166035143}
+    - apply_delay: {"delay_ms": 263, "decay": 0.7579228775495949}
+    - duplicate_and_shift: {"offset_ms": 0}
+  Chunk 10:
+    - apply_compression: {"threshold_db": -18, "ratio": 5.449534858233488}
+    - pan: {"pan_value": -0.8966317615515988}
+    - speed_change: {"factor": 1.426925369741011}
+  Chunk 11:
+    - change_volume: {"db": 8.007805610541222}
+    - pan: {"pan_value": 0.08429221195988501}
+    - low_pass: {"cutoff": 20000}
+    - high_pass: {"cutoff": 20}
+    - apply_normalize: {}
+    - delay: {}
+    - reverb: {}
+    - apply_compression: {"threshold_db": -30, "ratio": 4.682313711101177}
+    - eq: {"low_gain": -0.0, "mid_gain": -0.0, "high_gain": -0.0}
+    - apply_trim: {"start_ms": 0, "end_ms": 191}
+    - loop_section: {"start_ms": 1737, "end_ms": 2512, "count": 1}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - speed_change: {"factor": 1.0}
+  Chunk 12:
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_reverb: {}
+    - speed_change: {"factor": 0.9044328717231538}
+  Chunk 13:
+    - apply_trim: {"start_ms": 230, "end_ms": 0}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - loop_section: {"start_ms": 2347, "end_ms": 2861, "count": 1}
+  Chunk 14:
+    - duplicate_and_shift: {"offset_ms": 0}
+    - pan: {"pan_value": -0.21863124659005506}
+    - loop_section: {"start_ms": 3154, "end_ms": 3671, "count": 1}
+OTHER STEM:
+  Chunk 1:
+    - pan: {"pan_value": -0.5811159099057863}
+    - apply_high_pass: {"cutoff": 174}
+    - loop_section: {"start_ms": 58, "end_ms": 638, "count": 1}
+  Chunk 2:
+    - apply_eq: {"low_gain": 4.759288308340842, "mid_gain": -9.222428268779959, "high_gain": -6.853904098045994}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - apply_normalize: {}
+  Chunk 3:
+    - apply_compression: {"threshold_db": -10, "ratio": 5.326080246648218}
+    - apply_low_pass: {"cutoff": 4517}
+    - apply_high_pass: {"cutoff": 420}
+  Chunk 4:
+    - apply_trim: {"start_ms": 0, "end_ms": 287}
+    - apply_reverb: {}
+    - change_volume: {"db": -2.596264588469193}
+  Chunk 5:
+    - apply_delay: {"delay_ms": 316, "decay": 0.4480577088924461}
+    - loop_section: {"start_ms": 2748, "end_ms": 3269, "count": 1}
+    - apply_trim: {"start_ms": 68, "end_ms": 0}
+  Chunk 6:
+    - apply_eq: {"low_gain": 9.019658369758275, "mid_gain": 11.78522478751352, "high_gain": -3.6157230598717973}
+    - apply_delay: {"delay_ms": 289, "decay": 0.8104359741688656}
+    - speed_change: {"factor": 0.8021163015467828}
+  Chunk 7:
+    - change_volume: {"db": 16.792623277004186}
+    - apply_normalize: {}
+    - pan: {"pan_value": 0.6044791418934938}
+  Chunk 8:
+    - apply_compression: {"threshold_db": -19, "ratio": 4.777080210681353}
+    - apply_reverb: {}
+    - change_volume: {"db": -6.874674157114601}
+  Chunk 9:
+    - apply_trim: {"start_ms": 0, "end_ms": 226}
+    - speed_change: {"factor": 1.1837196459413069}
+    - duplicate_and_shift: {"offset_ms": 0}
+  Chunk 10:
+    - apply_reverb: {}
+    - pan: {"pan_value": -0.35443511225006885}
+    - apply_eq: {"low_gain": -9.34723629301677, "mid_gain": -10.05741547300521, "high_gain": 8.843453921642908}
+  Chunk 11:
+    - loop_section: {"start_ms": 2583, "end_ms": 3192, "count": 1}
+    - change_volume: {"db": 21.353023988582866}
+    - apply_delay: {"delay_ms": 216, "decay": 0.8786858378031285}
+  Chunk 12:
+    - change_volume: {"db": -3.1204604233980184}
+    - pan: {"pan_value": 0.2863574767728472}
+    - low_pass: {"cutoff": 20000}
+    - apply_high_pass: {"cutoff": 641}
+    - apply_normalize: {}
+    - apply_delay: {"delay_ms": 382, "decay": 0.5699207354401843}
+    - apply_reverb: {}
+    - apply_compression: {"threshold_db": -23, "ratio": 7.0407359558256815}
+    - apply_eq: {"low_gain": 9.045196069357434, "mid_gain": -8.663388055209161, "high_gain": 9.576867568121479}
+    - apply_trim: {"start_ms": 238, "end_ms": 0}
+    - loop_section: {"start_ms": 0, "end_ms": 0, "count": 1}
+    - duplicate_and_shift: {"offset_ms": 0}
+    - speed_change: {"factor": 1.0}
+  Chunk 13:
+    - apply_delay: {"delay_ms": 200, "decay": 0.7808803252003683}
+    - pan: {"pan_value": 0.6563679481186993}
+    - apply_trim: {"start_ms": 282, "end_ms": 0}
+  Chunk 14:
+    - speed_change: {"factor": 1.0114866426113156}
+    - pan: {"pan_value": -0.9488935847323443}
+    - apply_normalize: {}
+
+Audio Shape Information:
+Distorted Audio Shape: torch.Size([4, 14, 192000])
+Original Audio Shape: torch.Size([4, 14, 192000])
