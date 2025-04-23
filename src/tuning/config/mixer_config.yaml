@@ -3,7 +3,7 @@
 # Default training parameters
 default:
   num_epochs: 5             # Increase from 3 to 5 for better convergence
-  batch_size: 2             # Reduce from 4 to 2 to handle increased segment duration
+  batch_size: 1             # Reduce from 4 to 2 to handle increased segment duration
   learning_rate: 2.0e-5     # Adjust from 5.0e-5 to improve stability
   warmup_ratio: 0.15        # Increase from 0.10 for better stability
   weight_decay: 0.02        # Increase from 0.01 to reduce overfitting
@@ -38,7 +38,7 @@ data:
 # Mixer model configuration
 mixer:
   # Change to an open model instead of the gated Mistral model
-  mistral_model: "facebook/opt-2.7b"
+  mistral_model: 'mistralai/Mistral-7B-v0.1'
   text_model: "bert-base-uncased"
   
   # LoRA parameters

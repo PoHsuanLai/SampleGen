@@ -1,5 +1,5 @@
 from torch.utils.data import Dataset
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Union, Any
 import os
 import json
 import random
@@ -18,9 +18,8 @@ logger = logging.getLogger(__name__)
 class MixerDataset(Dataset):
     def __init__(self, 
         processed_dir: str,
-        tokenizer,
-        config: Dict,
-        dataset_file: str = None,
+        tokenizer: Any,
+        config: Dict[str, Any],
         segment_duration: float = 5.0,
         max_seq_len: int = 512,  # Increased to handle larger JSON inputs
         sample_rate: int = 48000,  # Use 48000 Hz to match CLAP model
@@ -37,7 +36,6 @@ class MixerDataset(Dataset):
             processed_dir: Directory containing data (artist/song folders)
             tokenizer: Tokenizer for generating text prompts
             config: Configuration dictionary
-            dataset_file: Optional JSON file with dataset metadata
             segment_duration: Duration of audio segments in seconds
             max_seq_len: Maximum sequence length for tokenized outputs
             sample_rate: Target sample rate for audio (48000 Hz for CLAP model)
@@ -174,6 +172,11 @@ class MixerDataset(Dataset):
                         logger.warning(f"No segments found in JSON for {song_dir_name}")
                         continue
                     
+                    # Skip songs without BPM metadata
+                    if "bpm" not in json_data or json_data["bpm"] is None:
+                        logger.warning(f"Skipping {song_dir_name}: BPM information missing")
+                        continue
+                    
                     # Create song entry
                     songs.append({
                         "artist": artist_name,
@@ -192,8 +195,15 @@ class MixerDataset(Dataset):
         
         return songs
     
-    def _format_instructions(self, actions):
-        """Format the actions into natural language instructions."""
+    def _format_instructions(self, actions: List[Dict]) -> List[str]:
+        """Format the actions into natural language instructions.
+        
+        Args:
+            actions: List of action dictionaries that were applied
+            
+        Returns:
+            List of formatted instruction strings
+        """
         instructions = []
         
         for action in actions:
@@ -257,7 +267,7 @@ class MixerDataset(Dataset):
         
         return instructions
     
-    def _generate_tool_tokens(self, actions, stem_name=None, loop_count=1):
+    def _generate_tool_tokens(self, actions: List[Dict], stem_name: Optional[str] = None, loop_count: int = 1) -> str:
         """Generate tool tokens for model training from actions.
         
         This method will generate tokens for ALL possible distortions, with zeroed
@@ -538,6 +548,10 @@ class MixerDataset(Dataset):
         Returns:
             Time in eight counts (where one eight count = 8 beats)
         """
+        # Ensure BPM is not None
+        if bpm is None:
+            bpm = 120.0  # Use default if None
+            
         # Calculate duration of one beat in seconds
         beat_duration_sec = 60.0 / bpm
         
@@ -549,7 +563,7 @@ class MixerDataset(Dataset):
         
         return eight_counts
     
-    def _extract_segment_audio(self, audio_file, segment, trim_silence=False, stem_name=None):
+    def _extract_segment_audio(self, audio_file: str, segment: Dict, trim_silence: bool = False, stem_name: Optional[str] = None) -> Tuple[List[Union[AudioSegment, np.ndarray]], List[int], List[Dict]]:
         """Extract a segment from a full audio file with beat-based chunking.
         
         Args:
@@ -559,7 +573,10 @@ class MixerDataset(Dataset):
             stem_name: Name of the stem (used for metadata tagging)
             
         Returns:
-            List of audio segment chunks, loop count for rhythmic elements, and metadata
+            Tuple containing:
+                - List of audio segment chunks (AudioSegment or numpy array)
+                - List of loop counts for each chunk
+                - List of metadata dictionaries for each chunk
         """
         full_audio = AudioSegment.from_wav(audio_file)
         
@@ -572,32 +589,44 @@ class MixerDataset(Dataset):
         
         # Check for silence or very low volume in the entire segment
         is_silent = segment_audio.dBFS < -40
-        if is_silent:
-            # Return an empty chunk with loop count 0 to indicate silence
-            metadata = {
+        
+        # For silent non-vocal stems, create a special silent segment with metadata indicating silence
+        if is_silent and stem_name != "vocals":
+            # Create a silent AudioSegment of the proper length
+            silent_duration = int(self.segment_duration * 1000)  # Convert to ms
+            silent_segment = AudioSegment.silent(duration=silent_duration, frame_rate=self.sample_rate)
+            
+            # Create metadata that indicates this is a silent chunk
+            silent_metadata = {
                 "stem_type": stem_name,
                 "segment_label": segment.get("label", "unknown"),
                 "position": 0,
-                "bpm": 120,
-                "speed_factor": 1.0,
-                "is_empty": True,
-                "loop_count": 0,  # Special loop count for empty chunks
+                "is_silent": True,
+                "loop_count": 0,  # Special loop count for silent chunks
                 "start_sec": segment["start"],
                 "end_sec": segment["end"],
-                "start_eight_count": self._seconds_to_eight_counts(segment["start"], 120),
-                "end_eight_count": self._seconds_to_eight_counts(segment["end"], 120)
+                "start_eight_count": 0,
+                "end_eight_count": 0
             }
             
-            # Create a silent segment
-            silent_duration = self.segment_duration * 1000  # Convert to ms
-            silent_chunk = AudioSegment.silent(duration=silent_duration, frame_rate=full_audio.frame_rate)
-            
-            return [silent_chunk], [0], [metadata]  # Loop count of 0 indicates an empty chunk
+            # Return the silent segment with a loop count of 0 and special metadata
+            return [silent_segment], [0], [silent_metadata]
         
-        # Optional silence trimming
-        if trim_silence:
-            silence_threshold = -50  # dB
-            segment_audio = segment_audio.strip_silence(silence_thresh=silence_threshold)
+        # Get the BPM for beat-based chunking - we can safely use it since we filter out songs without BPM
+        bpm = self.current_song_bpm
+        
+        # Ensure BPM is not None to avoid division errors
+        if bpm is None:
+            bpm = 120.0  # Use default 120 BPM if not available
+        
+        # Calculate chunk sizes based on musical bars
+        # 8 beats = 2 bars in 4/4 time
+        eight_beat_ms = (60.0 / bpm) * 8 * 1000
+        four_beat_ms = (60.0 / bpm) * 4 * 1000
+        
+        # Prefer chunking by 8 beats (2 bars), but fall back to 4 beats (1 bar) if needed
+        # or even smaller chunks if the segment is very short
+        segment_duration_ms = segment_audio.duration_seconds * 1000
         
         # Get beat information from the current song data
         beats = []
@@ -640,6 +669,11 @@ class MixerDataset(Dataset):
         
         # Reference BPM and eight beat count duration (always 4 seconds at 120 BPM)
         reference_bpm = 120
+        
+        # Check if BPM is None and provide a default
+        if bpm is None:
+            bpm = reference_bpm  # Use 120 BPM as default
+            
         # Calculate eight beat count in milliseconds at the reference BPM
         reference_eight_beat_ms = (60.0 / reference_bpm) * 8 * 1000  # 4000ms
         
@@ -947,12 +981,12 @@ class MixerDataset(Dataset):
         # Return the processed chunks with their loop counts and metadata
         return unique_chunks, unique_loop_counts, unique_metadata
     
-    def _check_high_similarity(self, audio_segment, threshold=0.85):
+    def _check_high_similarity(self, audio_segment: Union[AudioSegment, np.ndarray], threshold: float = 0.85) -> bool:
         """
         Check if an audio segment is highly self-similar (repetitive).
         
         Args:
-            audio_segment: The audio segment to check
+            audio_segment: The audio segment to check (AudioSegment or numpy array)
             threshold: Similarity threshold (0-1)
             
         Returns:
@@ -986,13 +1020,15 @@ class MixerDataset(Dataset):
             # In case of numerical issues
             return False
     
-    def _is_similar_to_existing_chunks(self, new_chunk, existing_chunks, threshold=0.8):
+    def _is_similar_to_existing_chunks(self, new_chunk: Union[AudioSegment, np.ndarray], 
+                                      existing_chunks: List[Union[AudioSegment, np.ndarray]], 
+                                      threshold: float = 0.8) -> bool:
         """
         Check if a new chunk is similar to any of the existing chunks.
         
         Args:
-            new_chunk: The new audio chunk to check
-            existing_chunks: List of existing audio chunks
+            new_chunk: The new audio chunk to check (AudioSegment or numpy array)
+            existing_chunks: List of existing audio chunks (AudioSegment or numpy array)
             threshold: Similarity threshold (0-1)
             
         Returns:
@@ -1035,34 +1071,52 @@ class MixerDataset(Dataset):
         
         return False
     
-    def _audio_to_numpy(self, audio_segment, target_sr=48000):
-        """Convert pydub AudioSegment to numpy array."""
-        # Get audio data as array of samples
-        samples = np.array(audio_segment.get_array_of_samples())
+    def _audio_to_numpy(self, audio_segment: Union[AudioSegment, np.ndarray], target_sr: int = 48000) -> np.ndarray:
+        """Convert pydub AudioSegment or numpy array to a normalized numpy array.
         
-        # Convert to float32 in range [-1, 1]
-        if audio_segment.sample_width == 2:  # 16-bit samples
-            samples = samples.astype(np.float32) / 32768.0
-        elif audio_segment.sample_width == 3:  # 24-bit samples
-            samples = samples.astype(np.float32) / 8388608.0
-        elif audio_segment.sample_width == 4:  # 32-bit samples
-            samples = samples.astype(np.float32) / 2147483648.0
-        
-        # Reshape for mono/stereo
-        if audio_segment.channels == 2:
-            samples = samples.reshape((-1, 2))
-            # Average to mono if needed
-            samples = samples.mean(axis=1)
-        
-        # Resample if needed
-        if audio_segment.frame_rate != target_sr:
-            samples = librosa.resample(
-                samples, 
-                orig_sr=audio_segment.frame_rate, 
-                target_sr=target_sr
-            )
-        
-        return samples
+        Args:
+            audio_segment: Audio segment to convert (either AudioSegment or numpy array)
+            target_sr: Target sample rate for resampling
+            
+        Returns:
+            Normalized audio as numpy array
+        """
+        # If already a numpy array, return it directly
+        if isinstance(audio_segment, np.ndarray):
+            return audio_segment
+            
+        # For AudioSegment objects, process normally
+        try:
+            # Get audio data as array of samples
+            samples = np.array(audio_segment.get_array_of_samples())
+            
+            # Convert to float32 in range [-1, 1]
+            if audio_segment.sample_width == 2:  # 16-bit samples
+                samples = samples.astype(np.float32) / 32768.0
+            elif audio_segment.sample_width == 3:  # 24-bit samples
+                samples = samples.astype(np.float32) / 8388608.0
+            elif audio_segment.sample_width == 4:  # 32-bit samples
+                samples = samples.astype(np.float32) / 2147483648.0
+            
+            # Reshape for mono/stereo
+            if audio_segment.channels == 2:
+                samples = samples.reshape((-1, 2))
+                # Average to mono if needed
+                samples = samples.mean(axis=1)
+            
+            # Resample if needed
+            if audio_segment.frame_rate != target_sr:
+                samples = librosa.resample(
+                    samples, 
+                    orig_sr=audio_segment.frame_rate, 
+                    target_sr=target_sr
+                )
+            
+            return samples
+        except AttributeError as e:
+            # Log the error and provide more context
+            logger.error(f"Invalid audio segment type: {type(audio_segment)}")
+            raise AttributeError(f"Expected AudioSegment or numpy.ndarray, got {type(audio_segment)}") from e
     
     def _format_json_for_prompt(self, json_data):
         """Format JSON data for inclusion in the prompt."""
@@ -1134,8 +1188,15 @@ class MixerDataset(Dataset):
     def __len__(self):
         return len(self.songs)
     
-    def __getitem__(self, idx):
-        """Get a training item with on-the-fly stem distortions and stem-specific tokens."""
+    def __getitem__(self, idx: int) -> Dict:
+        """Get a training item with on-the-fly stem distortions and stem-specific tokens.
+        
+        Args:
+            idx: Index of the song to retrieve
+            
+        Returns:
+            Dictionary containing processed audio data, text prompts, and metadata
+        """
         try:
             # Get the song info
             song = self.songs[idx]
@@ -1370,12 +1431,9 @@ class MixerDataset(Dataset):
                                         else:
                                             chunk_identifier = f"{stem_name}_{meta['segment_label']}_{meta['segment_idx']}_pos{meta['position']}"
                                 
-                                # Generate and add token for empty chunk
-                                stem_token = self._generate_tool_tokens(
-                                    [],  # No actions for empty chunks
-                                    chunk_identifier, 
-                                    0  # Special loop count of 0 for empty chunks
-                                )
+                                # Generate and add token for empty/silent chunk
+                                # Use a special empty/silent token in the ground truth
+                                stem_token = f"<{stem_name}> <empty> <silent_chunk> <loop:0>"
                                 tool_tokens.append(stem_token)
                                 chunk_idx += 1
                                 continue
