@@ -1,0 +1,58 @@
+{
+  "data_parameters": {
+    "processed_dir": "data/processed",
+    "segment_duration": 4.0,
+    "sample_rate": 44100,
+    "max_faust_length": 512
+  },
+  
+  "model_parameters": {
+    "decoder_model_name": "mistralai/Mistral-7B-v0.1",
+    "text_model_name": "bert-base-uncased",
+    "audio_model_name": "laion/larger_clap_music_and_speech",
+    "multi_gpu": false,
+    "freeze_encoders": true
+  },
+  
+  "training_parameters": {
+    "batch_size": 4,
+    "num_epochs": 10,
+    "learning_rate": 5e-5,
+    "weight_decay": 0.01,
+    "warmup_steps": 500,
+    "max_grad_norm": 1.0,
+    "accumulation_steps": 4
+  },
+  
+  "lora_parameters": {
+    "use_lora": true,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.1,
+    "lora_target_modules": [
+      "q_proj", "k_proj", "v_proj", "o_proj", 
+      "gate_proj", "up_proj", "down_proj"
+    ]
+  },
+  
+  "validation_and_saving": {
+    "val_split": 0.1,
+    "save_every_n_epochs": 2,
+    "validate_every_n_steps": 500,
+    "output_dir": "models/faust_mixer"
+  },
+  
+  "logging": {
+    "use_wandb": false,
+    "wandb_project": "faust-mixer",
+    "log_every_n_steps": 50
+  },
+  
+  "complexity_distribution": {
+    "simple": 0.3,
+    "medium": 0.6,
+    "complex": 0.1
+  },
+  
+  "description": "Configuration for training Faust DSP mixer model. This model generates professional Faust DSP scripts for audio mixing based on audio input and text prompts."
+} 

@@ -1,279 +1,191 @@
-# SampleGen: AI-Powered Hip-Hop Beat Generation
+# Unified Hip-Hop Producer AI
 
-SampleGen is an AI-powered beat generation system that combines sample-based production with machine learning to create hip-hop beats. It uses a pipeline of planning, generation, and mixing modules to produce high-quality music from text prompts and audio inputs.
+This document describes the new **Unified Architecture** that simplifies the hip-hop music production system by removing the complex mixer implementations and creating a single unified model.
 
-## Features
+## Architecture Overview
 
-- **Text-to-Beat Generation**: Create beats from natural language descriptions
-- **Sample Analysis and Re-synthesis**: Extract stems from existing tracks and transform them
-- **Multi-stage Pipeline**:
-  - **Planner**: Understands music structure and creates beat blueprints
-  - **Generator**: Creates individual musical components (drums, bass, others)
-  - **Mixer**: Professionally mixes the components for high-quality output
-- **Stem Separation**: Splits audio tracks into vocals, drums, bass, and other components
-- **MIDI Transcription**: Can transcribe audio to MIDI for further editing
+### New Unified Architecture
 
-## Installation
+The unified system consists of:
 
-### Prerequisites
-- Python 3.8+
-- PyTorch 2.0+
-- CUDA-compatible GPU (recommended)
+1. **UnifiedProducerModel** - Single model that handles:
+   - Planning which stems to generate
+   - Requesting generators to create stems
+   - Generating Faust DSP mixing scripts
+   - Quality assessment
 
-### Setup
+2. **UnifiedProducerDataset** - Simplified dataset for training:
+   - Stem generation planning
+   - Faust script generation
+   - Quality assessment
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/samplegen.git
-   cd samplegen
-   ```
+3. **UnifiedProducerTrainer** - Streamlined training pipeline:
+   - Planning loss (which stems to generate)
+   - Quality assessment loss
+   - Faust script generation loss
 
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+## Key Improvements
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. (Optional) Download pre-trained models:
-   ```bash
-   python scripts/download_models.py
-   ```
+✅ **Simplified Architecture**: Single unified model instead of separate mixer + generators  
+✅ **Direct Faust Generation**: Generates Faust DSP scripts directly  
+✅ **Cleaner Training**: Focused training objectives without complex multimodal fusion  
+✅ **Easier Maintenance**: Reduced complexity while maintaining functionality  
+✅ **Better Separation**: Clear separation between planning, generation, and mixing  
 
 ## Usage
 
-### Command Line Interface
-
-Generate a beat from an input audio file and text prompt:
+### Demo Mode
 
 ```bash
-python src/main.py --input samples/input.wav --output output/my_beat.wav --prompt "Boom bap style beat with heavy bass and jazzy piano samples"
+# Run with audio input and text prompt
+python src/main_unified_producer.py --mode demo \
+    --input your_song.wav \
+    --prompt "Create a dark trap beat with heavy 808s" \
+    --output result.wav
 ```
 
-### Options
+### Training Mode
 
-- `--input`, `-i`: Path to the input audio file
-- `--output`, `-o`: Path to save the output audio file (default: generated_song.wav)
-- `--prompt`, `-p`: Natural language prompt describing the desired music
-- `--duration`, `-d`: Maximum duration of the output in seconds (default: 30.0)
-- `--stem-model`, `-s`: Stem separation model to use (default: spleeter:5stems)
-
-## Project Structure
-
-```
-samplegen/
-├── data/                   # Data storage directory
-│   ├── stems/              # Extracted audio stems
-│   └── fma_metadata/       # FMA dataset metadata
-├── models/                 # Pre-trained model storage
-├── src/                    # Source code
-│   ├── data_processing/    # Data processing and stem extraction
-│   ├── music/              # Music generation modules
-│   │   ├── planner/        # Beat structure planning
-│   │   ├── generator/      # Component generators
-│   │   └── mixer/          # Audio mixing and mastering
-│   ├── tuning/             # Fine-tuning scripts
-│   ├── utils/              # Utility functions
-│   ├── main.py             # CLI entry point
-│   └── samplegen.py        # Main SampleGen class
-├── samples/                # Example input audio samples
-└── output/                 # Generated output directory
+```bash
+# Train the unified model
+python src/main_unified_producer.py --mode train \
+    --data-dir your_data_directory \
+    --epochs 5 \
+    --checkpoint model_checkpoint
 ```
 
-## Core Components
+### Faust Script Training
 
-### 1. Stem Extraction
+```bash
+# Train specifically for Faust script generation
+python src/main_unified_producer.py --mode faust-train \
+    --data-dir your_data_directory \
+    --epochs 3
+```
 
-The system uses Meta's Demucs to separate audio tracks into stems (vocals, drums, bass, other). These stems can be used for analysis, conditioning, or directly in the output mix.
+## Model Components
 
-### 2. Music Planning
-
-The planner uses audio and language understanding models to create a structured plan for the beat, determining sections, instruments, and style.
-
-### 3. Music Generation
-
-Multiple specialized generators create different components of the beat:
-- **MelodyGenerator**: Creates melodic lines
-- **BassGenerator**: Creates bass lines and 808s
-- **DrumGenerator**: Creates drum patterns
-- **HarmonyGenerator**: Creates chord progressions and harmonic elements
-
-### 4. Audio Mixing
-
-The MixingModule professionally mixes all generated components with frequency-specific processing, spatial effects, compression, and mastering.
-
-## Examples
-
-### Basic Beat Generation
+### UnifiedProducerModel
 
 ```python
-from samplegen import SampleGen
+from src.models.unified_producer import UnifiedProducerModel
 
-# Initialize SampleGen
-samplegen = SampleGen()
-
-# Generate a beat from an input file and prompt
-summary = samplegen.process(
-    input_audio_path="samples/loop.wav",
-    user_prompt="Dark trap beat with heavy 808s and atmospheric pads",
-    output_audio_path="output/dark_trap.wav",
-    duration=30.0
+model = UnifiedProducerModel(
+    device='cuda',
+    text_model_name='bert-base-uncased',
+    decoder_model_name='mistralai/Mistral-7B-v0.1'
 )
 
-print(summary)
+# Plan production
+plan = model.plan_production(text_prompt="Create a trap beat")
+
+# Generate stems
+stems = model.generate_stems(plan, duration=5.0)
+
+# Generate Faust script
+faust_script = model.generate_faust_script(stems, text_prompt)
 ```
 
-### Custom Generation
+### Training Pipeline
 
 ```python
-from samplegen import SampleGen
+from src.training.unified_trainer import UnifiedProducerTrainer
 
-# Initialize with custom settings
-samplegen = SampleGen(
-    stem_model='htdemucs_6s',  # 6-stem separation model
-    sample_rate=48000,         # Higher sample rate
-    max_duration=60.0          # Longer output
-)
+trainer = UnifiedProducerTrainer(model, data_dir, device='cuda')
 
-# Generate a complete track from scratch
-audio = samplegen.generate(
-    prompt="Lo-fi hip-hop beat with jazzy piano, vinyl crackle, and laid-back drums"
-)
-
-# Save the output
-import soundfile as sf
-sf.write("output/lofi_beat.wav", audio.T, 48000)
+# Train for one epoch
+results = trainer.train_epoch()
+print(f"Planning loss: {results['planning_loss']}")
+print(f"Quality loss: {results['quality_loss']}")
+print(f"Faust loss: {results['faust_loss']}")
 ```
 
-## Contributing
+## Data Structure
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+The unified system expects data in the following structure:
 
-## License
+```
+data/
+├── artist1/
+│   ├── song1/
+│   │   ├── song1.wav          # Main audio file
+│   │   ├── song1.json         # Metadata (BPM, key, segments)
+│   │   └── stems/             # Pre-extracted stems (optional)
+│   │       ├── vocals.wav
+│   │       ├── drums.wav
+│   │       ├── bass.wav
+│   │       └── other.wav
+│   │
+│   └── song2/
+│       └── ...
+└── artist2/
+    └── ...
+```
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## Faust Script Generation
 
-## Acknowledgments
+The unified model generates Faust DSP scripts for mixing:
 
-- [Demucs](https://github.com/facebookresearch/demucs) for stem separation
-- [MusicGen](https://github.com/facebookresearch/audiocraft) for music generation
-- [FMA Dataset](https://github.com/mdeff/fma) for training data
+```faust
+import("stdfaust.lib");
 
-# Audio Mixer Training Pipeline
+bass_process = _ : fi.highpass(1, 40) : co.compressor_mono(4, -20, 0.003, 0.1);
+drums_process = _ : fi.peak_eq(2, 100, 1) : co.compressor_mono(3, -15, 0.001, 0.05);
+melody_process = _ : fi.peak_eq(1.5, 2000, 0.7) : re.mono_freeverb(0.3, 0.5, 0.5, 0.5);
+harmony_process = _ : fi.peak_eq(1.5, 2000, 0.7) : re.mono_freeverb(0.3, 0.5, 0.5, 0.5);
 
-This repository contains code for processing audio data and training a mixing model that learns to apply various mixing operations to improve audio quality.
+process = _, _, _, _ : bass_process, drums_process, melody_process, harmony_process :> _;
+```
 
-## Overview
+## Training Objectives
 
-The mixer model is designed to take distorted audio as input and generate a plan of mixing operations to improve the audio quality. It uses a combination of audio and text encoders connected to a decoder language model to generate the appropriate mixing actions.
+The unified model is trained with three main objectives:
 
-## Project Structure
+1. **Planning Loss**: Binary classification for which stems to generate
+2. **Quality Loss**: Regression for audio quality assessment
+3. **Faust Loss**: Token-level similarity for Faust script generation
 
-- `src/data_processing/`: Contains scripts for audio processing and dataset creation
-  - `chunking.py`: Splits audio files into segments based on JSON annotations
-  - `audio_distorter.py`: Contains distortion methods for on-the-fly augmentation
-  - `create_dataset.py`: Creates a dataset index of processed audio segments
-- `src/music/mixer/`: Contains the mixer model implementation
-  - `mixer.py`: The main mixer model that generates mixing actions
-  - `mixing_tools.py`: Various audio mixing tools used by the mixer
-- `src/tuning/`: Contains training and evaluation scripts
-  - `tune_mixer.py`: Main script for training the mixer model
+## Comparison with Old Architecture
 
-## Data Processing
+| Aspect | Old Mixer-Based | New Unified |
+|--------|----------------|-------------|
+| Models | Mixer + Generators | UnifiedProducer + Generators |
+| Complexity | High (multimodal fusion) | Low (focused objectives) |
+| Training | Complex mixer dataset | Simplified unified dataset |
+| Output | Mixing instructions | Direct Faust scripts |
+| Maintenance | Difficult | Easy |
+| Extensibility | Limited | High |
 
-The pipeline involves several steps:
+## Dependencies
 
-1. **Chunking**: Split full songs into segments based on JSON annotations
-2. **Dataset Creation**: Create an index of all segments for easier access
-3. **Runtime Distortion**: During training, apply random distortions to original audio segments
+- PyTorch
+- Transformers (BERT, Mistral)
+- Demucs (stem separation)
+- SoundFile
+- NumPy
 
-## Training Pipeline
+## Getting Started
 
-### Option 1: End-to-End Pipeline
-
-Process data and train the model in a single command:
-
+1. Install dependencies:
 ```bash
-python -m src.tuning.tune_mixer \
-  --config src/tuning/config/mixer_config.yaml \
-  --data_dir data \
-  --processed_dir data/processed \
-  --dataset_file data/dataset.json
+pip install torch transformers demucs soundfile numpy
 ```
 
-### Option 2: Step-by-Step
-
-If you prefer to run the pipeline in steps:
-
-1. Process the data:
-
+2. Run the demo:
 ```bash
-python -m src.data_processing.chunking \
-  --artists_dir data \
-  --output_dir data/processed
+python src/main_unified_producer.py
 ```
 
-2. Create the dataset index:
-
+3. Train on your data:
 ```bash
-python -m src.data_processing.create_dataset \
-  --processed_dir data/processed \
-  --output_file data/dataset.json
+python src/main_unified_producer.py --mode train --data-dir your_data
 ```
 
-3. Train the model:
+## Future Enhancements
 
-```bash
-python -m src.tuning.tune_mixer \
-  --config src/tuning/config/mixer_config.yaml \
-  --skip_processing
-```
-
-## Configuration Options
-
-The mixer training can be configured through the `mixer_config.yaml` file:
-
-- Data parameters (segment duration, sample rate)
-- Model parameters (backbone models)
-- Augmentation settings (types and probabilities of distortions)
-- Training parameters (batch size, learning rate, etc.)
-
-## Runtime Distortions
-
-The audio distorter applies various transformations to create training examples:
-
-- **Volume Changes**: Adjust audio volume up or down
-- **Panning**: Create left/right imbalance
-- **Filtering**: Add high/low frequency content that needs filtering
-- **Compression**: Create dynamic range issues
-- **EQ Adjustments**: Create frequency imbalances
-- **Effects**: Training examples for delay and reverb
-
-These distortions are applied on-the-fly during training, rather than pre-generating distorted files.
-
-## Example Usage
-
-```python
-# Apply combined distortions to an audio file
-from pydub import AudioSegment
-from src.data_processing import AudioDistorter
-
-# Load an audio file
-audio = AudioSegment.from_file("path/to/audio.wav")
-
-# Create distorter
-distorter = AudioDistorter(audio)
-
-# Apply random distortions
-distorted_audio, actions = distorter.get_combined_distortions(num_distortions=2)
-
-# Save the distorted audio
-distorted_audio.export("distorted.wav", format="wav")
-
-# The actions contain the mixing operations needed to fix the audio
-print(actions)
-``` 
+- [ ] Advanced Faust script templates
+- [ ] Real-time audio processing
+- [ ] Web interface for easy interaction
+- [ ] Integration with DAWs
+- [ ] Advanced quality metrics
+- [ ] Multi-genre support beyond hip-hop 

@@ -1,0 +1,2657 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.12, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/frieren/r13921098/SampleGen
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.9.0, hydra-core-1.3.2
+collected 294 items
+
+tests/test_core_functionality.py ...................                     [  6%]
+tests/test_data_processing.py ..............                             [ 11%]
+tests/test_dataset.py .....................................              [ 23%]
+tests/test_faust_distorter.py ................F...............           [ 34%]
+tests/test_generators.py ......................FFFFFFFFFFFFFF            [ 46%]
+tests/test_main_producer.py ...F.....F............F                      [ 54%]
+tests/test_mixer.py .F......FFFFFFF.....FFF.F.                           [ 63%]
+tests/test_mixer_real.py ....sss...F.....                                [ 69%]
+tests/test_producer.py ....F.FFF.......F...F                             [ 76%]
+tests/test_stem_extraction.py ..F...F........                            [ 81%]
+tests/test_trainer.py ....F.FF..............F                            [ 89%]
+tests/test_training_utils.py ................................            [100%]
+
+=================================== FAILURES ===================================
+___________ TestFaustDistorter.test_compile_and_apply_faust_failure ____________
+
+self = <tests.test_faust_distorter.TestFaustDistorter object at 0x7a17670e55d0>
+mock_subprocess = <MagicMock name='run' id='134240928079376'>
+distorter = <src.data_processing.faust_distorter.FaustDistorter object at 0x7a1766e4ab50>
+test_audio_mono = array([ 0.0000000e+00,  3.1324517e-02,  6.2525965e-02, ...,
+       -6.2525965e-02, -3.1324517e-02,  6.2761340e-14], dtype=float32)
+
+    @patch('subprocess.run')
+    def test_compile_and_apply_faust_failure(self, mock_subprocess, distorter, test_audio_mono):
+        """Test failed Faust compilation."""
+        # Mock failed compilation
+        mock_subprocess.return_value = MagicMock(returncode=1, stderr="Compilation error")
+    
+        faust_code = "invalid faust code"
+        result = distorter.compile_and_apply_faust(faust_code, test_audio_mono)
+    
+        # Should still return something (fallback processing)
+>       assert result is not None
+E       assert None is not None
+
+tests/test_faust_distorter.py:213: AssertionError
+----------------------------- Captured stdout call -----------------------------
+Faust compilation failed: Compilation error
+__________________ TestBassGenerator.test_enhance_bass_prompt __________________
+
+self = <tests.test_generators.TestBassGenerator object at 0x7a1766f184d0>
+bass_generator = <src.models.generator.bass_generator.BassGenerator object at 0x7a174e47a190>
+
+    def test_enhance_bass_prompt(self, bass_generator):
+        """Test bass prompt enhancement."""
+        prompt = "deep bass"
+>       enhanced = bass_generator._enhance_bass_prompt(prompt, key="Am", bpm=120)
+E       TypeError: BassGenerator._enhance_bass_prompt() got an unexpected keyword argument 'key'
+
+tests/test_generators.py:285: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpyb5mx61p/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpyb5mx61p/facebook_musicgen-small
+BassGenerator model loaded successfully!
+____________________ TestDrumGenerator.test_generate_drums _____________________
+
+self = <tests.test_generators.TestDrumGenerator object at 0x7a1766f18e50>
+drum_generator = <src.models.generator.drum_generator.DrumGenerator object at 0x7a174c11eb10>
+
+    def test_generate_drums(self, drum_generator):
+        """Test drum generation."""
+>       audio = drum_generator.generate(
+            prompt="Trap drums with hi-hats",
+            duration=4.0,
+            bpm=140,
+            style="trap"
+        )
+E       TypeError: DrumGenerator.generate() got an unexpected keyword argument 'style'
+
+tests/test_generators.py:320: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpfweac2h6/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpfweac2h6/facebook_musicgen-small
+DrumGenerator model loaded successfully!
+__________________ TestDrumGenerator.test_enhance_drum_prompt __________________
+
+self = <tests.test_generators.TestDrumGenerator object at 0x7a1766f117d0>
+drum_generator = <src.models.generator.drum_generator.DrumGenerator object at 0x7a1766d7bd90>
+
+    def test_enhance_drum_prompt(self, drum_generator):
+        """Test drum prompt enhancement."""
+        prompt = "drums"
+>       enhanced = drum_generator._enhance_drum_prompt(prompt, bpm=120, style="trap")
+E       TypeError: DrumGenerator._enhance_drum_prompt() got an unexpected keyword argument 'bpm'
+
+tests/test_generators.py:333: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpyyr6nijn/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpyyr6nijn/facebook_musicgen-small
+DrumGenerator model loaded successfully!
+___________________ TestOtherGenerator.test_generate_melody ____________________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f18cd0>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a174481d910>
+
+    def test_generate_melody(self, other_generator):
+        """Test melody generation."""
+>       audio = other_generator.generate(
+            prompt="Dark melody in minor key",
+            duration=5.0,
+            instrument_type="melody",
+            key="Am",
+            bpm=120
+        )
+E       TypeError: OtherGenerator.generate() got an unexpected keyword argument 'instrument_type'
+
+tests/test_generators.py:368: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmprmsodl98/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmprmsodl98/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+___________________ TestOtherGenerator.test_generate_harmony ___________________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f19450>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a1766e80890>
+
+    def test_generate_harmony(self, other_generator):
+        """Test harmony generation."""
+>       audio = other_generator.generate(
+            prompt="Atmospheric pads",
+            duration=5.0,
+            instrument_type="harmony",
+            key="C"
+        )
+E       TypeError: OtherGenerator.generate() got an unexpected keyword argument 'instrument_type'
+
+tests/test_generators.py:381: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpasqaol76/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpasqaol76/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+________________ TestOtherGenerator.test_enhance_prompt_melody _________________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f19810>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a1766e21950>
+
+    def test_enhance_prompt_melody(self, other_generator):
+        """Test prompt enhancement for melody."""
+        prompt = "melody"
+>       enhanced = other_generator._enhance_prompt(
+            prompt,
+            instrument_type="melody",
+            key="G",
+            bpm=130
+        )
+E       AttributeError: 'OtherGenerator' object has no attribute '_enhance_prompt'
+
+tests/test_generators.py:394: AttributeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpzdcn1so8/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpzdcn1so8/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+________________ TestOtherGenerator.test_enhance_prompt_harmony ________________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f19c10>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a174c375690>
+
+    def test_enhance_prompt_harmony(self, other_generator):
+        """Test prompt enhancement for harmony."""
+        prompt = "pads"
+>       enhanced = other_generator._enhance_prompt(
+            prompt,
+            instrument_type="harmony",
+            key="Dm"
+        )
+E       AttributeError: 'OtherGenerator' object has no attribute '_enhance_prompt'
+
+tests/test_generators.py:409: AttributeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpxdpck3s_/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpxdpck3s_/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+__________ TestOtherGenerator.test_different_instrument_types[melody] __________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f1a690>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a1766f9ebd0>
+instrument_type = 'melody'
+
+    @pytest.mark.parametrize("instrument_type", ["melody", "harmony", "synth", "sfx"])
+    def test_different_instrument_types(self, other_generator, instrument_type):
+        """Test generation with different instrument types."""
+>       audio = other_generator.generate(
+            prompt=f"Generate {instrument_type}",
+            instrument_type=instrument_type,
+            duration=3.0
+        )
+E       TypeError: OtherGenerator.generate() got an unexpected keyword argument 'instrument_type'
+
+tests/test_generators.py:422: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpz613a8b3/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpz613a8b3/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+_________ TestOtherGenerator.test_different_instrument_types[harmony] __________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f1a7d0>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a1760145950>
+instrument_type = 'harmony'
+
+    @pytest.mark.parametrize("instrument_type", ["melody", "harmony", "synth", "sfx"])
+    def test_different_instrument_types(self, other_generator, instrument_type):
+        """Test generation with different instrument types."""
+>       audio = other_generator.generate(
+            prompt=f"Generate {instrument_type}",
+            instrument_type=instrument_type,
+            duration=3.0
+        )
+E       TypeError: OtherGenerator.generate() got an unexpected keyword argument 'instrument_type'
+
+tests/test_generators.py:422: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpts1bxi04/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpts1bxi04/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+__________ TestOtherGenerator.test_different_instrument_types[synth] ___________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f1a910>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a17448a9950>
+instrument_type = 'synth'
+
+    @pytest.mark.parametrize("instrument_type", ["melody", "harmony", "synth", "sfx"])
+    def test_different_instrument_types(self, other_generator, instrument_type):
+        """Test generation with different instrument types."""
+>       audio = other_generator.generate(
+            prompt=f"Generate {instrument_type}",
+            instrument_type=instrument_type,
+            duration=3.0
+        )
+E       TypeError: OtherGenerator.generate() got an unexpected keyword argument 'instrument_type'
+
+tests/test_generators.py:422: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmp4a56_mdm/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmp4a56_mdm/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+___________ TestOtherGenerator.test_different_instrument_types[sfx] ____________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f1ab90>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a17600f7390>
+instrument_type = 'sfx'
+
+    @pytest.mark.parametrize("instrument_type", ["melody", "harmony", "synth", "sfx"])
+    def test_different_instrument_types(self, other_generator, instrument_type):
+        """Test generation with different instrument types."""
+>       audio = other_generator.generate(
+            prompt=f"Generate {instrument_type}",
+            instrument_type=instrument_type,
+            duration=3.0
+        )
+E       TypeError: OtherGenerator.generate() got an unexpected keyword argument 'instrument_type'
+
+tests/test_generators.py:422: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpmyfljjwy/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpmyfljjwy/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+__________ TestOtherGenerator.test_error_handling_invalid_instrument ___________
+
+self = <tests.test_generators.TestOtherGenerator object at 0x7a1766f1b150>
+other_generator = <src.models.generator.other_generator.OtherGenerator object at 0x7a174e44ae10>
+
+    def test_error_handling_invalid_instrument(self, other_generator):
+        """Test error handling with invalid instrument type."""
+        # Should still work but may log a warning
+>       audio = other_generator.generate(
+            prompt="Generate sound",
+            instrument_type="invalid_type",
+            duration=3.0
+        )
+E       TypeError: OtherGenerator.generate() got an unexpected keyword argument 'instrument_type'
+
+tests/test_generators.py:434: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpret0safs/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpret0safs/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+___________ TestGeneratorIntegration.test_generate_full_arrangement ____________
+
+self = <tests.test_generators.TestGeneratorIntegration object at 0x7a1766f1ba50>
+all_generators = {'bass': <src.models.generator.bass_generator.BassGenerator object at 0x7a1766dc0310>, 'drums': <src.models.generator....tor object at 0x7a174e461010>, 'other': <src.models.generator.other_generator.OtherGenerator object at 0x7a1766fdf950>}
+
+    def test_generate_full_arrangement(self, all_generators):
+        """Test generating a full musical arrangement."""
+        generators = all_generators
+        duration = 4.0
+    
+        # Generate bass
+        bass = generators['bass'].generate_bass_line(
+            "Deep 808 bass",
+            duration=duration,
+            key="C",
+            bpm=140
+        )
+    
+        # Generate drums
+>       drums = generators['drums'].generate(
+            "Trap drums with hi-hats",
+            duration=duration,
+            bpm=140,
+            style="trap"
+        )
+E       TypeError: DrumGenerator.generate() got an unexpected keyword argument 'style'
+
+tests/test_generators.py:485: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmplr7gh5i0/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmplr7gh5i0/facebook_musicgen-small
+BassGenerator model loaded successfully!
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmplr7gh5i0/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmplr7gh5i0/facebook_musicgen-small
+DrumGenerator model loaded successfully!
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmplr7gh5i0/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmplr7gh5i0/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+_____ TestGeneratorIntegration.test_consistent_duration_across_generators ______
+
+self = <tests.test_generators.TestGeneratorIntegration object at 0x7a1766f1c110>
+all_generators = {'bass': <src.models.generator.bass_generator.BassGenerator object at 0x7a174470b150>, 'drums': <src.models.generator....tor object at 0x7a176012bdd0>, 'other': <src.models.generator.other_generator.OtherGenerator object at 0x7a176013e1d0>}
+
+    def test_consistent_duration_across_generators(self, all_generators):
+        """Test that all generators produce consistent durations."""
+        generators = all_generators
+        duration = 5.0
+    
+        results = []
+    
+        # Generate from each generator
+        results.append(generators['bass'].generate_bass_line("Bass", duration=duration))
+        results.append(generators['drums'].generate("Drums", duration=duration))
+>       results.append(generators['other'].generate("Melody", duration=duration, instrument_type="melody"))
+E       TypeError: OtherGenerator.generate() got an unexpected keyword argument 'instrument_type'
+
+tests/test_generators.py:525: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpx3vsqx0w/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpx3vsqx0w/facebook_musicgen-small
+BassGenerator model loaded successfully!
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpx3vsqx0w/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpx3vsqx0w/facebook_musicgen-small
+DrumGenerator model loaded successfully!
+Loading MusicGen model 'facebook/musicgen-small' on cpu...
+Downloading model from Hugging Face: facebook/musicgen-small
+This will be saved to: /tmp/tmpx3vsqx0w/facebook_musicgen-small
+Model downloaded and saved to /tmp/tmpx3vsqx0w/facebook_musicgen-small
+OtherGenerator model loaded successfully!
+_________________ TestMainProducerReal.test_file_walking_logic _________________
+
+self = <tests.test_main_producer.TestMainProducerReal object at 0x7a1766f28150>
+
+    def test_file_walking_logic(self):
+        """Test the file walking logic for pretrain mode."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Create directory structure similar to what pretrain mode expects
+            data_dir = os.path.join(temp_dir, "data")
+            os.makedirs(data_dir)
+    
+            # Create some audio files
+            audio_files = [
+                "song1.wav",
+                "song2.mp3",
+                "song3.flac",
+                ".hidden.wav",  # Should be skipped
+                "song4.wav"
+            ]
+    
+            for filename in audio_files:
+                Path(os.path.join(data_dir, filename)).touch()
+    
+            # Create a stems subdirectory (should be skipped)
+            stems_dir = os.path.join(data_dir, "stems")
+            os.makedirs(stems_dir)
+            Path(os.path.join(stems_dir, "vocals.wav")).touch()
+            Path(os.path.join(stems_dir, "drums.wav")).touch()
+    
+            # Create nested structure
+            sub_dir = os.path.join(data_dir, "artist1")
+            os.makedirs(sub_dir)
+            Path(os.path.join(sub_dir, "track1.wav")).touch()
+            Path(os.path.join(sub_dir, "track2.mp3")).touch()
+    
+            # Simulate the file collection logic from main()
+            collected_files = []
+            for root, dirs, files in os.walk(data_dir):
+                for file in files:
+                    if file.endswith(('.wav', '.mp3', '.flac')) and not file.startswith('.'):
+                        if '/stems/' not in root:
+                            full_path = os.path.join(root, file)
+                            collected_files.append(full_path)
+    
+            # Should find 5 files (excluding hidden and stems)
+>           assert len(collected_files) == 5
+E           AssertionError: assert 8 == 5
+E            +  where 8 = len(['/tmp/tmpsy6svduz/data/song4.wav', '/tmp/tmpsy6svduz/data/song2.mp3', '/tmp/tmpsy6svduz/data/song1.wav', '/tmp/tmpsy6svduz/data/song3.flac', '/tmp/tmpsy6svduz/data/stems/vocals.wav', '/tmp/tmpsy6svduz/data/stems/drums.wav', ...])
+
+tests/test_main_producer.py:128: AssertionError
+_____________ TestMainProducerReal.test_main_function_with_no_args _____________
+
+self = <tests.test_main_producer.TestMainProducerReal object at 0x7a1766f28d90>
+capsys = <_pytest.capture.CaptureFixture object at 0x7a176014b150>
+
+    def test_main_function_with_no_args(self, capsys):
+        """Test main function behavior when called with no arguments."""
+        # Mock sys.argv to have only the script name
+        with patch.object(sys, 'argv', ['main_producer.py']):
+            # Mock the model to avoid heavy dependencies
+            with patch('src.main_producer.HipHopProducerModel') as mock_model:
+                mock_instance = mock_model.return_value
+                mock_instance.generate_stems.side_effect = Exception("Not set up")
+    
+                # Should call demo_with_example
+                main()
+    
+                captured = capsys.readouterr()
+>               assert "Hip-Hop Producer AI Demo" in captured.out
+E               AssertionError: assert 'Hip-Hop Producer AI Demo' in 'Initializing Hip-Hop Producer model...\nModel initialized successfully!\nDemo mode requires --input and --prompt arguments\n'
+E                +  where 'Initializing Hip-Hop Producer model...\nModel initialized successfully!\nDemo mode requires --input and --prompt arguments\n' = CaptureResult(out='Initializing Hip-Hop Producer model...\nModel initialized successfully!\nDemo mode requires --input and --prompt arguments\n', err='').out
+
+tests/test_main_producer.py:245: AssertionError
+_______ TestMainProducerIntegration.test_audio_file_discovery_realistic ________
+
+self = <tests.test_main_producer.TestMainProducerIntegration object at 0x7a1766f35690>
+
+    def test_audio_file_discovery_realistic(self):
+        """Test audio file discovery with realistic directory structure."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Create realistic music library structure
+            music_dir = os.path.join(temp_dir, "music")
+    
+            # Artist directories
+            for artist in ["Artist1", "Artist2", "Artist3"]:
+                artist_dir = os.path.join(music_dir, artist)
+                os.makedirs(artist_dir)
+    
+                # Albums
+                for album in ["Album1", "Album2"]:
+                    album_dir = os.path.join(artist_dir, album)
+                    os.makedirs(album_dir)
+    
+                    # Tracks
+                    for track in range(1, 4):  # 3 tracks per album
+                        track_file = os.path.join(album_dir, f"Track_{track:02d}.wav")
+                        Path(track_file).touch()
+    
+            # Add some files in root
+            Path(os.path.join(music_dir, "bonus_track.mp3")).touch()
+            Path(os.path.join(music_dir, "intro.flac")).touch()
+    
+            # Add stems directory (should be ignored)
+            stems_dir = os.path.join(music_dir, "Artist1", "Album1", "stems")
+            os.makedirs(stems_dir)
+            Path(os.path.join(stems_dir, "vocals.wav")).touch()
+            Path(os.path.join(stems_dir, "drums.wav")).touch()
+    
+            # Count files using the same logic as main()
+            audio_files = []
+            for root, dirs, files in os.walk(music_dir):
+                for file in files:
+                    if file.endswith(('.wav', '.mp3', '.flac')) and not file.startswith('.'):
+                        if '/stems/' not in root:
+                            full_path = os.path.join(root, file)
+                            audio_files.append(full_path)
+    
+            # Should find: 3 artists × 2 albums × 3 tracks + 2 root files = 20 files
+            # (excluding 2 stem files)
+>           assert len(audio_files) == 20
+E           AssertionError: assert 22 == 20
+E            +  where 22 = len(['/tmp/tmp1ci5vqh3/music/bonus_track.mp3', '/tmp/tmp1ci5vqh3/music/intro.flac', '/tmp/tmp1ci5vqh3/music/Artist2/Album2....wav', '/tmp/tmp1ci5vqh3/music/Artist2/Album2/Track_03.wav', '/tmp/tmp1ci5vqh3/music/Artist2/Album1/Track_02.wav', ...])
+
+tests/test_main_producer.py:516: AssertionError
+___________________ TestMixer.test_initialization_multi_gpu ____________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a17670ad210>
+mock_transformers = {'clap_model': <MagicMock name='ClapModel.from_pretrained()' id='134240930647760'>, 'clap_processor': <MagicMock name=...istralForCausalLM.from_pretrained()' id='134240481456208'>, 'decoder_tokenizer': <MagicMock id='134240516362704'>, ...}
+
+    def test_initialization_multi_gpu(self, mock_transformers):
+        """Test model initialization with multi GPU setup."""
+        with patch('torch.cuda.is_available', return_value=True), \
+             patch('torch.cuda.device_count', return_value=2):
+            mixer = Mixer(multi_gpu=True)
+    
+            assert mixer.encoder_device != mixer.decoder_device
+>           assert mixer.encoder_device == torch.device("cuda:0")
+E           AssertionError: assert 'cuda:0' == device(type='cuda', index=0)
+E            +  where 'cuda:0' = Mixer(\n  (fusion_proj): Sequential(\n    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)\n    (6): Dropout(p=0.1, inplace=False)\n  )\n  (stem_token_embedder): Embedding(100, 512)\n).encoder_device
+E            +  and   device(type='cuda', index=0) = <class 'torch.device'>('cuda:0')
+E            +    where <class 'torch.device'> = torch.device
+
+tests/test_mixer.py:118: AssertionError
+----------------------------- Captured stdout call -----------------------------
+Using multi-GPU setup with 2 GPUs
+Loading Mistral model on cuda:1...
+Using device_map: cuda:1
+Model using dtype: torch.float32
+______________________ TestMixer.test_get_embedding_basic ______________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f48e90>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+device = 'cpu'
+
+    def test_get_embedding_basic(self, mixer_model, device):
+        """Test basic embedding extraction."""
+        text_prompt = "Create a trap beat"
+        audio_waveform = torch.randn(1, 4, 8, 22050).to(device)  # [batch, stems, chunks, samples]
+    
+        text_emb, audio_emb = mixer_model.get_embedding(text_prompt, audio_waveform)
+    
+>       assert isinstance(text_emb, torch.Tensor)
+E       AssertionError: assert False
+E        +  where False = isinstance(<MagicMock name='AutoModel.from_pretrained().to()().last_hidden_state.mean()' id='134240518796304'>, <class 'torch.Tensor'>)
+E        +    where <class 'torch.Tensor'> = torch.Tensor
+
+tests/test_mixer.py:181: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+----------------------------- Captured stdout call -----------------------------
+Error processing batch 0-32: isnan(): argument 'input' (position 1) must be Tensor, not MagicMock
+Batch audio shape: torch.Size([32, 22050])
+ERROR: Failed to extract any audio features!
+___________________ TestMixer.test_get_embedding_with_tokens ___________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f494d0>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+device = 'cpu'
+
+    def test_get_embedding_with_tokens(self, mixer_model, device):
+        """Test embedding extraction with token identifiers."""
+        text_prompt = "Create a trap beat"
+        audio_waveform = torch.randn(1, 4, 8, 22050).to(device)
+        token_identifiers = [
+            ['[VOCALS_1]', '[VOCALS_2]', '[VOCALS_3]', '[VOCALS_4]', '[PAD]', '[PAD]', '[PAD]', '[PAD]'],
+            ['[BASS_1]', '[BASS_2]', '[BASS_3]', '[BASS_4]', '[PAD]', '[PAD]', '[PAD]', '[PAD]'],
+            ['[DRUMS_1]', '[DRUMS_2]', '[DRUMS_3]', '[DRUMS_4]', '[PAD]', '[PAD]', '[PAD]', '[PAD]'],
+            ['[OTHER_1]', '[OTHER_2]', '[OTHER_3]', '[OTHER_4]', '[PAD]', '[PAD]', '[PAD]', '[PAD]']
+        ]
+    
+        text_emb, audio_emb = mixer_model.get_embedding(text_prompt, audio_waveform, token_identifiers)
+    
+>       assert isinstance(text_emb, torch.Tensor)
+E       AssertionError: assert False
+E        +  where False = isinstance(<MagicMock name='AutoModel.from_pretrained().to()().last_hidden_state.mean()' id='134240352338000'>, <class 'torch.Tensor'>)
+E        +    where <class 'torch.Tensor'> = torch.Tensor
+
+tests/test_mixer.py:199: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+----------------------------- Captured stdout call -----------------------------
+Error processing batch 0-32: isnan(): argument 'input' (position 1) must be Tensor, not MagicMock
+Batch audio shape: torch.Size([32, 22050])
+ERROR: Failed to extract any audio features!
+_______________________ TestMixer.test_forward_text_only _______________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f49b50>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+
+    def test_forward_text_only(self, mixer_model):
+        """Test forward pass with text only."""
+>       result = mixer_model.forward(text_prompt="Create a trap beat")
+
+tests/test_mixer.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/mixer.py:499: in forward
+    text_emb = self.safe_normalize(text_emb)
+src/models/mixer.py:204: in safe_normalize
+    norm = torch.norm(x, p=2, dim=-1, keepdim=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = <MagicMock name='AutoModel.from_pretrained().to()().last_hidden_state.mean()' id='134240352655184'>
+p = 2, dim = -1, keepdim = True, out = None, dtype = None
+
+    def norm(  # noqa: F811
+        input,
+        p: Optional[Union[float, str]] = "fro",
+        dim=None,
+        keepdim=False,
+        out=None,
+        dtype=None,
+    ):
+        r"""Returns the matrix norm or vector norm of a given tensor.
+    
+        .. warning::
+    
+            torch.norm is deprecated and may be removed in a future PyTorch release.
+            Its documentation and behavior may be incorrect, and it is no longer
+            actively maintained.
+    
+            Use :func:`torch.linalg.vector_norm` when computing vector norms and
+            :func:`torch.linalg.matrix_norm` when computing matrix norms.
+            For a function with a similar behavior as this one see :func:`torch.linalg.norm`.
+            Note, however, the signature for these functions is slightly different than the
+            signature for ``torch.norm``.
+    
+        Args:
+            input (Tensor): The input tensor. Its data type must be either a floating
+                point or complex type. For complex inputs, the norm is calculated using the
+                absolute value of each element. If the input is complex and neither
+                :attr:`dtype` nor :attr:`out` is specified, the result's data type will
+                be the corresponding floating point type (e.g. float if :attr:`input` is
+                complexfloat).
+    
+            p (int, float, inf, -inf, 'fro', 'nuc', optional): the order of norm. Default: ``'fro'``
+                The following norms can be calculated:
+    
+                ======  ==============  ==========================
+                ord     matrix norm     vector norm
+                ======  ==============  ==========================
+                'fro'   Frobenius norm  --
+                'nuc'   nuclear norm    --
+                Number  --              sum(abs(x)**ord)**(1./ord)
+                ======  ==============  ==========================
+    
+                The vector norm can be calculated across any number of dimensions.
+                The corresponding dimensions of :attr:`input` are flattened into
+                one dimension, and the norm is calculated on the flattened
+                dimension.
+    
+                Frobenius norm produces the same result as ``p=2`` in all cases
+                except when :attr:`dim` is a list of three or more dims, in which
+                case Frobenius norm throws an error.
+    
+                Nuclear norm can only be calculated across exactly two dimensions.
+    
+            dim (int, tuple of ints, list of ints, optional):
+                Specifies which dimension or dimensions of :attr:`input` to
+                calculate the norm across. If :attr:`dim` is ``None``, the norm will
+                be calculated across all dimensions of :attr:`input`. If the norm
+                type indicated by :attr:`p` does not support the specified number of
+                dimensions, an error will occur.
+            keepdim (bool, optional): whether the output tensors have :attr:`dim`
+                retained or not. Ignored if :attr:`dim` = ``None`` and
+                :attr:`out` = ``None``. Default: ``False``
+            out (Tensor, optional): the output tensor. Ignored if
+                :attr:`dim` = ``None`` and :attr:`out` = ``None``.
+            dtype (:class:`torch.dtype`, optional): the desired data type of
+                returned tensor. If specified, the input tensor is casted to
+                :attr:`dtype` while performing the operation. Default: None.
+    
+        .. note::
+            Even though ``p='fro'`` supports any number of dimensions, the true
+            mathematical definition of Frobenius norm only applies to tensors with
+            exactly two dimensions. :func:`torch.linalg.matrix_norm` with ``ord='fro'``
+            aligns with the mathematical definition, since it can only be applied across
+            exactly two dimensions.
+    
+        Example::
+    
+            >>> import torch
+            >>> a = torch.arange(9, dtype= torch.float) - 4
+            >>> b = a.reshape((3, 3))
+            >>> torch.norm(a)
+            tensor(7.7460)
+            >>> torch.norm(b)
+            tensor(7.7460)
+            >>> torch.norm(a, float('inf'))
+            tensor(4.)
+            >>> torch.norm(b, float('inf'))
+            tensor(4.)
+            >>> c = torch.tensor([[ 1, 2, 3], [-1, 1, 4]] , dtype=torch.float)
+            >>> torch.norm(c, dim=0)
+            tensor([1.4142, 2.2361, 5.0000])
+            >>> torch.norm(c, dim=1)
+            tensor([3.7417, 4.2426])
+            >>> torch.norm(c, p=1, dim=1)
+            tensor([6., 6.])
+            >>> d = torch.arange(8, dtype=torch.float).reshape(2, 2, 2)
+            >>> torch.norm(d, dim=(1, 2))
+            tensor([ 3.7417, 11.2250])
+            >>> torch.norm(d[0, :, :]), torch.norm(d[1, :, :])
+            (tensor(3.7417), tensor(11.2250))
+        """
+    
+        if has_torch_function_unary(input):
+            return handle_torch_function(
+                norm, (input,), input, p=p, dim=dim, keepdim=keepdim, out=out, dtype=dtype
+            )
+    
+        # NB. All the repeated code and weird python is to please TorchScript.
+        #     For a more compact implementation see the relevant function in `_refs/__init__.py`
+    
+        # We don't do this for MPS or sparse tensors
+        if input.layout == torch.strided and input.device.type in (
+            "cpu",
+            "cuda",
+            "meta",
+            torch.utils.backend_registration._privateuse1_backend_name,
+        ):
+            if dim is not None:
+                if isinstance(dim, (int, torch.SymInt)):
+                    _dim = [dim]
+                else:
+                    _dim = dim
+            else:
+                _dim = None  # type: ignore[assignment]
+    
+            if isinstance(p, str):
+                if p == "fro" and (
+                    dim is None or isinstance(dim, (int, torch.SymInt)) or len(dim) <= 2
+                ):
+                    if out is None:
+                        return torch.linalg.vector_norm(
+                            input, 2, _dim, keepdim, dtype=dtype
+                        )
+                    else:
+                        return torch.linalg.vector_norm(
+                            input, 2, _dim, keepdim, dtype=dtype, out=out
+                        )
+    
+                # Here we either call the nuclear norm, or we call matrix_norm with some arguments
+                # that will throw an error
+                if _dim is None:
+                    _dim = list(range(input.ndim))
+                if out is None:
+                    return torch.linalg.matrix_norm(input, p, _dim, keepdim, dtype=dtype)
+                else:
+                    return torch.linalg.matrix_norm(
+                        input, p, _dim, keepdim, dtype=dtype, out=out
+                    )
+            else:
+                # NB. p should be Union[str, number], not Optional!
+                _p = 2.0 if p is None else p
+                if out is None:
+                    return torch.linalg.vector_norm(input, _p, _dim, keepdim, dtype=dtype)
+                else:
+                    return torch.linalg.vector_norm(
+                        input, _p, _dim, keepdim, dtype=dtype, out=out
+                    )
+    
+        ndim = input.dim()
+    
+        # catch default case
+        if dim is None and out is None and dtype is None and p is not None:
+            if isinstance(p, str):
+                if p == "fro":
+                    return _VF.frobenius_norm(input, dim=(), keepdim=keepdim)
+            if not isinstance(p, str):
+                _dim = list(range(ndim))
+                return _VF.norm(input, p, dim=_dim, keepdim=keepdim)  # type: ignore[attr-defined]
+    
+        # TODO: when https://github.com/pytorch/pytorch/issues/33782 is fixed
+        # remove the overloads where dim is an int and replace with BraodcastingList1
+        # and remove next four lines, replace _dim with dim
+        if dim is not None:
+            if isinstance(dim, (int, torch.SymInt)):
+                _dim = [dim]
+            else:
+                _dim = dim
+        else:
+            _dim = None  # type: ignore[assignment]
+    
+        if isinstance(p, str):
+            if p == "fro":
+                if dtype is not None:
+                    raise ValueError("dtype argument is not supported in frobenius norm")
+    
+                if _dim is None:
+                    _dim = list(range(ndim))
+                if out is None:
+                    return _VF.frobenius_norm(input, _dim, keepdim=keepdim)  # type: ignore[arg-type]
+                else:
+                    return _VF.frobenius_norm(input, _dim, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+            elif p == "nuc":
+                if dtype is not None:
+                    raise ValueError("dtype argument is not supported in nuclear norm")
+                if _dim is None:
+                    if out is None:
+                        return _VF.nuclear_norm(input, keepdim=keepdim)  # type: ignore[arg-type]
+                    else:
+                        return _VF.nuclear_norm(input, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+                else:
+                    if out is None:
+                        return _VF.nuclear_norm(input, _dim, keepdim=keepdim)  # type: ignore[arg-type]
+                    else:
+                        return _VF.nuclear_norm(input, _dim, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+            raise RuntimeError(f"only valid string values are 'fro' and 'nuc', found {p}")
+        else:
+            if _dim is None:
+                _dim = list(range(ndim))
+    
+            if out is None:
+                if dtype is None:
+>                   return _VF.norm(input, p, _dim, keepdim=keepdim)  # type: ignore[attr-defined]
+E                   TypeError: norm() received an invalid combination of arguments - got (MagicMock, int, list, keepdim=bool), but expected one of:
+E                    * (Tensor input, Number p = 2)
+E                    * (Tensor input, Number p, *, torch.dtype dtype)
+E                         didn't match because some of the keywords were incorrect: keepdim
+E                    * (Tensor input, Number p, tuple of ints dim, bool keepdim, *, torch.dtype dtype, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of ints dim, bool keepdim = False, *, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of names dim, bool keepdim, *, torch.dtype dtype, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of names dim, bool keepdim = False, *, Tensor out = None)
+
+.venv/lib/python3.11/site-packages/torch/functional.py:1908: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+----------------------------- Captured stdout call -----------------------------
+Error processing batch 0-32: isnan(): argument 'input' (position 1) must be Tensor, not MagicMock
+Batch audio shape: torch.Size([32, 22050])
+ERROR: Failed to extract any audio features!
+______________________ TestMixer.test_forward_with_audio _______________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f4a1d0>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+device = 'cpu'
+
+    def test_forward_with_audio(self, mixer_model, device):
+        """Test forward pass with text and audio."""
+        text_prompt = "Create a trap beat"
+        audio_waveform = torch.randn(1, 4, 8, 22050).to(device)
+    
+>       result = mixer_model.forward(
+            text_prompt=text_prompt,
+            audio_waveform=audio_waveform
+        )
+
+tests/test_mixer.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/mixer.py:499: in forward
+    text_emb = self.safe_normalize(text_emb)
+src/models/mixer.py:204: in safe_normalize
+    norm = torch.norm(x, p=2, dim=-1, keepdim=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = <MagicMock name='AutoModel.from_pretrained().to()().last_hidden_state.mean()' id='134240481322704'>
+p = 2, dim = -1, keepdim = True, out = None, dtype = None
+
+    def norm(  # noqa: F811
+        input,
+        p: Optional[Union[float, str]] = "fro",
+        dim=None,
+        keepdim=False,
+        out=None,
+        dtype=None,
+    ):
+        r"""Returns the matrix norm or vector norm of a given tensor.
+    
+        .. warning::
+    
+            torch.norm is deprecated and may be removed in a future PyTorch release.
+            Its documentation and behavior may be incorrect, and it is no longer
+            actively maintained.
+    
+            Use :func:`torch.linalg.vector_norm` when computing vector norms and
+            :func:`torch.linalg.matrix_norm` when computing matrix norms.
+            For a function with a similar behavior as this one see :func:`torch.linalg.norm`.
+            Note, however, the signature for these functions is slightly different than the
+            signature for ``torch.norm``.
+    
+        Args:
+            input (Tensor): The input tensor. Its data type must be either a floating
+                point or complex type. For complex inputs, the norm is calculated using the
+                absolute value of each element. If the input is complex and neither
+                :attr:`dtype` nor :attr:`out` is specified, the result's data type will
+                be the corresponding floating point type (e.g. float if :attr:`input` is
+                complexfloat).
+    
+            p (int, float, inf, -inf, 'fro', 'nuc', optional): the order of norm. Default: ``'fro'``
+                The following norms can be calculated:
+    
+                ======  ==============  ==========================
+                ord     matrix norm     vector norm
+                ======  ==============  ==========================
+                'fro'   Frobenius norm  --
+                'nuc'   nuclear norm    --
+                Number  --              sum(abs(x)**ord)**(1./ord)
+                ======  ==============  ==========================
+    
+                The vector norm can be calculated across any number of dimensions.
+                The corresponding dimensions of :attr:`input` are flattened into
+                one dimension, and the norm is calculated on the flattened
+                dimension.
+    
+                Frobenius norm produces the same result as ``p=2`` in all cases
+                except when :attr:`dim` is a list of three or more dims, in which
+                case Frobenius norm throws an error.
+    
+                Nuclear norm can only be calculated across exactly two dimensions.
+    
+            dim (int, tuple of ints, list of ints, optional):
+                Specifies which dimension or dimensions of :attr:`input` to
+                calculate the norm across. If :attr:`dim` is ``None``, the norm will
+                be calculated across all dimensions of :attr:`input`. If the norm
+                type indicated by :attr:`p` does not support the specified number of
+                dimensions, an error will occur.
+            keepdim (bool, optional): whether the output tensors have :attr:`dim`
+                retained or not. Ignored if :attr:`dim` = ``None`` and
+                :attr:`out` = ``None``. Default: ``False``
+            out (Tensor, optional): the output tensor. Ignored if
+                :attr:`dim` = ``None`` and :attr:`out` = ``None``.
+            dtype (:class:`torch.dtype`, optional): the desired data type of
+                returned tensor. If specified, the input tensor is casted to
+                :attr:`dtype` while performing the operation. Default: None.
+    
+        .. note::
+            Even though ``p='fro'`` supports any number of dimensions, the true
+            mathematical definition of Frobenius norm only applies to tensors with
+            exactly two dimensions. :func:`torch.linalg.matrix_norm` with ``ord='fro'``
+            aligns with the mathematical definition, since it can only be applied across
+            exactly two dimensions.
+    
+        Example::
+    
+            >>> import torch
+            >>> a = torch.arange(9, dtype= torch.float) - 4
+            >>> b = a.reshape((3, 3))
+            >>> torch.norm(a)
+            tensor(7.7460)
+            >>> torch.norm(b)
+            tensor(7.7460)
+            >>> torch.norm(a, float('inf'))
+            tensor(4.)
+            >>> torch.norm(b, float('inf'))
+            tensor(4.)
+            >>> c = torch.tensor([[ 1, 2, 3], [-1, 1, 4]] , dtype=torch.float)
+            >>> torch.norm(c, dim=0)
+            tensor([1.4142, 2.2361, 5.0000])
+            >>> torch.norm(c, dim=1)
+            tensor([3.7417, 4.2426])
+            >>> torch.norm(c, p=1, dim=1)
+            tensor([6., 6.])
+            >>> d = torch.arange(8, dtype=torch.float).reshape(2, 2, 2)
+            >>> torch.norm(d, dim=(1, 2))
+            tensor([ 3.7417, 11.2250])
+            >>> torch.norm(d[0, :, :]), torch.norm(d[1, :, :])
+            (tensor(3.7417), tensor(11.2250))
+        """
+    
+        if has_torch_function_unary(input):
+            return handle_torch_function(
+                norm, (input,), input, p=p, dim=dim, keepdim=keepdim, out=out, dtype=dtype
+            )
+    
+        # NB. All the repeated code and weird python is to please TorchScript.
+        #     For a more compact implementation see the relevant function in `_refs/__init__.py`
+    
+        # We don't do this for MPS or sparse tensors
+        if input.layout == torch.strided and input.device.type in (
+            "cpu",
+            "cuda",
+            "meta",
+            torch.utils.backend_registration._privateuse1_backend_name,
+        ):
+            if dim is not None:
+                if isinstance(dim, (int, torch.SymInt)):
+                    _dim = [dim]
+                else:
+                    _dim = dim
+            else:
+                _dim = None  # type: ignore[assignment]
+    
+            if isinstance(p, str):
+                if p == "fro" and (
+                    dim is None or isinstance(dim, (int, torch.SymInt)) or len(dim) <= 2
+                ):
+                    if out is None:
+                        return torch.linalg.vector_norm(
+                            input, 2, _dim, keepdim, dtype=dtype
+                        )
+                    else:
+                        return torch.linalg.vector_norm(
+                            input, 2, _dim, keepdim, dtype=dtype, out=out
+                        )
+    
+                # Here we either call the nuclear norm, or we call matrix_norm with some arguments
+                # that will throw an error
+                if _dim is None:
+                    _dim = list(range(input.ndim))
+                if out is None:
+                    return torch.linalg.matrix_norm(input, p, _dim, keepdim, dtype=dtype)
+                else:
+                    return torch.linalg.matrix_norm(
+                        input, p, _dim, keepdim, dtype=dtype, out=out
+                    )
+            else:
+                # NB. p should be Union[str, number], not Optional!
+                _p = 2.0 if p is None else p
+                if out is None:
+                    return torch.linalg.vector_norm(input, _p, _dim, keepdim, dtype=dtype)
+                else:
+                    return torch.linalg.vector_norm(
+                        input, _p, _dim, keepdim, dtype=dtype, out=out
+                    )
+    
+        ndim = input.dim()
+    
+        # catch default case
+        if dim is None and out is None and dtype is None and p is not None:
+            if isinstance(p, str):
+                if p == "fro":
+                    return _VF.frobenius_norm(input, dim=(), keepdim=keepdim)
+            if not isinstance(p, str):
+                _dim = list(range(ndim))
+                return _VF.norm(input, p, dim=_dim, keepdim=keepdim)  # type: ignore[attr-defined]
+    
+        # TODO: when https://github.com/pytorch/pytorch/issues/33782 is fixed
+        # remove the overloads where dim is an int and replace with BraodcastingList1
+        # and remove next four lines, replace _dim with dim
+        if dim is not None:
+            if isinstance(dim, (int, torch.SymInt)):
+                _dim = [dim]
+            else:
+                _dim = dim
+        else:
+            _dim = None  # type: ignore[assignment]
+    
+        if isinstance(p, str):
+            if p == "fro":
+                if dtype is not None:
+                    raise ValueError("dtype argument is not supported in frobenius norm")
+    
+                if _dim is None:
+                    _dim = list(range(ndim))
+                if out is None:
+                    return _VF.frobenius_norm(input, _dim, keepdim=keepdim)  # type: ignore[arg-type]
+                else:
+                    return _VF.frobenius_norm(input, _dim, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+            elif p == "nuc":
+                if dtype is not None:
+                    raise ValueError("dtype argument is not supported in nuclear norm")
+                if _dim is None:
+                    if out is None:
+                        return _VF.nuclear_norm(input, keepdim=keepdim)  # type: ignore[arg-type]
+                    else:
+                        return _VF.nuclear_norm(input, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+                else:
+                    if out is None:
+                        return _VF.nuclear_norm(input, _dim, keepdim=keepdim)  # type: ignore[arg-type]
+                    else:
+                        return _VF.nuclear_norm(input, _dim, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+            raise RuntimeError(f"only valid string values are 'fro' and 'nuc', found {p}")
+        else:
+            if _dim is None:
+                _dim = list(range(ndim))
+    
+            if out is None:
+                if dtype is None:
+>                   return _VF.norm(input, p, _dim, keepdim=keepdim)  # type: ignore[attr-defined]
+E                   TypeError: norm() received an invalid combination of arguments - got (MagicMock, int, list, keepdim=bool), but expected one of:
+E                    * (Tensor input, Number p = 2)
+E                    * (Tensor input, Number p, *, torch.dtype dtype)
+E                         didn't match because some of the keywords were incorrect: keepdim
+E                    * (Tensor input, Number p, tuple of ints dim, bool keepdim, *, torch.dtype dtype, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of ints dim, bool keepdim = False, *, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of names dim, bool keepdim, *, torch.dtype dtype, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of names dim, bool keepdim = False, *, Tensor out = None)
+
+.venv/lib/python3.11/site-packages/torch/functional.py:1908: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+----------------------------- Captured stdout call -----------------------------
+Error processing batch 0-32: isnan(): argument 'input' (position 1) must be Tensor, not MagicMock
+Batch audio shape: torch.Size([32, 22050])
+ERROR: Failed to extract any audio features!
+____________________ TestMixer.test_forward_generation_mode ____________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f4a850>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+
+    def test_forward_generation_mode(self, mixer_model):
+        """Test forward pass in generation mode."""
+        input_ids = torch.randint(0, 32000, (1, 10))
+        attention_mask = torch.ones(1, 10)
+    
+>       result = mixer_model.forward(
+            input_ids=input_ids,
+            attention_mask=attention_mask
+        )
+
+tests/test_mixer.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+text_prompt = None, audio_waveform = None, token_identifiers = None
+target_tool_tokens = None
+input_ids = tensor([[11235, 16271, 20630,  1021, 18543, 15183, 23228, 13911, 12992,  4406]])
+attention_mask = tensor([[1., 1., 1., 1., 1., 1., 1., 1., 1., 1.]])
+tool_input_ids = None, tool_attention_mask = None, labels = None
+embedding_scale = None
+
+    def forward(self, text_prompt=None, audio_waveform=None, token_identifiers=None, target_tool_tokens=None,
+              input_ids=None, attention_mask=None, tool_input_ids=None, tool_attention_mask=None, labels=None,
+              embedding_scale=None):
+        """
+        Forward pass for the Mixer model.
+    
+        Args:
+            text_prompt: Raw text prompt (will be tokenized)
+            audio_waveform: Audio waveform data
+            token_identifiers: List of token identifiers for stems and positions
+            target_tool_tokens: Raw target tokens (will be tokenized)
+            input_ids: Pre-tokenized input IDs (if text_prompt is None)
+            attention_mask: Pre-tokenized attention mask (if text_prompt is None)
+            tool_input_ids: Pre-tokenized tool input IDs (if target_tool_tokens is None)
+            tool_attention_mask: Pre-tokenized tool attention mask (if target_tool_tokens is None)
+            labels: Optional direct labels for computing loss (will override internal label creation)
+            embedding_scale: Optional custom scaling factor for embeddings
+        """
+        # Move inputs to encoder device
+        encoder_device = self.encoder_device
+        decoder_device = self.decoder_device
+    
+        # Get model dtype from stored attribute to ensure consistent dtypes
+        model_dtype = self.model_dtype
+    
+        # Encode audio using our stable wrapper
+        if text_prompt is None:
+>           raise ValueError("text_prompt must be provided")
+E           ValueError: text_prompt must be provided
+
+src/models/mixer.py:477: ValueError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+_____________________ TestMixer.test_forward_training_mode _____________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f4aed0>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+
+    def test_forward_training_mode(self, mixer_model):
+        """Test forward pass in training mode with labels."""
+        input_ids = torch.randint(0, 32000, (1, 10))
+        attention_mask = torch.ones(1, 10)
+        labels = torch.randint(0, 32000, (1, 10))
+    
+>       result = mixer_model.forward(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            labels=labels
+        )
+
+tests/test_mixer.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+text_prompt = None, audio_waveform = None, token_identifiers = None
+target_tool_tokens = None
+input_ids = tensor([[12385,  1348, 17505, 30482, 24539, 24369, 19615, 14455, 27891, 13221]])
+attention_mask = tensor([[1., 1., 1., 1., 1., 1., 1., 1., 1., 1.]])
+tool_input_ids = None, tool_attention_mask = None
+labels = tensor([[21641,  4348,  3325, 23863, 31667,  8364, 12302,  8363, 10907, 19641]])
+embedding_scale = None
+
+    def forward(self, text_prompt=None, audio_waveform=None, token_identifiers=None, target_tool_tokens=None,
+              input_ids=None, attention_mask=None, tool_input_ids=None, tool_attention_mask=None, labels=None,
+              embedding_scale=None):
+        """
+        Forward pass for the Mixer model.
+    
+        Args:
+            text_prompt: Raw text prompt (will be tokenized)
+            audio_waveform: Audio waveform data
+            token_identifiers: List of token identifiers for stems and positions
+            target_tool_tokens: Raw target tokens (will be tokenized)
+            input_ids: Pre-tokenized input IDs (if text_prompt is None)
+            attention_mask: Pre-tokenized attention mask (if text_prompt is None)
+            tool_input_ids: Pre-tokenized tool input IDs (if target_tool_tokens is None)
+            tool_attention_mask: Pre-tokenized tool attention mask (if target_tool_tokens is None)
+            labels: Optional direct labels for computing loss (will override internal label creation)
+            embedding_scale: Optional custom scaling factor for embeddings
+        """
+        # Move inputs to encoder device
+        encoder_device = self.encoder_device
+        decoder_device = self.decoder_device
+    
+        # Get model dtype from stored attribute to ensure consistent dtypes
+        model_dtype = self.model_dtype
+    
+        # Encode audio using our stable wrapper
+        if text_prompt is None:
+>           raise ValueError("text_prompt must be provided")
+E           ValueError: text_prompt must be provided
+
+src/models/mixer.py:477: ValueError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+_________________ TestMixer.test_forward_with_embedding_scale __________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f4b550>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+device = 'cpu'
+
+    def test_forward_with_embedding_scale(self, mixer_model, device):
+        """Test forward pass with embedding scale."""
+        text_prompt = "Create a trap beat"
+        audio_waveform = torch.randn(1, 4, 8, 22050).to(device)
+    
+>       result = mixer_model.forward(
+            text_prompt=text_prompt,
+            audio_waveform=audio_waveform,
+            embedding_scale=0.5
+        )
+
+tests/test_mixer.py:259: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/mixer.py:499: in forward
+    text_emb = self.safe_normalize(text_emb)
+src/models/mixer.py:204: in safe_normalize
+    norm = torch.norm(x, p=2, dim=-1, keepdim=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = <MagicMock name='AutoModel.from_pretrained().to()().last_hidden_state.mean()' id='134240353473296'>
+p = 2, dim = -1, keepdim = True, out = None, dtype = None
+
+    def norm(  # noqa: F811
+        input,
+        p: Optional[Union[float, str]] = "fro",
+        dim=None,
+        keepdim=False,
+        out=None,
+        dtype=None,
+    ):
+        r"""Returns the matrix norm or vector norm of a given tensor.
+    
+        .. warning::
+    
+            torch.norm is deprecated and may be removed in a future PyTorch release.
+            Its documentation and behavior may be incorrect, and it is no longer
+            actively maintained.
+    
+            Use :func:`torch.linalg.vector_norm` when computing vector norms and
+            :func:`torch.linalg.matrix_norm` when computing matrix norms.
+            For a function with a similar behavior as this one see :func:`torch.linalg.norm`.
+            Note, however, the signature for these functions is slightly different than the
+            signature for ``torch.norm``.
+    
+        Args:
+            input (Tensor): The input tensor. Its data type must be either a floating
+                point or complex type. For complex inputs, the norm is calculated using the
+                absolute value of each element. If the input is complex and neither
+                :attr:`dtype` nor :attr:`out` is specified, the result's data type will
+                be the corresponding floating point type (e.g. float if :attr:`input` is
+                complexfloat).
+    
+            p (int, float, inf, -inf, 'fro', 'nuc', optional): the order of norm. Default: ``'fro'``
+                The following norms can be calculated:
+    
+                ======  ==============  ==========================
+                ord     matrix norm     vector norm
+                ======  ==============  ==========================
+                'fro'   Frobenius norm  --
+                'nuc'   nuclear norm    --
+                Number  --              sum(abs(x)**ord)**(1./ord)
+                ======  ==============  ==========================
+    
+                The vector norm can be calculated across any number of dimensions.
+                The corresponding dimensions of :attr:`input` are flattened into
+                one dimension, and the norm is calculated on the flattened
+                dimension.
+    
+                Frobenius norm produces the same result as ``p=2`` in all cases
+                except when :attr:`dim` is a list of three or more dims, in which
+                case Frobenius norm throws an error.
+    
+                Nuclear norm can only be calculated across exactly two dimensions.
+    
+            dim (int, tuple of ints, list of ints, optional):
+                Specifies which dimension or dimensions of :attr:`input` to
+                calculate the norm across. If :attr:`dim` is ``None``, the norm will
+                be calculated across all dimensions of :attr:`input`. If the norm
+                type indicated by :attr:`p` does not support the specified number of
+                dimensions, an error will occur.
+            keepdim (bool, optional): whether the output tensors have :attr:`dim`
+                retained or not. Ignored if :attr:`dim` = ``None`` and
+                :attr:`out` = ``None``. Default: ``False``
+            out (Tensor, optional): the output tensor. Ignored if
+                :attr:`dim` = ``None`` and :attr:`out` = ``None``.
+            dtype (:class:`torch.dtype`, optional): the desired data type of
+                returned tensor. If specified, the input tensor is casted to
+                :attr:`dtype` while performing the operation. Default: None.
+    
+        .. note::
+            Even though ``p='fro'`` supports any number of dimensions, the true
+            mathematical definition of Frobenius norm only applies to tensors with
+            exactly two dimensions. :func:`torch.linalg.matrix_norm` with ``ord='fro'``
+            aligns with the mathematical definition, since it can only be applied across
+            exactly two dimensions.
+    
+        Example::
+    
+            >>> import torch
+            >>> a = torch.arange(9, dtype= torch.float) - 4
+            >>> b = a.reshape((3, 3))
+            >>> torch.norm(a)
+            tensor(7.7460)
+            >>> torch.norm(b)
+            tensor(7.7460)
+            >>> torch.norm(a, float('inf'))
+            tensor(4.)
+            >>> torch.norm(b, float('inf'))
+            tensor(4.)
+            >>> c = torch.tensor([[ 1, 2, 3], [-1, 1, 4]] , dtype=torch.float)
+            >>> torch.norm(c, dim=0)
+            tensor([1.4142, 2.2361, 5.0000])
+            >>> torch.norm(c, dim=1)
+            tensor([3.7417, 4.2426])
+            >>> torch.norm(c, p=1, dim=1)
+            tensor([6., 6.])
+            >>> d = torch.arange(8, dtype=torch.float).reshape(2, 2, 2)
+            >>> torch.norm(d, dim=(1, 2))
+            tensor([ 3.7417, 11.2250])
+            >>> torch.norm(d[0, :, :]), torch.norm(d[1, :, :])
+            (tensor(3.7417), tensor(11.2250))
+        """
+    
+        if has_torch_function_unary(input):
+            return handle_torch_function(
+                norm, (input,), input, p=p, dim=dim, keepdim=keepdim, out=out, dtype=dtype
+            )
+    
+        # NB. All the repeated code and weird python is to please TorchScript.
+        #     For a more compact implementation see the relevant function in `_refs/__init__.py`
+    
+        # We don't do this for MPS or sparse tensors
+        if input.layout == torch.strided and input.device.type in (
+            "cpu",
+            "cuda",
+            "meta",
+            torch.utils.backend_registration._privateuse1_backend_name,
+        ):
+            if dim is not None:
+                if isinstance(dim, (int, torch.SymInt)):
+                    _dim = [dim]
+                else:
+                    _dim = dim
+            else:
+                _dim = None  # type: ignore[assignment]
+    
+            if isinstance(p, str):
+                if p == "fro" and (
+                    dim is None or isinstance(dim, (int, torch.SymInt)) or len(dim) <= 2
+                ):
+                    if out is None:
+                        return torch.linalg.vector_norm(
+                            input, 2, _dim, keepdim, dtype=dtype
+                        )
+                    else:
+                        return torch.linalg.vector_norm(
+                            input, 2, _dim, keepdim, dtype=dtype, out=out
+                        )
+    
+                # Here we either call the nuclear norm, or we call matrix_norm with some arguments
+                # that will throw an error
+                if _dim is None:
+                    _dim = list(range(input.ndim))
+                if out is None:
+                    return torch.linalg.matrix_norm(input, p, _dim, keepdim, dtype=dtype)
+                else:
+                    return torch.linalg.matrix_norm(
+                        input, p, _dim, keepdim, dtype=dtype, out=out
+                    )
+            else:
+                # NB. p should be Union[str, number], not Optional!
+                _p = 2.0 if p is None else p
+                if out is None:
+                    return torch.linalg.vector_norm(input, _p, _dim, keepdim, dtype=dtype)
+                else:
+                    return torch.linalg.vector_norm(
+                        input, _p, _dim, keepdim, dtype=dtype, out=out
+                    )
+    
+        ndim = input.dim()
+    
+        # catch default case
+        if dim is None and out is None and dtype is None and p is not None:
+            if isinstance(p, str):
+                if p == "fro":
+                    return _VF.frobenius_norm(input, dim=(), keepdim=keepdim)
+            if not isinstance(p, str):
+                _dim = list(range(ndim))
+                return _VF.norm(input, p, dim=_dim, keepdim=keepdim)  # type: ignore[attr-defined]
+    
+        # TODO: when https://github.com/pytorch/pytorch/issues/33782 is fixed
+        # remove the overloads where dim is an int and replace with BraodcastingList1
+        # and remove next four lines, replace _dim with dim
+        if dim is not None:
+            if isinstance(dim, (int, torch.SymInt)):
+                _dim = [dim]
+            else:
+                _dim = dim
+        else:
+            _dim = None  # type: ignore[assignment]
+    
+        if isinstance(p, str):
+            if p == "fro":
+                if dtype is not None:
+                    raise ValueError("dtype argument is not supported in frobenius norm")
+    
+                if _dim is None:
+                    _dim = list(range(ndim))
+                if out is None:
+                    return _VF.frobenius_norm(input, _dim, keepdim=keepdim)  # type: ignore[arg-type]
+                else:
+                    return _VF.frobenius_norm(input, _dim, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+            elif p == "nuc":
+                if dtype is not None:
+                    raise ValueError("dtype argument is not supported in nuclear norm")
+                if _dim is None:
+                    if out is None:
+                        return _VF.nuclear_norm(input, keepdim=keepdim)  # type: ignore[arg-type]
+                    else:
+                        return _VF.nuclear_norm(input, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+                else:
+                    if out is None:
+                        return _VF.nuclear_norm(input, _dim, keepdim=keepdim)  # type: ignore[arg-type]
+                    else:
+                        return _VF.nuclear_norm(input, _dim, keepdim=keepdim, out=out)  # type: ignore[arg-type]
+            raise RuntimeError(f"only valid string values are 'fro' and 'nuc', found {p}")
+        else:
+            if _dim is None:
+                _dim = list(range(ndim))
+    
+            if out is None:
+                if dtype is None:
+>                   return _VF.norm(input, p, _dim, keepdim=keepdim)  # type: ignore[attr-defined]
+E                   TypeError: norm() received an invalid combination of arguments - got (MagicMock, int, list, keepdim=bool), but expected one of:
+E                    * (Tensor input, Number p = 2)
+E                    * (Tensor input, Number p, *, torch.dtype dtype)
+E                         didn't match because some of the keywords were incorrect: keepdim
+E                    * (Tensor input, Number p, tuple of ints dim, bool keepdim, *, torch.dtype dtype, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of ints dim, bool keepdim = False, *, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of names dim, bool keepdim, *, torch.dtype dtype, Tensor out = None)
+E                    * (Tensor input, Number p, tuple of names dim, bool keepdim = False, *, Tensor out = None)
+
+.venv/lib/python3.11/site-packages/torch/functional.py:1908: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+----------------------------- Captured stdout call -----------------------------
+Error processing batch 0-32: isnan(): argument 'input' (position 1) must be Tensor, not MagicMock
+Batch audio shape: torch.Size([32, 22050])
+ERROR: Failed to extract any audio features!
+___________________ TestMixer.test_different_batch_sizes[1] ____________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f52550>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+device = 'cpu', batch_size = 1
+
+    @pytest.mark.parametrize("batch_size", [1, 2, 4])
+    def test_different_batch_sizes(self, mixer_model, device, batch_size):
+        """Test model with different batch sizes."""
+        text_prompt = ["Create a trap beat"] * batch_size
+        audio_waveform = torch.randn(batch_size, 4, 8, 22050).to(device)
+    
+>       result = mixer_model.forward(
+            text_prompt=text_prompt,
+            audio_waveform=audio_waveform
+        )
+
+tests/test_mixer.py:326: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/mixer.py:496: in forward
+    text_emb, audio_emb = self.get_embedding(text_prompt, audio_waveform, token_identifiers)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+text_prompt = ['Create a trap beat']
+audio_waveform = tensor([[[[-0.4477,  0.2249, -0.1490,  ..., -0.9745, -1.4254,  0.7834],
+          [-0.2324,  1.1054, -0.8871,  ...,  1..., -1.0798,  ..., -0.1882, -1.5055,  1.9602],
+          [-0.7721,  0.1532,  0.2339,  ...,  1.2475,  1.5427,  0.7237]]]])
+token_identifiers = None
+
+    def get_embedding(self, text_prompt, audio_waveform, token_identifiers=None):
+        """
+        Use the CLAP model to extract audio embeddings with token identifiers
+    
+        Args:
+            text_prompt: Text prompt tensor
+            audio_waveform: Audio waveform tensor [batch, stems, chunks, samples]
+            token_identifiers: Optional list of stem position tokens [stems, chunks]
+    
+        Returns:
+            text_emb: Text embedding
+            audio_emb: Audio embedding with token information incorporated
+        """
+        # Always use encoder device for embedding extraction
+        target_device = self.encoder_device
+    
+        # Handle numpy arrays
+        with torch.no_grad():
+            # Handle text_prompt - convert to tensor if it's a list of strings
+            if isinstance(text_prompt, (list, tuple)):
+                # Use the text encoder's tokenizer to process the text
+                if hasattr(self.text_encoder, 'tokenizer'):
+                    tokenizer = self.text_encoder.tokenizer
+                else:
+                    # Fallback to a basic tokenizer
+                    from transformers import AutoTokenizer
+                    tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
+    
+                # Tokenize the text prompts
+                text_inputs = tokenizer(
+                    text_prompt,
+                    padding=True,
+                    truncation=True,
+                    return_tensors="pt",
+                    max_length=512
+                )
+    
+                # Move to target device
+                text_inputs = {k: v.to(target_device) for k, v in text_inputs.items()}
+>               text_prompt = text_inputs['input_ids']
+E               KeyError: 'input_ids'
+
+src/models/mixer.py:248: KeyError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+___________________ TestMixer.test_different_batch_sizes[2] ____________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f4b9d0>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+device = 'cpu', batch_size = 2
+
+    @pytest.mark.parametrize("batch_size", [1, 2, 4])
+    def test_different_batch_sizes(self, mixer_model, device, batch_size):
+        """Test model with different batch sizes."""
+        text_prompt = ["Create a trap beat"] * batch_size
+        audio_waveform = torch.randn(batch_size, 4, 8, 22050).to(device)
+    
+>       result = mixer_model.forward(
+            text_prompt=text_prompt,
+            audio_waveform=audio_waveform
+        )
+
+tests/test_mixer.py:326: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/mixer.py:496: in forward
+    text_emb, audio_emb = self.get_embedding(text_prompt, audio_waveform, token_identifiers)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+text_prompt = ['Create a trap beat', 'Create a trap beat']
+audio_waveform = tensor([[[[ 1.2965e+00,  1.2897e+00, -1.2749e+00,  ...,  2.1910e-01,
+            8.1196e-01,  4.1298e-01],
+          [...151e-01],
+          [ 5.5523e-01, -1.0696e-01,  1.3649e-01,  ...,  1.0536e-01,
+            2.0071e-01, -6.5315e-01]]]])
+token_identifiers = None
+
+    def get_embedding(self, text_prompt, audio_waveform, token_identifiers=None):
+        """
+        Use the CLAP model to extract audio embeddings with token identifiers
+    
+        Args:
+            text_prompt: Text prompt tensor
+            audio_waveform: Audio waveform tensor [batch, stems, chunks, samples]
+            token_identifiers: Optional list of stem position tokens [stems, chunks]
+    
+        Returns:
+            text_emb: Text embedding
+            audio_emb: Audio embedding with token information incorporated
+        """
+        # Always use encoder device for embedding extraction
+        target_device = self.encoder_device
+    
+        # Handle numpy arrays
+        with torch.no_grad():
+            # Handle text_prompt - convert to tensor if it's a list of strings
+            if isinstance(text_prompt, (list, tuple)):
+                # Use the text encoder's tokenizer to process the text
+                if hasattr(self.text_encoder, 'tokenizer'):
+                    tokenizer = self.text_encoder.tokenizer
+                else:
+                    # Fallback to a basic tokenizer
+                    from transformers import AutoTokenizer
+                    tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
+    
+                # Tokenize the text prompts
+                text_inputs = tokenizer(
+                    text_prompt,
+                    padding=True,
+                    truncation=True,
+                    return_tensors="pt",
+                    max_length=512
+                )
+    
+                # Move to target device
+                text_inputs = {k: v.to(target_device) for k, v in text_inputs.items()}
+>               text_prompt = text_inputs['input_ids']
+E               KeyError: 'input_ids'
+
+src/models/mixer.py:248: KeyError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+___________________ TestMixer.test_different_batch_sizes[4] ____________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f49950>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+device = 'cpu', batch_size = 4
+
+    @pytest.mark.parametrize("batch_size", [1, 2, 4])
+    def test_different_batch_sizes(self, mixer_model, device, batch_size):
+        """Test model with different batch sizes."""
+        text_prompt = ["Create a trap beat"] * batch_size
+        audio_waveform = torch.randn(batch_size, 4, 8, 22050).to(device)
+    
+>       result = mixer_model.forward(
+            text_prompt=text_prompt,
+            audio_waveform=audio_waveform
+        )
+
+tests/test_mixer.py:326: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/mixer.py:496: in forward
+    text_emb, audio_emb = self.get_embedding(text_prompt, audio_waveform, token_identifiers)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+text_prompt = ['Create a trap beat', 'Create a trap beat', 'Create a trap beat', 'Create a trap beat']
+audio_waveform = tensor([[[[-1.0751e+00,  9.1771e-01, -1.4161e+00,  ..., -6.8010e-01,
+            1.2076e-01, -1.0986e+00],
+          [...368e+00],
+          [ 7.9057e-01, -4.1498e-01,  3.5408e-01,  ..., -1.1256e+00,
+           -1.3148e+00, -1.3971e-01]]]])
+token_identifiers = None
+
+    def get_embedding(self, text_prompt, audio_waveform, token_identifiers=None):
+        """
+        Use the CLAP model to extract audio embeddings with token identifiers
+    
+        Args:
+            text_prompt: Text prompt tensor
+            audio_waveform: Audio waveform tensor [batch, stems, chunks, samples]
+            token_identifiers: Optional list of stem position tokens [stems, chunks]
+    
+        Returns:
+            text_emb: Text embedding
+            audio_emb: Audio embedding with token information incorporated
+        """
+        # Always use encoder device for embedding extraction
+        target_device = self.encoder_device
+    
+        # Handle numpy arrays
+        with torch.no_grad():
+            # Handle text_prompt - convert to tensor if it's a list of strings
+            if isinstance(text_prompt, (list, tuple)):
+                # Use the text encoder's tokenizer to process the text
+                if hasattr(self.text_encoder, 'tokenizer'):
+                    tokenizer = self.text_encoder.tokenizer
+                else:
+                    # Fallback to a basic tokenizer
+                    from transformers import AutoTokenizer
+                    tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
+    
+                # Tokenize the text prompts
+                text_inputs = tokenizer(
+                    text_prompt,
+                    padding=True,
+                    truncation=True,
+                    return_tensors="pt",
+                    max_length=512
+                )
+    
+                # Move to target device
+                text_inputs = {k: v.to(target_device) for k, v in text_inputs.items()}
+>               text_prompt = text_inputs['input_ids']
+E               KeyError: 'input_ids'
+
+src/models/mixer.py:248: KeyError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+___________________ TestMixer.test_model_devices_consistency ___________________
+
+self = <tests.test_mixer.TestMixer object at 0x7a1766f51fd0>
+mixer_model = Mixer(
+  (fusion_proj): Sequential(
+    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+
+    def test_model_devices_consistency(self, mixer_model):
+        """Test that model devices are consistently set."""
+        assert hasattr(mixer_model, 'device')
+        assert hasattr(mixer_model, 'encoder_device')
+        assert hasattr(mixer_model, 'decoder_device')
+        assert hasattr(mixer_model, 'main_device')
+    
+        # main_device should equal encoder_device
+>       assert mixer_model.main_device == mixer_model.encoder_device
+E       AssertionError: assert device(type='cpu') == 'cpu'
+E        +  where device(type='cpu') = Mixer(\n  (fusion_proj): Sequential(\n    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)\n    (6): Dropout(p=0.1, inplace=False)\n  )\n  (stem_token_embedder): Embedding(100, 512)\n).main_device
+E        +  and   'cpu' = Mixer(\n  (fusion_proj): Sequential(\n    (0): Linear(in_features=<MagicMock name='AutoModel.from_pretrained().to().conf...-05, elementwise_affine=True)\n    (6): Dropout(p=0.1, inplace=False)\n  )\n  (stem_token_embedder): Embedding(100, 512)\n).encoder_device
+
+tests/test_mixer.py:347: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cpu...
+Using device_map: auto
+Model using dtype: torch.float32
+__________________ TestMixerReal.test_device_consistency_real __________________
+
+self = <tests.test_mixer_real.TestMixerReal object at 0x7a1766d53ed0>
+mixer_model_real = Mixer(
+  (text_encoder): BertModel(
+    (embeddings): BertEmbeddings(
+      (word_embeddings): Embedding(30522, 128, p...-05, elementwise_affine=True)
+    (6): Dropout(p=0.1, inplace=False)
+  )
+  (stem_token_embedder): Embedding(100, 512)
+)
+
+>   ???
+E   AssertionError: assert device(type='cuda', index=0) == device(type='cpu')
+E    +  where device(type='cuda', index=0) = Mixer(\n  (text_encoder): BertModel(\n    (embeddings): BertEmbeddings(\n      (word_embeddings): Embedding(30522, 128, p...-05, elementwise_affine=True)\n    (6): Dropout(p=0.1, inplace=False)\n  )\n  (stem_token_embedder): Embedding(100, 512)\n).main_device
+E    +  and   device(type='cpu') = Mixer(\n  (text_encoder): BertModel(\n    (embeddings): BertEmbeddings(\n      (word_embeddings): Embedding(30522, 128, p...-05, elementwise_affine=True)\n    (6): Dropout(p=0.1, inplace=False)\n  )\n  (stem_token_embedder): Embedding(100, 512)\n).encoder_device
+
+/home/frieren/r13921098/SampleGen/tests/test_mixer_real.py:201: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+Using single GPU setup
+Loading Mistral model on cuda:0...
+Using device_map: auto
+Failed to load as Mistral model: The state dictionary of the model you are trying to load is corrupted. Are you sure it was properly saved?
+Model using dtype: torch.float16
+---------------------------- Captured stderr setup -----------------------------
+You are using a model of type gpt2 to instantiate a model of type mistral. This is not supported for all configurations of models and can yield errors.
+_________________ TestHipHopProducerModel.test_generate_stems __________________
+
+self = <tests.test_producer.TestHipHopProducerModel object at 0x7a1766d50850>
+producer_model = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+
+    def test_generate_stems(self, producer_model):
+        """Test stem generation."""
+        plan = {
+            'generate_bass': "Deep 808 bass",
+            'generate_drums': "Trap drums",
+            'generate_melody': "Dark melody",
+            'generate_harmony': "Atmospheric pads"
+        }
+    
+        stems = producer_model.generate_stems(plan, duration=5.0)
+    
+        assert isinstance(stems, dict)
+        assert len(stems) == 4  # All stems should be generated
+    
+        # Check that generators were called
+        producer_model.generators['bass'].generate_bass_line.assert_called_once()
+        producer_model.generators['drums'].generate.assert_called_once()
+>       producer_model.generators['melody'].generate.assert_called_once()
+
+tests/test_producer.py:141: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <MagicMock name='OtherGenerator().generate' id='134240358190416'>
+
+    def assert_called_once(self):
+        """assert that the mock was called only once.
+        """
+        if not self.call_count == 1:
+            msg = ("Expected '%s' to have been called once. Called %s times.%s"
+                   % (self._mock_name or 'mock',
+                      self.call_count,
+                      self._calls_repr()))
+>           raise AssertionError(msg)
+E           AssertionError: Expected 'generate' to have been called once. Called 2 times.
+E           Calls: [call(prompt='Dark melody', duration=5.0),
+E            call(prompt='Atmospheric pads', duration=5.0)].
+
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:918: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+Initializing existing mixer...
+Initializing existing generators...
+Initializing stem extractor...
+----------------------------- Captured stdout call -----------------------------
+Generating bass: Deep 808 bass
+Generating drums: Trap drums
+Generating melody: Dark melody
+Generating harmony: Atmospheric pads
+___________________ TestHipHopProducerModel.test_create_mix ____________________
+
+self = <tests.test_producer.TestHipHopProducerModel object at 0x7a1766d4bb50>
+producer_model = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+test_stems = {'bass': array([ 0.0000000e+00,  1.6000113e-02,  3.1937364e-02, ...,
+       -3.1937364e-02, -1.6000113e-02,  3.2057592...00000e+00,  2.2352012e-02,  4.4616207e-02, ...,
+       -4.4616207e-02, -2.2352012e-02,  4.4784160e-14], dtype=float32)}
+test_prompts = {'generation': 'Generate a menacing bass line with sliding notes', 'mixing': 'Apply professional hip-hop mixing with punch and clarity', 'style': 'Dark trap beat with heavy 808s and atmospheric pads'}
+
+    def test_create_mix(self, producer_model, test_stems, test_prompts):
+        """Test audio mixing."""
+        original_stems = test_stems
+        generated_stems = {
+            'bass': np.random.randn(44100).astype(np.float32),
+            'drums': np.random.randn(44100).astype(np.float32)
+        }
+    
+>       mixed_audio = producer_model.create_mix(
+            original_stems, generated_stems, test_prompts['style']
+        )
+
+tests/test_producer.py:170: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/producer.py:202: in create_mix
+    audio_waveform = self._prepare_audio_for_mixer(all_stems)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+stems = {'bass': array([ 2.05796  , -0.8213188,  1.626371 , ...,  0.5415206,  1.7603639,
+       -0.746473 ], dtype=float32), '...00000e+00,  2.2352012e-02,  4.4616207e-02, ...,
+       -4.4616207e-02, -2.2352012e-02,  4.4784160e-14], dtype=float32)}
+
+    def _prepare_audio_for_mixer(self, stems: Dict[str, np.ndarray]) -> torch.Tensor:
+        """Convert stems to format expected by mixer."""
+        # Convert stems to tensor format expected by mixer
+        # This is a simplified version - you'd need to match the exact format
+        stem_list = []
+        for stem_name, audio in stems.items():
+            if len(audio.shape) == 1:
+                audio = audio[np.newaxis, :]  # Add channel dimension
+            stem_list.append(torch.from_numpy(audio).float())
+    
+        if stem_list:
+            # Stack stems and add batch dimension
+>           audio_tensor = torch.stack(stem_list).unsqueeze(0).to(self.device)
+E           RuntimeError: stack expects each tensor to be equal size, but got [1, 88200] at entry 0 and [1, 44100] at entry 1
+
+src/models/producer.py:321: RuntimeError
+---------------------------- Captured stdout setup -----------------------------
+Initializing existing mixer...
+Initializing existing generators...
+Initializing stem extractor...
+_________________ TestHipHopProducerModel.test_assess_quality __________________
+
+self = <tests.test_producer.TestHipHopProducerModel object at 0x7a1766d4afd0>
+producer_model = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+test_audio_mono = array([ 0.0000000e+00,  3.1324517e-02,  6.2525965e-02, ...,
+       -6.2525965e-02, -3.1324517e-02,  6.2761340e-14], dtype=float32)
+test_prompts = {'generation': 'Generate a menacing bass line with sliding notes', 'mixing': 'Apply professional hip-hop mixing with punch and clarity', 'style': 'Dark trap beat with heavy 808s and atmospheric pads'}
+
+    def test_assess_quality(self, producer_model, test_audio_mono, test_prompts):
+        """Test quality assessment."""
+>       quality_score = producer_model.assess_quality(
+            test_audio_mono, test_prompts['style']
+        )
+
+tests/test_producer.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/producer.py:246: in assess_quality
+    quality_score = self.quality_head(combined_emb).item()
+.venv/lib/python3.11/site-packages/torch/nn/modules/module.py:1751: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+.venv/lib/python3.11/site-packages/torch/nn/modules/module.py:1762: in _call_impl
+    return forward_call(*args, **kwargs)
+.venv/lib/python3.11/site-packages/torch/nn/modules/container.py:240: in forward
+    input = module(input)
+.venv/lib/python3.11/site-packages/torch/nn/modules/module.py:1751: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+.venv/lib/python3.11/site-packages/torch/nn/modules/module.py:1762: in _call_impl
+    return forward_call(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Linear(in_features=4096, out_features=256, bias=True)
+input = tensor([[ 0.9303,  1.5100, -1.8310,  ...,  0.2394, -0.1189, -0.6854]])
+
+    def forward(self, input: Tensor) -> Tensor:
+>       return F.linear(input, self.weight, self.bias)
+E       RuntimeError: mat1 and mat2 shapes cannot be multiplied (1x8192 and 4096x256)
+
+.venv/lib/python3.11/site-packages/torch/nn/modules/linear.py:125: RuntimeError
+---------------------------- Captured stdout setup -----------------------------
+Initializing existing mixer...
+Initializing existing generators...
+Initializing stem extractor...
+______________ TestHipHopProducerModel.test_iterative_refinement _______________
+
+self = <tests.test_producer.TestHipHopProducerModel object at 0x7a1766d4a7d0>
+producer_model = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+test_stems = {'bass': array([ 0.0000000e+00,  1.9830892e-02,  3.9583873e-02, ...,
+       -3.9583873e-02, -1.9830892e-02,  3.9732882...00000e+00,  2.2815660e-02,  4.5541681e-02, ...,
+       -4.5541681e-02, -2.2815660e-02,  4.5713118e-14], dtype=float32)}
+test_prompts = {'generation': 'Generate a menacing bass line with sliding notes', 'mixing': 'Apply professional hip-hop mixing with punch and clarity', 'style': 'Dark trap beat with heavy 808s and atmospheric pads'}
+
+    def test_iterative_refinement(self, producer_model, test_stems, test_prompts):
+        """Test iterative refinement process."""
+        original_stems = test_stems
+        generated_stems = {
+            'bass': np.random.randn(44100).astype(np.float32)
+        }
+    
+>       final_mix, final_quality = producer_model.iterative_refinement(
+            original_stems, generated_stems, test_prompts['style'],
+            max_iterations=2, quality_threshold=0.7
+        )
+
+tests/test_producer.py:194: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/producer.py:269: in iterative_refinement
+    current_mix = self.create_mix(original_stems, generated_stems, text_prompt)
+src/models/producer.py:202: in create_mix
+    audio_waveform = self._prepare_audio_for_mixer(all_stems)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+stems = {'bass': array([ 0.6291052 , -0.5011474 , -0.2219327 , ..., -0.02945442,
+        0.24936126, -0.40018824], dtype=float...00000e+00,  2.2815660e-02,  4.5541681e-02, ...,
+       -4.5541681e-02, -2.2815660e-02,  4.5713118e-14], dtype=float32)}
+
+    def _prepare_audio_for_mixer(self, stems: Dict[str, np.ndarray]) -> torch.Tensor:
+        """Convert stems to format expected by mixer."""
+        # Convert stems to tensor format expected by mixer
+        # This is a simplified version - you'd need to match the exact format
+        stem_list = []
+        for stem_name, audio in stems.items():
+            if len(audio.shape) == 1:
+                audio = audio[np.newaxis, :]  # Add channel dimension
+            stem_list.append(torch.from_numpy(audio).float())
+    
+        if stem_list:
+            # Stack stems and add batch dimension
+>           audio_tensor = torch.stack(stem_list).unsqueeze(0).to(self.device)
+E           RuntimeError: stack expects each tensor to be equal size, but got [1, 88200] at entry 0 and [1, 44100] at entry 2
+
+src/models/producer.py:321: RuntimeError
+---------------------------- Captured stdout setup -----------------------------
+Initializing existing mixer...
+Initializing existing generators...
+Initializing stem extractor...
+______________ TestHipHopProducerModel.test_quality_head_forward _______________
+
+self = <tests.test_producer.TestHipHopProducerModel object at 0x7a176706e890>
+producer_model = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+
+    def test_quality_head_forward(self, producer_model):
+        """Test quality head neural network forward pass."""
+        # Test with proper input size
+        input_tensor = torch.randn(1, 8192).to(producer_model.device)  # Combined embedding size
+>       output = producer_model.quality_head(input_tensor)
+
+tests/test_producer.py:267: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.11/site-packages/torch/nn/modules/module.py:1751: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+.venv/lib/python3.11/site-packages/torch/nn/modules/module.py:1762: in _call_impl
+    return forward_call(*args, **kwargs)
+.venv/lib/python3.11/site-packages/torch/nn/modules/container.py:240: in forward
+    input = module(input)
+.venv/lib/python3.11/site-packages/torch/nn/modules/module.py:1751: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+.venv/lib/python3.11/site-packages/torch/nn/modules/module.py:1762: in _call_impl
+    return forward_call(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Linear(in_features=4096, out_features=256, bias=True)
+input = tensor([[ 0.9341, -0.6573,  1.4337,  ..., -0.1197, -0.3395, -0.1612]])
+
+    def forward(self, input: Tensor) -> Tensor:
+>       return F.linear(input, self.weight, self.bias)
+E       RuntimeError: mat1 and mat2 shapes cannot be multiplied (1x8192 and 4096x256)
+
+.venv/lib/python3.11/site-packages/torch/nn/modules/linear.py:125: RuntimeError
+---------------------------- Captured stdout setup -----------------------------
+Initializing existing mixer...
+Initializing existing generators...
+Initializing stem extractor...
+________ TestHipHopProducerModel.test_error_handling_in_assess_quality _________
+
+self = <tests.test_producer.TestHipHopProducerModel object at 0x7a1766d38f10>
+producer_model = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+test_audio_mono = array([ 0.0000000e+00,  3.1324517e-02,  6.2525965e-02, ...,
+       -6.2525965e-02, -3.1324517e-02,  6.2761340e-14], dtype=float32)
+
+    def test_error_handling_in_assess_quality(self, producer_model, test_audio_mono):
+        """Test error handling in quality assessment."""
+        # Mock the mixer to raise an exception
+        producer_model.mixer.get_embedding.side_effect = Exception("Mock error")
+    
+        # Should not crash but handle gracefully
+        try:
+>           quality = producer_model.assess_quality(test_audio_mono, "test prompt")
+
+tests/test_producer.py:293: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/models/producer.py:239: in assess_quality
+    text_emb, audio_emb = self.mixer.get_embedding(
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:1124: in __call__
+    return self._mock_call(*args, **kwargs)
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:1128: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <MagicMock name='Mixer().get_embedding' id='134240518254288'>, args = ()
+kwargs = {'audio_waveform': tensor([[[[ 0.0000e+00,  3.1325e-02,  6.2526e-02,  ..., -6.2526e-02,
+           -3.1325e-02,  6.2761e-14]]]]), 'text_prompt': 'test prompt'}
+effect = Exception('Mock error')
+
+    def _execute_mock_call(self, /, *args, **kwargs):
+        # separate from _increment_mock_call so that awaited functions are
+        # executed separately from their call, also AsyncMock overrides this method
+    
+        effect = self.side_effect
+        if effect is not None:
+            if _is_exception(effect):
+>               raise effect
+E               Exception: Mock error
+
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:1183: Exception
+
+During handling of the above exception, another exception occurred:
+
+self = <tests.test_producer.TestHipHopProducerModel object at 0x7a1766d38f10>
+producer_model = HipHopProducerModel(
+  (quality_head): Sequential(
+    (0): Linear(in_features=4096, out_features=256, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=256, out_features=1, bias=True)
+    (3): Sigmoid()
+  )
+)
+test_audio_mono = array([ 0.0000000e+00,  3.1324517e-02,  6.2525965e-02, ...,
+       -6.2525965e-02, -3.1324517e-02,  6.2761340e-14], dtype=float32)
+
+    def test_error_handling_in_assess_quality(self, producer_model, test_audio_mono):
+        """Test error handling in quality assessment."""
+        # Mock the mixer to raise an exception
+        producer_model.mixer.get_embedding.side_effect = Exception("Mock error")
+    
+        # Should not crash but handle gracefully
+        try:
+            quality = producer_model.assess_quality(test_audio_mono, "test prompt")
+            # If it doesn't crash, that's good
+            assert isinstance(quality, (int, float))
+        except Exception:
+            # If it does crash, that's a test failure
+>           pytest.fail("assess_quality should handle exceptions gracefully")
+E           Failed: assess_quality should handle exceptions gracefully
+
+tests/test_producer.py:298: Failed
+---------------------------- Captured stdout setup -----------------------------
+Initializing existing mixer...
+Initializing existing generators...
+Initializing stem extractor...
+________________ TestStemExtractor.test_extract_stems_from_file ________________
+
+self = <tests.test_stem_extraction.TestStemExtractor object at 0x7a1766d385d0>
+extractor = <src.data_processing.stem_extraction.StemExtractor object at 0x7a1746f55350>
+test_wav_file = '/tmp/tmp1grj_cn_/test_audio.wav', temp_dir = '/tmp/tmp1grj_cn_'
+
+    def test_extract_stems_from_file(self, extractor, test_wav_file, temp_dir):
+        """Test stem extraction from audio file."""
+        # Mock the demucs.separate.main function since it's complex
+>       with patch('src.data_processing.stem_extraction.demucs_separate') as mock_separate:
+
+tests/test_stem_extraction.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7a1746f2a550>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'src.data_processing.stem_extraction' from '/home/frieren/r13921098/SampleGen/src/data_processing/stem_extraction.py'> does not have the attribute 'demucs_separate'
+
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:1419: AttributeError
+---------------------------- Captured stdout setup -----------------------------
+Loading Demucs model 'htdemucs' on cpu...
+Model loaded with sources: drums, bass, other, vocals
+____________ TestStemExtractor.test_generate_stem_unsupported_type _____________
+
+self = <tests.test_stem_extraction.TestStemExtractor object at 0x7a1766d39f50>
+extractor = <src.data_processing.stem_extraction.StemExtractor object at 0x7a1744d2d650>
+test_prompts = {'generation': 'Generate a menacing bass line with sliding notes', 'mixing': 'Apply professional hip-hop mixing with punch and clarity', 'style': 'Dark trap beat with heavy 808s and atmospheric pads'}
+
+    def test_generate_stem_unsupported_type(self, extractor, test_prompts):
+        """Test stem generation with unsupported stem type."""
+>       with patch('src.data_processing.stem_extraction.MelodyGenerator'):
+
+tests/test_stem_extraction.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:1446: in __enter__
+    original, local = self.get_original()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7a1744d2c6d0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'src.data_processing.stem_extraction' from '/home/frieren/r13921098/SampleGen/src/data_processing/stem_extraction.py'> does not have the attribute 'MelodyGenerator'
+
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:1419: AttributeError
+---------------------------- Captured stdout setup -----------------------------
+Loading Demucs model 'htdemucs' on cpu...
+Model loaded with sources: drums, bass, other, vocals
+____________ TestHipHopProducerTrainer.test_train_epoch_with_errors ____________
+
+self = <tests.test_trainer.TestHipHopProducerTrainer object at 0x7a1766d2d390>
+trainer = <src.training.trainer.HipHopProducerTrainer object at 0x7a174e49db50>
+mock_dataloader = <MagicMock name='DataLoader()' id='134240393637264'>
+
+    def test_train_epoch_with_errors(self, trainer, mock_dataloader):
+        """Test training epoch with batch errors."""
+        # Mock the dataloader to include a problematic batch
+        def side_effect_iter():
+            # First batch is normal
+            yield {
+                'stems': {
+                    'vocals': [np.random.randn(44100).astype(np.float32)]
+                },
+                'style_prompt': ['Test style'],
+                'ground_truth_dsp': [{'tool': 'test', 'params': {}}]
+            }
+            # Second batch causes an error
+            raise Exception("Mock batch error")
+    
+        mock_dataloader.__iter__ = side_effect_iter
+    
+>       results = trainer.train_epoch()
+
+tests/test_trainer.py:158: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/training/trainer.py:68: in train_epoch
+    for batch_idx, batch in enumerate(self.train_loader):
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <MagicMock name='DataLoader()' id='134240393637264'>, args = (), kw = {}
+
+    def method(self, /, *args, **kw):
+>       return func(self, *args, **kw)
+E       TypeError: TestHipHopProducerTrainer.test_train_epoch_with_errors.<locals>.side_effect_iter() takes 0 positional arguments but 1 was given
+
+../../.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/unittest/mock.py:1992: TypeError
+---------------------------- Captured stdout setup -----------------------------
+Found 2 trainable parameters
+________________ TestHipHopProducerTrainer.test_save_checkpoint ________________
+
+self = <tests.test_trainer.TestHipHopProducerTrainer object at 0x7a1766d2e490>
+trainer = <src.training.trainer.HipHopProducerTrainer object at 0x7a1744868310>
+temp_dir = '/tmp/tmpl7rbrbm6'
+
+    def test_save_checkpoint(self, trainer, temp_dir):
+        """Test saving training checkpoint."""
+        checkpoint_path = os.path.join(temp_dir, "test_checkpoint.pt")
+    
+>       trainer.save_checkpoint(checkpoint_path)
+
+tests/test_trainer.py:188: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/training/trainer.py:194: in save_checkpoint
+    torch.save(checkpoint, path)
+.venv/lib/python3.11/site-packages/torch/serialization.py:965: in save
+    _save(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obj = {'model_state_dict': <MagicMock name='mock.state_dict()' id='134240357607120'>, 'optimizer_state_dict': {'param_groups': [{'amsgrad': False, 'betas': (0.9, 0.999), 'capturable': False, 'decoupled_weight_decay': True, ...}], 'state': {}}}
+zip_file = <torch.PyTorchFileWriter object at 0x7a1744d462b0>
+pickle_module = <module 'pickle' from '/home/frieren/.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/pickle.py'>
+pickle_protocol = 2, _disable_byteorder_record = False
+
+    def _save(
+        obj,
+        zip_file,
+        pickle_module,
+        pickle_protocol,
+        _disable_byteorder_record,
+    ):
+        serialized_storages = {}
+        id_map: dict[int, str] = {}
+    
+        # Since loading storages that view the same data with different dtypes is
+        # not supported, we need to keep track of the dtype associated with each
+        # storage data_ptr and throw an error if the dtype is ever different.
+        # TODO: This feature could be added in the future
+        storage_dtypes: dict[int, torch.dtype] = {}
+    
+        def persistent_id(obj):
+            # FIXME: the docs say that persistent_id should only return a string
+            # but torch store returns tuples. This works only in the binary protocol
+            # see
+            # https://docs.python.org/2/library/pickle.html#pickling-and-unpickling-external-objects
+            # https://github.com/python/cpython/blob/master/Lib/pickle.py#L527-L537
+            if isinstance(obj, torch.storage.TypedStorage) or torch.is_storage(obj):
+                if isinstance(obj, torch.storage.TypedStorage):
+                    # TODO: Once we decide to break serialization FC, this case
+                    # can be deleted
+                    storage = obj._untyped_storage
+                    storage_dtype = obj.dtype
+                    storage_type_str = obj._pickle_storage_type()
+                    storage_type = getattr(torch, storage_type_str)
+                    storage_numel = obj._size()
+    
+                else:
+                    storage = obj
+                    storage_dtype = torch.uint8
+                    storage_type = normalize_storage_type(type(obj))
+                    storage_numel = storage.nbytes()
+    
+                # If storage is allocated, ensure that any other saved storages
+                # pointing to the same data all have the same dtype. If storage is
+                # not allocated, don't perform this check
+                if str(storage.device) != "meta" and storage.data_ptr() != 0:
+                    if storage.data_ptr() in storage_dtypes:
+                        if storage_dtype != storage_dtypes[storage.data_ptr()]:
+                            raise RuntimeError(
+                                "Cannot save multiple tensors or storages that "
+                                "view the same data as different types"
+                            )
+                    else:
+                        storage_dtypes[storage.data_ptr()] = storage_dtype
+    
+                storage_key = id_map.setdefault(storage._cdata, str(len(id_map)))
+                if hasattr(obj, "_fake_device") and obj._fake_device is not None:
+                    location = str(obj._fake_device)
+                else:
+                    location = location_tag(storage)
+                serialized_storages[storage_key] = storage
+    
+                return ("storage", storage_type, storage_key, location, storage_numel)
+    
+            return None
+    
+        # Write the pickle data for `obj`
+        data_buf = io.BytesIO()
+    
+        class PyTorchPickler(pickle_module.Pickler):  # type: ignore[name-defined]
+            def persistent_id(self, obj):
+                return persistent_id(obj)
+    
+        pickler = PyTorchPickler(data_buf, protocol=pickle_protocol)
+>       pickler.dump(obj)
+E       _pickle.PicklingError: Can't pickle <class 'unittest.mock.MagicMock'>: it's not the same object as unittest.mock.MagicMock
+
+.venv/lib/python3.11/site-packages/torch/serialization.py:1211: PicklingError
+---------------------------- Captured stdout setup -----------------------------
+Found 2 trainable parameters
+________________ TestHipHopProducerTrainer.test_load_checkpoint ________________
+
+self = <tests.test_trainer.TestHipHopProducerTrainer object at 0x7a1766d2e110>
+trainer = <src.training.trainer.HipHopProducerTrainer object at 0x7a174464e3d0>
+temp_dir = '/tmp/tmp6rs3qq93'
+
+    def test_load_checkpoint(self, trainer, temp_dir):
+        """Test loading training checkpoint."""
+        checkpoint_path = os.path.join(temp_dir, "test_checkpoint.pt")
+    
+        # First save a checkpoint
+>       trainer.save_checkpoint(checkpoint_path)
+
+tests/test_trainer.py:202: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/training/trainer.py:194: in save_checkpoint
+    torch.save(checkpoint, path)
+.venv/lib/python3.11/site-packages/torch/serialization.py:965: in save
+    _save(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obj = {'model_state_dict': <MagicMock name='mock.state_dict()' id='134240516658768'>, 'optimizer_state_dict': {'param_groups': [{'amsgrad': False, 'betas': (0.9, 0.999), 'capturable': False, 'decoupled_weight_decay': True, ...}], 'state': {}}}
+zip_file = <torch.PyTorchFileWriter object at 0x7a174464c270>
+pickle_module = <module 'pickle' from '/home/frieren/.local/share/uv/python/cpython-3.11.12-linux-x86_64-gnu/lib/python3.11/pickle.py'>
+pickle_protocol = 2, _disable_byteorder_record = False
+
+    def _save(
+        obj,
+        zip_file,
+        pickle_module,
+        pickle_protocol,
+        _disable_byteorder_record,
+    ):
+        serialized_storages = {}
+        id_map: dict[int, str] = {}
+    
+        # Since loading storages that view the same data with different dtypes is
+        # not supported, we need to keep track of the dtype associated with each
+        # storage data_ptr and throw an error if the dtype is ever different.
+        # TODO: This feature could be added in the future
+        storage_dtypes: dict[int, torch.dtype] = {}
+    
+        def persistent_id(obj):
+            # FIXME: the docs say that persistent_id should only return a string
+            # but torch store returns tuples. This works only in the binary protocol
+            # see
+            # https://docs.python.org/2/library/pickle.html#pickling-and-unpickling-external-objects
+            # https://github.com/python/cpython/blob/master/Lib/pickle.py#L527-L537
+            if isinstance(obj, torch.storage.TypedStorage) or torch.is_storage(obj):
+                if isinstance(obj, torch.storage.TypedStorage):
+                    # TODO: Once we decide to break serialization FC, this case
+                    # can be deleted
+                    storage = obj._untyped_storage
+                    storage_dtype = obj.dtype
+                    storage_type_str = obj._pickle_storage_type()
+                    storage_type = getattr(torch, storage_type_str)
+                    storage_numel = obj._size()
+    
+                else:
+                    storage = obj
+                    storage_dtype = torch.uint8
+                    storage_type = normalize_storage_type(type(obj))
+                    storage_numel = storage.nbytes()
+    
+                # If storage is allocated, ensure that any other saved storages
+                # pointing to the same data all have the same dtype. If storage is
+                # not allocated, don't perform this check
+                if str(storage.device) != "meta" and storage.data_ptr() != 0:
+                    if storage.data_ptr() in storage_dtypes:
+                        if storage_dtype != storage_dtypes[storage.data_ptr()]:
+                            raise RuntimeError(
+                                "Cannot save multiple tensors or storages that "
+                                "view the same data as different types"
+                            )
+                    else:
+                        storage_dtypes[storage.data_ptr()] = storage_dtype
+    
+                storage_key = id_map.setdefault(storage._cdata, str(len(id_map)))
+                if hasattr(obj, "_fake_device") and obj._fake_device is not None:
+                    location = str(obj._fake_device)
+                else:
+                    location = location_tag(storage)
+                serialized_storages[storage_key] = storage
+    
+                return ("storage", storage_type, storage_key, location, storage_numel)
+    
+            return None
+    
+        # Write the pickle data for `obj`
+        data_buf = io.BytesIO()
+    
+        class PyTorchPickler(pickle_module.Pickler):  # type: ignore[name-defined]
+            def persistent_id(self, obj):
+                return persistent_id(obj)
+    
+        pickler = PyTorchPickler(data_buf, protocol=pickle_protocol)
+>       pickler.dump(obj)
+E       _pickle.PicklingError: Can't pickle <class 'unittest.mock.MagicMock'>: it's not the same object as unittest.mock.MagicMock
+
+.venv/lib/python3.11/site-packages/torch/serialization.py:1211: PicklingError
+---------------------------- Captured stdout setup -----------------------------
+Found 2 trainable parameters
+_____________ TestSelfSupervisedPretrainer.test_gradient_clipping ______________
+
+self = <tests.test_trainer.TestSelfSupervisedPretrainer object at 0x7a1766d072d0>
+pretrainer = <src.training.trainer.SelfSupervisedPretrainer object at 0x7a174e405d50>
+mock_distortion_dataloader = <MagicMock name='DataLoader()' id='134240353444688'>
+
+    def test_gradient_clipping(self, pretrainer, mock_distortion_dataloader):
+        """Test gradient clipping during pretraining."""
+        # Mock parameters to have large gradients
+        mock_param = torch.nn.Parameter(torch.randn(10, 10, requires_grad=True))
+        mock_param.grad = torch.randn(10, 10) * 100  # Large gradients
+        pretrainer.model.parameters.return_value = [mock_param]
+    
+        with patch('torch.nn.utils.clip_grad_norm_') as mock_clip:
+            results = pretrainer.pretrain_epoch()
+    
+            # Should have called gradient clipping
+>           assert mock_clip.call_count > 0
+E           AssertionError: assert 0 > 0
+E            +  where 0 = <MagicMock name='clip_grad_norm_' id='134240516539600'>.call_count
+
+tests/test_trainer.py:464: AssertionError
+----------------------------- Captured stdout call -----------------------------
+Error in pretrain batch 0: element 0 of tensors does not require grad and does not have a grad_fn
+Error in pretrain batch 1: element 0 of tensors does not require grad and does not have a grad_fn
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/pydub/utils.py:14
+  /home/frieren/r13921098/SampleGen/.venv/lib/python3.11/site-packages/pydub/utils.py:14: DeprecationWarning: 'audioop' is deprecated and slated for removal in Python 3.13
+    import audioop
+
+.venv/lib/python3.11/site-packages/torchvision/io/image.py:13
+  /home/frieren/r13921098/SampleGen/.venv/lib/python3.11/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/home/frieren/r13921098/SampleGen/.venv/lib/python3.11/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+    warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_faust_distorter.py::TestFaustDistorter::test_compile_and_apply_faust_failure
+FAILED tests/test_generators.py::TestBassGenerator::test_enhance_bass_prompt
+FAILED tests/test_generators.py::TestDrumGenerator::test_generate_drums - Typ...
+FAILED tests/test_generators.py::TestDrumGenerator::test_enhance_drum_prompt
+FAILED tests/test_generators.py::TestOtherGenerator::test_generate_melody - T...
+FAILED tests/test_generators.py::TestOtherGenerator::test_generate_harmony - ...
+FAILED tests/test_generators.py::TestOtherGenerator::test_enhance_prompt_melody
+FAILED tests/test_generators.py::TestOtherGenerator::test_enhance_prompt_harmony
+FAILED tests/test_generators.py::TestOtherGenerator::test_different_instrument_types[melody]
+FAILED tests/test_generators.py::TestOtherGenerator::test_different_instrument_types[harmony]
+FAILED tests/test_generators.py::TestOtherGenerator::test_different_instrument_types[synth]
+FAILED tests/test_generators.py::TestOtherGenerator::test_different_instrument_types[sfx]
+FAILED tests/test_generators.py::TestOtherGenerator::test_error_handling_invalid_instrument
+FAILED tests/test_generators.py::TestGeneratorIntegration::test_generate_full_arrangement
+FAILED tests/test_generators.py::TestGeneratorIntegration::test_consistent_duration_across_generators
+FAILED tests/test_main_producer.py::TestMainProducerReal::test_file_walking_logic
+FAILED tests/test_main_producer.py::TestMainProducerReal::test_main_function_with_no_args
+FAILED tests/test_main_producer.py::TestMainProducerIntegration::test_audio_file_discovery_realistic
+FAILED tests/test_mixer.py::TestMixer::test_initialization_multi_gpu - Assert...
+FAILED tests/test_mixer.py::TestMixer::test_get_embedding_basic - AssertionEr...
+FAILED tests/test_mixer.py::TestMixer::test_get_embedding_with_tokens - Asser...
+FAILED tests/test_mixer.py::TestMixer::test_forward_text_only - TypeError: no...
+FAILED tests/test_mixer.py::TestMixer::test_forward_with_audio - TypeError: n...
+FAILED tests/test_mixer.py::TestMixer::test_forward_generation_mode - ValueEr...
+FAILED tests/test_mixer.py::TestMixer::test_forward_training_mode - ValueErro...
+FAILED tests/test_mixer.py::TestMixer::test_forward_with_embedding_scale - Ty...
+FAILED tests/test_mixer.py::TestMixer::test_different_batch_sizes[1] - KeyErr...
+FAILED tests/test_mixer.py::TestMixer::test_different_batch_sizes[2] - KeyErr...
+FAILED tests/test_mixer.py::TestMixer::test_different_batch_sizes[4] - KeyErr...
+FAILED tests/test_mixer.py::TestMixer::test_model_devices_consistency - Asser...
+FAILED tests/test_mixer_real.py::TestMixerReal::test_device_consistency_real
+FAILED tests/test_producer.py::TestHipHopProducerModel::test_generate_stems
+FAILED tests/test_producer.py::TestHipHopProducerModel::test_create_mix - Run...
+FAILED tests/test_producer.py::TestHipHopProducerModel::test_assess_quality
+FAILED tests/test_producer.py::TestHipHopProducerModel::test_iterative_refinement
+FAILED tests/test_producer.py::TestHipHopProducerModel::test_quality_head_forward
+FAILED tests/test_producer.py::TestHipHopProducerModel::test_error_handling_in_assess_quality
+FAILED tests/test_stem_extraction.py::TestStemExtractor::test_extract_stems_from_file
+FAILED tests/test_stem_extraction.py::TestStemExtractor::test_generate_stem_unsupported_type
+FAILED tests/test_trainer.py::TestHipHopProducerTrainer::test_train_epoch_with_errors
+FAILED tests/test_trainer.py::TestHipHopProducerTrainer::test_save_checkpoint
+FAILED tests/test_trainer.py::TestHipHopProducerTrainer::test_load_checkpoint
+FAILED tests/test_trainer.py::TestSelfSupervisedPretrainer::test_gradient_clipping
+====== 43 failed, 248 passed, 3 skipped, 2 warnings in 1799.44s (0:29:59) ======

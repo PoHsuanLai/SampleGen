@@ -6,7 +6,6 @@ import soundfile as sf
 from demucs.pretrained import get_model
 from demucs.apply import apply_model
 import tempfile
-from transcription import StemTranscriber
 
 class StemExtractor:
     """
@@ -26,12 +25,12 @@ class StemExtractor:
                         'mdx_extra' - MDX model with more separation quality
                         'mdx_extra_q' - Quantized version of mdx_extra
             device: Device to use for inference ('cpu', 'cuda', or None for auto-detect)
-            transcribe_stems: Whether to automatically transcribe stems to MIDI
+            transcribe_stems: Whether to automatically transcribe stems to MIDI (currently disabled)
             sample_rate: Audio sample rate to work with
         """
         self.model_name = model_name
         self.sample_rate = sample_rate
-        self.transcribe_stems = transcribe_stems
+        self.transcribe_stems = False  # Disable transcription for now
         
         # Auto-detect device if not specified
         if device is None:
@@ -47,11 +46,8 @@ class StemExtractor:
         self.source_names = self.model.sources
         print(f"Model loaded with sources: {', '.join(self.source_names)}")
         
-        # Initialize the transcriber if needed
-        if transcribe_stems:
-            self.transcriber = StemTranscriber(sample_rate=sample_rate)
-        else:
-            self.transcriber = None
+        # Transcription is disabled for now
+        self.transcriber = None
     
     def extract_stems(self, audio_data: np.ndarray, sample_rate: int = 44100) -> Dict[str, np.ndarray]:
         """
@@ -138,13 +134,18 @@ class StemExtractor:
             
             # Prepare arguments for the demucs separator
             original_args = sys.argv
-            sys.argv = [
+            args = [
                 "demucs", 
                 "-n", self.model_name,
-                "-o", output_dir,
-                "--two-stems=vocals" if len(self.source_names) == 2 else "",
-                audio_path
+                "-o", output_dir
             ]
+            
+            # Add two-stems option only if needed
+            if len(self.source_names) == 2:
+                args.append("--two-stems=vocals")
+            
+            args.append(audio_path)
+            sys.argv = args
             
             # Run the separator
             try:
@@ -179,11 +180,8 @@ class StemExtractor:
             else:
                 print(f"Warning: Stem file {stem_path} not found!")
         
-        # Transcribe stems if requested
+        # Transcription is disabled for now
         midi_paths = None
-        if do_transcribe and stems and hasattr(self, 'transcriber') and self.transcriber is not None:
-            print(f"Transcribing stems to MIDI in {midi_output_dir}...")
-            midi_paths = self.transcriber.transcribe_all_stems(stems, midi_output_dir)
         
         return stems, midi_paths
     
@@ -279,23 +277,7 @@ class StemExtractor:
             sf.write(output_path, audio.T, self.sample_rate)
             print(f"Generated {stem_type} saved to {output_path}")
         
-        # Transcribe if requested
+        # Transcription is disabled for now
         midi_path = None
-        if transcribe and audio is not None:
-            if not hasattr(self, 'transcriber') or self.transcriber is None:
-                self.transcriber = StemTranscriber(sample_rate=self.sample_rate)
-                
-            midi_dir = os.path.dirname(midi_output_path) if midi_output_path else tempfile.mkdtemp()
-            os.makedirs(midi_dir, exist_ok=True)
-            
-            midi_path = midi_output_path or os.path.join(midi_dir, f"generated_{stem_type}.mid")
-            result = self.transcriber.transcribe_audio(audio, midi_path)
-            
-            if result:
-                print(f"Generated {stem_type} transcribed to {midi_path}")
-                midi_path = result.get("path", midi_path)
-            else:
-                print(f"Failed to transcribe generated {stem_type}")
-                midi_path = None
         
         return audio, midi_path 
