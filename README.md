@@ -38,7 +38,7 @@ The unified system consists of:
 
 ```bash
 # Run with audio input and text prompt
-python src/main_unified_producer.py --mode demo \
+uv run src/main_unified_producer.py --mode demo \
     --input your_song.wav \
     --prompt "Create a dark trap beat with heavy 808s" \
     --output result.wav
@@ -48,7 +48,7 @@ python src/main_unified_producer.py --mode demo \
 
 ```bash
 # Train the unified model
-python src/main_unified_producer.py --mode train \
+uv run src/main_unified_producer.py --mode train \
     --data-dir your_data_directory \
     --epochs 5 \
     --checkpoint model_checkpoint
@@ -58,14 +58,14 @@ python src/main_unified_producer.py --mode train \
 
 ```bash
 # Train specifically for Faust script generation
-python src/main_unified_producer.py --mode faust-train \
+uv run src/main_unified_producer.py --mode faust-train \
     --data-dir your_data_directory \
     --epochs 3
 ```
 
 ## Model Components
 
-### UnifiedProducerModel
+### ProducerModel
 
 ```python
 from src.models.unified_producer import UnifiedProducerModel
@@ -173,12 +173,12 @@ pip install torch transformers demucs soundfile numpy
 
 2. Run the demo:
 ```bash
-python src/main_unified_producer.py
+uv run src/main_unified_producer.py
 ```
 
 3. Train on your data:
 ```bash
-python src/main_unified_producer.py --mode train --data-dir your_data
+uv run src/main_unified_producer.py --mode train --data-dir your_data
 ```
 
 ## Future Enhancements
